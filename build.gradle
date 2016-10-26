@@ -1,0 +1,45 @@
+apply from: 'buildsystem/ci.gradle'
+apply from: 'buildsystem/dependencies.gradle'
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+        classpath "com.fernandocejas.frodo:frodo-plugin:0.8.3"
+    }
+}
+
+allprojects {
+    ext {
+        androidApplicationId = 'cn.canlnac.onlinecourse.presentation'
+        androidVersionCode = 1
+        androidVersionName = "1.0"
+        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        testApplicationId = 'cn.canlnac.onlinecourse.presentation.test'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    description 'Creates the gradle wrapper.'
+    gradleVersion '3.0'
+}
+
+task runDomainUnitTests(dependsOn: [':domain:test']) {
+    description 'Run unit tests for the domain layer.'
+}
+
+task runDataUnitTests(dependsOn: [':data:cleanTestDebugUnitTest', ':data:testDebugUnitTest']) {
+    description 'Run unit tests for the data layer.'
+}
+
+task runUnitTests(dependsOn: ['runDomainUnitTests', 'runDataUnitTests']) {
+    description 'Run unit tests for both domain and data layers.'
+}
+
+task runAcceptanceTests(dependsOn: [':presentation:connectedAndroidTest']) {
+    description 'Run application acceptance tests.'
+}
