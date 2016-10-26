@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.data.net;
 
-import java.util.List;
-
 import cn.canlnac.onlinecourse.data.entity.LoginEntity;
 import rx.Observable;
 
