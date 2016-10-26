@@ -7,7 +7,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
         classpath "com.fernandocejas.frodo:frodo-plugin:0.8.3"
     }
@@ -15,11 +15,11 @@ buildscript {
 
 allprojects {
     ext {
-        androidApplicationId = 'com.onlinecourse.presentation'
+        androidApplicationId = 'cn.canlnac.onlinecourse.presentation'
         androidVersionCode = 1
         androidVersionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
-        testApplicationId = 'com.onlinecourse.presentation.test'
+        testApplicationId = 'cn.canlnac.onlinecourse.presentation.test'
     }
 }
 
