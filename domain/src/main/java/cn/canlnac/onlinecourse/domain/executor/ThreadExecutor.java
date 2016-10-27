@@ -13,26 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.canlnac.onlinecourse.data.exception;
+package cn.canlnac.onlinecourse.domain.executor;
+
+import java.util.concurrent.Executor;
 
 /**
- * 网络连接异常
+ * Executor implementation can be based on different frameworks or techniques of asynchronous
+ * execution, but every implementation will execute the
+ * {@link cn.canlnac.onlinecourse.domain.interactor.LoginCase} out of the UI thread.
  */
-public class NetworkConnectionException extends Exception {
-
-    public NetworkConnectionException() {
-        super();
-    }
-
-    public NetworkConnectionException(final String message) {
-        super(message);
-    }
-
-    public NetworkConnectionException(final String message, final Throwable cause) {
-        super(message, cause);
-    }
-
-    public NetworkConnectionException(final Throwable cause) {
-        super(cause);
-    }
+public interface ThreadExecutor extends Executor {
 }
