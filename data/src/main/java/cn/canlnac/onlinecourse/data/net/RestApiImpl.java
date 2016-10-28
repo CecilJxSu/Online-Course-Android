@@ -23,7 +23,7 @@ public class RestApiImpl implements RestApi {
     /**
      * 构造函数
      *
-     * @param context {@link android.content.Context}               安卓内容上下文
+     * @param context               {@link android.content.Context}               安卓内容上下文
      * @param loginEntityJsonMapper {@link LoginEntityJsonMapper}   json处理类
      */
     public RestApiImpl(Context context, LoginEntityJsonMapper loginEntityJsonMapper) {
@@ -36,9 +36,10 @@ public class RestApiImpl implements RestApi {
 
     /**
      * 登录
-     * @param username  用户名
-     * @param password  密码
-     * @return          登录实体类
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return 登录实体类
      */
     @RxLogObservable
     @Override
@@ -64,8 +65,9 @@ public class RestApiImpl implements RestApi {
 
     /**
      * 登录请求
-     * @return                          登录数据
-     * @throws MalformedURLException    URL格式错误
+     *
+     * @return 登录数据
+     * @throws MalformedURLException URL格式错误
      */
     private String getLoginEntityFromApi() throws MalformedURLException {
         return APIConnection.createGET(API_LOGIN_POST).requestSyncCall();
