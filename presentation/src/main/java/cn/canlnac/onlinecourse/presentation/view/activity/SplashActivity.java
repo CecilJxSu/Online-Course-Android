@@ -1,6 +1,10 @@
 package cn.canlnac.onlinecourse.presentation.view.activity;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -8,14 +12,16 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.canlnac.onlinecourse.data.cache.FileManager;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.view.SplashIndicator;
 import cn.canlnac.onlinecourse.presentation.view.SplashVideoView;
@@ -29,11 +35,11 @@ import rx.functions.Action1;
 
 public class SplashActivity extends Activity {
     //视频视图
-    @Bind(R.id.splash_video_view) SplashVideoView mVideoView;
+    @BindView(R.id.splash_video_view) SplashVideoView mVideoView;
     //滑动页视图
-    @Bind(R.id.splash_image) ViewPager mVpImage;
+    @BindView(R.id.splash_image) ViewPager mVpImage;
     //指示器视图
-    @Bind(R.id.indicator) SplashIndicator mIndicator;
+    @BindView(R.id.indicator) SplashIndicator mIndicator;
 
     //滑动页的图片视图
     List<View> mViewList = new ArrayList<>();
@@ -51,6 +57,16 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //添加偏好设置，记录是否第一次启动欢迎页
+        final SharedPreferences sharedPreferences = getSharedPreferences("Splash", Context.MODE_PRIVATE);
+        Boolean isFirst = sharedPreferences.getBoolean("first",true);
+        //直接进入主页
+        if (!isFirst) {
+            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         setContentView(R.layout.splash);    //设置布局：视频视图，滑动页，指示器视图
 
         //绑定视图
@@ -60,11 +76,28 @@ public class SplashActivity extends Activity {
         mVideoView.setVideoURI(Uri.parse(getVideoPath()));
 
         //根据图片资源，创建图片视图
-        for (int resId:mImageResIds){
+        for (int i = 0; i < mImageResIds.length; i++){
             //图片视图的布局
             View view = LayoutInflater.from(this).inflate(R.layout.splash_intro, null, false);
             //根据布局获取其中的图片视图，并设置图片资源
-            ((ImageView) view.findViewById(R.id.iv_intro_text)).setImageResource(resId);
+            ((ImageView) view.findViewById(R.id.iv_intro_text)).setImageResource(mImageResIds[i]);
+
+            //图片视图添加点击事件，进入主界面
+            if (i == mImageResIds.length - 1) {
+                view.findViewById(R.id.iv_intro_text).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //偏好设置，保存记录
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("first",false);
+                        editor.commit();
+
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        SplashActivity.this.startActivity(intent);
+                        SplashActivity.this.finish();
+                    }
+                });
+            }
             //添加到列表中
             mViewList.add(view);
         }
@@ -135,6 +168,10 @@ public class SplashActivity extends Activity {
         if (null != mLoop) {
             mLoop.unsubscribe();
         }
+        if (null != mVideoView) {
+            mVideoView.stopPlayback();
+        }
+
         super.onDestroy();
     }
 
