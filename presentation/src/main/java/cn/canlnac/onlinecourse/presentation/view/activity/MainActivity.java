@@ -53,18 +53,30 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 创建菜单栏
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
+    /**
+     * 菜单选项选中
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
+        switch (item.getItemId()) {
+            case R.id.menu_message:
+                return true;
+            case R.id.menu_search:
+                return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

@@ -2,4 +2,6 @@
 <resources>
   <string name="app_name">在线课程</string>
   <string name="url">http://120.24.221.156:8080/</string>
+  <string name="menu_search">搜索</string>
+  <string name="menu_message">消息</string>
 </resources>
