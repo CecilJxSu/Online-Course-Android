@@ -1,10 +1,9 @@
-package cn.canlnac.onlinecourse.presentation.view.activity;
+package cn.canlnac.onlinecourse.presentation.ui.activity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -12,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -21,10 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.canlnac.onlinecourse.data.cache.FileManager;
 import cn.canlnac.onlinecourse.presentation.R;
-import cn.canlnac.onlinecourse.presentation.view.SplashIndicator;
-import cn.canlnac.onlinecourse.presentation.view.SplashVideoView;
+import cn.canlnac.onlinecourse.presentation.ui.layout.SplashIndicator;
+import cn.canlnac.onlinecourse.presentation.ui.view.SplashVideoView;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -107,7 +104,7 @@ public class SplashActivity extends Activity {
         //设置滑动页的适配器
         mVpImage.setAdapter(mAdapter);
         //添加滑动页面事件
-        mVpImage.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mVpImage.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 

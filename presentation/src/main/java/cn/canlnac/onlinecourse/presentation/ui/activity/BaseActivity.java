@@ -1,4 +1,4 @@
-package cn.canlnac.onlinecourse.presentation.view.activity;
+package cn.canlnac.onlinecourse.presentation.ui.activity;
 
 import android.app.Activity;
 import android.app.Fragment;

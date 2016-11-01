@@ -1,4 +1,4 @@
-package cn.canlnac.onlinecourse.presentation.view;
+package cn.canlnac.onlinecourse.presentation.ui.layout;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

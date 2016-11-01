@@ -1,4 +1,4 @@
-package cn.canlnac.onlinecourse.presentation.view;
+package cn.canlnac.onlinecourse.presentation.ui.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
