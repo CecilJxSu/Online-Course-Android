@@ -1,12 +1,12 @@
-package cn.canlnac.onlinecourse.presentation.view.adapter;
+package cn.canlnac.onlinecourse.presentation.ui.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import cn.canlnac.onlinecourse.presentation.view.fragment.TabFragment1;
-import cn.canlnac.onlinecourse.presentation.view.fragment.TabFragment2;
-import cn.canlnac.onlinecourse.presentation.view.fragment.TabFragment3;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment1;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment2;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment3;
 
 /**
  * Created by cecil on 2016/10/31.

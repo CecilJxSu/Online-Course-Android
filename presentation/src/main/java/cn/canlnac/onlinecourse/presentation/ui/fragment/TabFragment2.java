@@ -1,4 +1,4 @@
-package cn.canlnac.onlinecourse.presentation.view.fragment;
+package cn.canlnac.onlinecourse.presentation.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
