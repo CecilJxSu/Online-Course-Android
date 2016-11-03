@@ -13,21 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.canlnac.onlinecourse.domain.repository;
-
-import cn.canlnac.onlinecourse.domain.Login;
-
-import rx.Observable;
+package cn.canlnac.onlinecourse.domain.exception;
 
 /**
- * Interface that represents a Repository for getting {@link Login} related data.
+ *  Wrapper around Exceptions used to manage default errors.
  */
-public interface LoginRepository {
-  /**
-   * Get an {@link Observable} which will emit a {@link Login}.
-   *
-   * @param username 用户名.
-   * @param password 密码.
-   */
-  Observable<Login> login(String username, String password);
+public class DefaultErrorBundle implements ErrorBundle {
+
+  private static final String DEFAULT_ERROR_MSG = "Unknown error";
+
+  private final Exception exception;
+
+  public DefaultErrorBundle(Exception exception) {
+    this.exception = exception;
+  }
+
+  @Override
+  public Exception getException() {
+    return exception;
+  }
+
+  @Override
+  public String getErrorMessage() {
+    return (exception != null) ? this.exception.getMessage() : DEFAULT_ERROR_MSG;
+  }
 }
