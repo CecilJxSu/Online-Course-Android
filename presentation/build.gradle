@@ -70,8 +70,10 @@ dependencies {
     compile project(':domain')
     compile project(':data')
 
+    //libraries for ui
     compile presentationDependencies.appcompat
     compile presentationDependencies.design
+    compile presentationDependencies.carouselview
 
     apt presentationDependencies.daggerCompiler
     compile presentationDependencies.dagger
