@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <com.synnapps.carouselview.CarouselView
         android:id="@+id/carouselView"
@@ -17,4 +24,35 @@
         app:strokeColor="#FF777777"
         app:strokeWidth="1dp" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/course_item_1"
+            android:textColor="#707070"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:drawablePadding="5sp"
+            android:drawableLeft="@drawable/rectangle_item" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:gravity="center|right"
+            android:textColor="#707070"
+            android:paddingRight="5sp"
+            android:text="更多"
+            android:drawableRight="@drawable/arrow_more"/>
+
+    </LinearLayout>
+
+</LinearLayout>
+
+</ScrollView>
