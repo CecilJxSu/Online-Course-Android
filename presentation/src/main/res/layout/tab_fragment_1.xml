@@ -12,20 +12,9 @@
         app:autoPlay="true"
         app:fillColor="#FFFFFFFF"
         app:pageColor="#00000000"
-        app:indicatorGravity="top"
         app:radius="6dp"
-        app:pageTransformInterval="1500"
-        app:pageTransformer="depth"
-        app:animateOnBoundary="true"
-        app:slideInterval="3000"
+        app:slideInterval="5000"
         app:strokeColor="#FF777777"
         app:strokeWidth="1dp" />
-
-    <TextView
-        android:id="@+id/tabTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tab 1"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </RelativeLayout>
