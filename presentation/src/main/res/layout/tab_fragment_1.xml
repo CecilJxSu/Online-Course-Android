@@ -38,7 +38,7 @@
             android:textColor="#707070"
             android:textSize="16sp"
             android:gravity="center"
-            android:drawablePadding="5sp"
+            android:drawablePadding="10dp"
             android:drawableLeft="@drawable/rectangle_item" />
 
         <TextView
@@ -47,11 +47,19 @@
             android:textSize="16sp"
             android:gravity="center|right"
             android:textColor="#707070"
-            android:paddingRight="5sp"
+            android:paddingRight="10dp"
             android:text="更多"
             android:drawableRight="@drawable/arrow_more"/>
 
     </LinearLayout>
+
+    <GridView
+        android:id="@+id/course_gallery"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:numColumns="2"
+        android:gravity="center" />
 
 </LinearLayout>
 
