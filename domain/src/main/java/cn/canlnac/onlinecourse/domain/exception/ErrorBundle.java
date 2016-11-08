@@ -13,21 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.canlnac.onlinecourse.domain.repository;
-
-import cn.canlnac.onlinecourse.domain.Login;
-
-import rx.Observable;
+package cn.canlnac.onlinecourse.domain.exception;
 
 /**
- * Interface that represents a Repository for getting {@link Login} related data.
+ * Interface to represent a wrapper around an {@link Exception} to manage errors.
  */
-public interface LoginRepository {
-  /**
-   * Get an {@link Observable} which will emit a {@link Login}.
-   *
-   * @param username 用户名.
-   * @param password 密码.
-   */
-  Observable<Login> login(String username, String password);
+public interface ErrorBundle {
+  Exception getException();
+
+  String getErrorMessage();
 }

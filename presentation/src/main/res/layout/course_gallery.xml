@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/course_gallery_image"
+        android:layout_width="340px"
+        android:layout_height="240px"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/course_gallery_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Course"
+        android:textAlignment="center" />
+
+</LinearLayout>
