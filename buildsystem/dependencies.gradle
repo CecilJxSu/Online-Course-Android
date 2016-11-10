@@ -27,6 +27,7 @@ ext {
     appcompat = '23.2.1'
     design = '23.2.1'
     carouselview = '0.0.10'
+    fab = '1.6.4'
 
     //Testing
     robolectricVersion = '3.0'
@@ -52,7 +53,8 @@ ext {
             appcompat:              "com.android.support:appcompat-v7:${appcompat}",
             design:                 "com.android.support:design:${design}",
 
-            carouselview:           "com.synnapps:carouselview:${carouselview}"
+            carouselview:           "com.synnapps:carouselview:${carouselview}",
+            fab:                    "com.github.clans:fab:${fab}"
     ]
 
     presentationTestDependencies = [
