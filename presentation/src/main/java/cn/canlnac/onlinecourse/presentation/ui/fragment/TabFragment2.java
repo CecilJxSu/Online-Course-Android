@@ -1,12 +1,12 @@
 package cn.canlnac.onlinecourse.presentation.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -14,6 +14,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.ui.activity.PostChatActivity;
 
 /**
  * 话题.
@@ -38,7 +39,9 @@ public class TabFragment2 extends Fragment {
         createChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TabFragment2.this.getActivity(), "点击事件，创建课程", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(TabFragment2.this.getActivity(), PostChatActivity.class);
+                TabFragment2.this.startActivity(intent);
+                menu.toggle(true);
             }
         });
 
