@@ -22,11 +22,17 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
         </activity>
 
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/app_name">
+
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
         </activity>
 
         <activity
@@ -36,6 +42,11 @@
 
         <activity
             android:name=".ui.activity.WebViewActivity"
+            android:label="@string/app_name">
+        </activity>
+
+        <activity
+            android:name=".ui.activity.PostChatActivity"
             android:label="@string/app_name">
         </activity>
     </application>

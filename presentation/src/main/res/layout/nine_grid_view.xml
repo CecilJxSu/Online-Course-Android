@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/chat_list_view_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#707070"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
+
+    <cn.canlnac.onlinecourse.presentation.ui.view.NineGridImageView
+        android:id="@+id/ngl_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:imgGap="3dp"
+        app:maxSize="-1"
+        app:showStyle="grid"
+        app:singleImgSize="60dp" />
+
+</LinearLayout>

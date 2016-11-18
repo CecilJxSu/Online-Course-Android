@@ -1,9 +1,7 @@
 package cn.canlnac.onlinecourse.presentation.ui.activity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -19,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.canlnac.onlinecourse.data.cache.FileManager;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.ui.layout.SplashIndicator;
 import cn.canlnac.onlinecourse.presentation.ui.view.SplashVideoView;
@@ -51,14 +50,16 @@ public class SplashActivity extends Activity {
     //循环
     Subscription mLoop;
 
+    final FileManager fileManager = new FileManager();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //添加偏好设置，记录是否第一次启动欢迎页
-        final SharedPreferences sharedPreferences = getSharedPreferences("Splash", Context.MODE_PRIVATE);
-        Boolean isFirst = sharedPreferences.getBoolean("first",true);
+        Long isNotFirst = fileManager.getFromPreferences(this,"Splash","isNotFirst");
+
         //直接进入主页
-        if (!isFirst) {
+        if (isNotFirst == 1) {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -85,9 +86,7 @@ public class SplashActivity extends Activity {
                     @Override
                     public void onClick(View view) {
                         //偏好设置，保存记录
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putBoolean("first",false);
-                        editor.commit();
+                        fileManager.writeToPreferences(SplashActivity.this,"Splash","isNotFirst",1);
 
                         Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                         SplashActivity.this.startActivity(intent);
