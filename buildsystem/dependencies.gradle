@@ -22,6 +22,7 @@ ext {
     gsonVersion = '2.3'
     okHttpVersion = '2.5.0'
     androidAnnotationsVersion = '21.0.3'
+    picasso = '2.5.2'
 
     //Libraries for UI
     appcompat = '23.2.1'
@@ -52,6 +53,7 @@ ext {
             javaxAnnotation:        "javax.annotation:jsr250-api:${javaxAnnotationVersion}",
             appcompat:              "com.android.support:appcompat-v7:${appcompat}",
             design:                 "com.android.support:design:${design}",
+            picasso:                 "com.squareup.picasso:picasso:${picasso}",
 
             carouselview:           "com.synnapps:carouselview:${carouselview}",
             fab:                    "com.github.clans:fab:${fab}"
