@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import cn.canlnac.onlinecourse.presentation.R;
 
 /**
- * Created by cecil on 2016/10/31.
+ * 个人中心.
  */
 
 public class TabFragment3 extends Fragment {
