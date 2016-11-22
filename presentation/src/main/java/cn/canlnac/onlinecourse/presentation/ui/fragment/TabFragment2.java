@@ -222,7 +222,7 @@ public class TabFragment2 extends Fragment {
             //绑定视图
             ButterKnife.bind(MyAdapter.this, view);
 
-            headImage.setImageResource(R.drawable.ic_launcher);
+            headImage.setImageResource(R.drawable.header);
 
             username.setText("弗拉德丽嘉");
 
