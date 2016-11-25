@@ -5,7 +5,7 @@
     android:background="#FFFFFF">
 
     <LinearLayout
-        android:id="@+id/register_title"
+        android:id="@+id/forget_title"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#2196F3"
@@ -13,7 +13,7 @@
         android:elevation="6dp">
 
             <Button
-                android:id="@+id/register_close_button"
+                android:id="@+id/forget_close_button"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="14dp"
@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="注册"
+                android:text="忘记密码"
                 android:textColor="#FFFFFF"
                 android:layout_marginLeft="10dp"
                 android:textSize="17sp"
@@ -36,7 +36,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_below="@+id/register_title"
+        android:layout_below="@+id/forget_title"
         android:layout_marginTop="40dp">
         <LinearLayout
             android:layout_width="300dp"
@@ -48,41 +48,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="用户名：" />
+                android:text="邮箱："/>
 
             <EditText
-                android:id="@+id/register_username"
+                android:id="@+id/forget_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:inputType="textVisiblePassword|textNoSuggestions"
+                android:inputType="textEmailAddress"
                 android:textColor="#666666"
                 android:focusable="true"
                 android:focusableInTouchMode="true" />
-        </LinearLayout>
-        <View
-            android:layout_width="300dp"
-            android:layout_height="1px"
-            android:background="#dddddd" />
-        <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="邮箱：" />
-
-            <EditText
-                android:id="@+id/register_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:background="@null"
-                android:textColor="#666666"/>
         </LinearLayout>
         <View
             android:layout_width="300dp"
@@ -95,27 +71,30 @@
             android:paddingTop="5dp"
             android:paddingBottom="5dp" >
             <TextView
-                android:id="@+id/register_password_hint"
+                android:id="@+id/forget_verify_hint"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:text="密码：" />
+                android:text="验证码：" />
 
             <EditText
-                android:id="@+id/register_password"
+                android:id="@+id/forget_verify"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
-                android:inputType="textPassword"
+                android:inputType="number"
                 android:background="@null"
-                android:layout_toRightOf="@+id/register_password_hint"
-                android:layout_toLeftOf="@+id/register_is_visible"
+                android:layout_toRightOf="@+id/forget_verify_hint"
+                android:layout_toLeftOf="@+id/forget_verify_send"
                 android:textColor="#666666"/>
-            <ImageView
-                android:id="@+id/register_is_visible"
-                android:layout_width="30dp"
+            <TextView
+                android:id="@+id/forget_verify_send"
+                android:layout_width="80dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/invisible"
+                android:gravity="center_vertical|right"
+                android:text="发送验证码"
+                android:textColor="#2196F3"
+                android:textSize="14sp"
+                android:clickable="true"
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
         <View
@@ -124,12 +103,12 @@
             android:background="#dddddd" />
 
         <Button
-            android:id="@+id/register_done"
+            android:id="@+id/forget_next"
             android:layout_width="300dp"
             android:layout_height="40dp"
             android:gravity="center"
             android:layout_marginTop="30dp"
-            android:text="完\t\t\t成"
+            android:text="下\t一\t步"
             android:textSize="18sp"
             android:textColor="#FFFFFF"
             android:background="#AFAFAF"/>

@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.ui.activity.LoginActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
 
 /**
@@ -22,6 +23,8 @@ import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
 public class TabFragment3 extends Fragment {
     @BindView(R.id.tab3_register)
     TextView register;
+    @BindView(R.id.tab3_login)
+    TextView login;
 
     @Nullable
     @Override
@@ -38,6 +41,13 @@ public class TabFragment3 extends Fragment {
     @OnClick(R.id.tab3_register)
     public void onClickRegister(View v) {
         Intent intent = new Intent(TabFragment3.this.getActivity(), RegisterActivity.class);
+        TabFragment3.this.getActivity().startActivity(intent);
+    }
+
+    //登录按钮点击事件
+    @OnClick(R.id.tab3_login)
+    public void onClickLogin(View v) {
+        Intent intent= new Intent(TabFragment3.this.getActivity(), LoginActivity.class);
         TabFragment3.this.getActivity().startActivity(intent);
     }
 }
