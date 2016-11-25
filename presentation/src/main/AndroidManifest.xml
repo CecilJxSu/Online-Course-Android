@@ -54,6 +54,16 @@
             android:name=".ui.activity.RegisterActivity"
             android:label="注册">
         </activity>
+
+        <activity
+            android:name=".ui.activity.LoginActivity"
+            android:label="登录">
+        </activity>
+
+        <activity
+            android:name=".ui.activity.ForgetActivity"
+            android:label="忘记密码">
+        </activity>
     </application>
 
 </manifest>
