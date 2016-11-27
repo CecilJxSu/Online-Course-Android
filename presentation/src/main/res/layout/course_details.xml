@@ -1,20 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F0F0F0">
 
-    <TextView
-        android:id="@+id/course_details_text"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="course details"
-        android:gravity="center" />
+        android:background="#FFFFFF">
+        <VideoView
+            android:id="@+id/course_video"
+            android:layout_width="match_parent"
+            android:layout_height="220dp" />
+        <ImageView
+            android:id="@+id/course_close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/left_arrow"/>
+        <ImageView
+            android:id="@+id/course_like"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/thump_up_icon" />
 
-    <Button
-        android:id="@+id/course_details_close"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/course_watching_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/invisible"
+            android:layout_below="@+id/course_video"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/layout_watching_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="浏览人数"
+            android:gravity="center_vertical"
+            android:textSize="11sp"
+            android:textColor="#707070"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/course_watching_img"/>
+        <TextView
+            android:id="@+id/course_watching_count"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:gravity="center_vertical"
+            android:text="0"
+            android:textColor="#707070"
+            android:layout_toRightOf="@+id/course_watching_img"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_below="@+id/course_video"/>
+        <ImageView
+            android:id="@+id/course_favorite"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/unfavorite"
+            android:layout_below="@+id/course_video"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"/>
+        <TextView
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:text="收藏"
+            android:gravity="center"
+            android:textSize="11sp"
+            android:textColor="#707070"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/course_favorite"/>
+        <ImageView
+            android:id="@+id/course_share"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/share_icon"
+            android:layout_below="@+id/course_video"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/course_favorite"/>
+        <TextView
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:text="分享"
+            android:gravity="center"
+            android:textSize="11sp"
+            android:textColor="#707070"
+            android:layout_toLeftOf="@+id/course_favorite"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/course_favorite"/>
+
+        <TextView
+            android:id="@+id/course_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textSize="16sp"
+            android:padding="10dp"
+            android:textColor="#888888"
+            android:layout_below="@+id/layout_watching_hint"/>
+    </RelativeLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/course_tab_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Close" />
+        android:background="#FFFFFF"
+        app:tabTextColor="#666666"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="#7fc8c1"
+        android:layout_marginTop="5dp"
+        android:minHeight="50dp" />
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/course_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
