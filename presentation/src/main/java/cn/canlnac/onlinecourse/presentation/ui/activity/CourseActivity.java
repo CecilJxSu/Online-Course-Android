@@ -66,6 +66,10 @@ public class CourseActivity extends FragmentActivity {
         //创建适配器
         final CoursePagerAdapter adapter = new CoursePagerAdapter
                 (getSupportFragmentManager(), courseTab.getTabCount());
+        //设置适配器
+        coursePager.setAdapter(adapter);
+        //添加换页事件
+        coursePager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(courseTab));
         //设置选项卡选择事件
         courseTab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
