@@ -41,7 +41,7 @@ public class CourseCatalogFragment extends Fragment {
 
             for (int j = 1; j <= 5; j++) {
                 IconTreeItem iconTreeItem = new IconTreeItem();
-                iconTreeItem.icon = R.drawable.favorite;
+                iconTreeItem.icon = R.drawable.watching_video;
                 iconTreeItem.text = i+"-"+j+". 第"+j+"小节";
                 iconTreeItem.duration = "12:01";
                 CatalogViewHolder catalogViewHolder2 = new CatalogViewHolder(getActivity());
