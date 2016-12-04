@@ -76,4 +76,14 @@
         android:gravity="center_vertical"
         android:textColor="#999999" />
 
+    <ListView
+        android:id="@+id/comment_reply_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/comment_head_icon"
+        android:layout_below="@+id/comment_like_count"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        />
+
 </RelativeLayout>

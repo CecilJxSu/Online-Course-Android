@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
+import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CommentAdapter;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleFooter;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleHeader;
@@ -97,6 +98,25 @@ public class CourseCommentFragment extends Fragment {
         comment1.setLikeCount("100");
         comment1.setLike(false);
         comment1.setReply(true);
+
+        List<ReplyModel> replies = new ArrayList<>();
+        ReplyModel reply1 = new ReplyModel();
+        reply1.setUserName("abdsfdsffsdf");
+        reply1.setContent("啦啦啦!!!");
+        reply1.setPostTime("一小时前");
+        reply1.setReply(true);
+
+        ReplyModel reply2 = new ReplyModel();
+        reply2.setUserName("弗拉德丽嘉1");
+        reply2.setToUserName("abdsfdsffsdf");
+        reply2.setContent("Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla!!!");
+        reply2.setPostTime("一小时前");
+        reply2.setReply(false);
+
+        replies.add(reply1);
+        replies.add(reply2);
+
+        comment1.setReplies(replies);
         comments.add(comment1);
 
         CommentModel comment2 = new CommentModel();

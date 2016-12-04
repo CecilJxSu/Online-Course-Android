@@ -1,5 +1,7 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
+import java.util.List;
+
 /**
  * 评论数据模型.
  */
@@ -12,6 +14,7 @@ public class CommentModel {
     private String likeCount;
     private boolean isLike;
     private boolean isReply;
+    private List<ReplyModel> replies;
 
     public int getUserIcon() {
         return userIcon;
@@ -67,5 +70,13 @@ public class CommentModel {
 
     public void setReply(boolean reply) {
         isReply = reply;
+    }
+
+    public List<ReplyModel> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<ReplyModel> replies) {
+        this.replies = replies;
     }
 }
