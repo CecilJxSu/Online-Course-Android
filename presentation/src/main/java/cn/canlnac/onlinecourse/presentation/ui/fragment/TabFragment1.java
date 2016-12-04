@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
@@ -92,14 +90,13 @@ public class TabFragment1 extends Fragment {
         @Override
         public void setImageForPosition(int position, ImageView imageView) {
             //设置图片点击事件
-            imageView.setOnTouchListener(new View.OnTouchListener() {
+            imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public boolean onTouch(View v, MotionEvent event) {
+                public void onClick(View v) {
                     //打开网页视图
                     Intent intent = new Intent(TabFragment1.this.getActivity(), WebViewActivity.class);
                     intent.putExtra("url", "http://cn.bing.com");   //网页
                     TabFragment1.this.startActivity(intent);
-                    return false;
                 }
             });
             //设置轮播图片
