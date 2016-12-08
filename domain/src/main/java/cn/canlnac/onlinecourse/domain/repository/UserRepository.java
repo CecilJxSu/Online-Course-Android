@@ -1,5 +1,6 @@
 package cn.canlnac.onlinecourse.domain.repository;
 
+import cn.canlnac.onlinecourse.domain.Register;
 import cn.canlnac.onlinecourse.domain.Response;
 import rx.Observable;
 
@@ -14,5 +15,5 @@ public interface UserRepository {
      * @param email     邮箱
      * @return
      */
-    Observable<Response> register(String username, String password, String email);
+    Observable<Response<Register>> register(String username, String password, String email);
 }

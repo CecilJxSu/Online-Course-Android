@@ -1,12 +1,14 @@
 package cn.canlnac.onlinecourse.domain;
 
 /**
- * 注册.
+ * 响应.
  */
 
 public class Response<Body> {
     private Body body;
+
     private String status;
+
     private String jwt;
 
     public String getStatus() {
@@ -15,6 +17,22 @@ public class Response<Body> {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Body getBody() {
+        return body;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 }
 
