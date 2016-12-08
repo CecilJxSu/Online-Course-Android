@@ -17,8 +17,11 @@ package cn.canlnac.onlinecourse.data.net;
 
 import android.support.annotation.Nullable;
 
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -34,12 +37,49 @@ public class APIConnection implements Callable<String> {
 
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_VALUE_JSON = "application/json; charset=utf-8";
+    public static final MediaType JSON
+            = MediaType.parse("application/json; charset=utf-8");
 
     private URL url;
-    private String response;
+    private String body;
+    private Response response;
 
     private APIConnection(String url) throws MalformedURLException {
         this.url = new URL(url);
+    }
+
+    /**
+     * 创建APIConnection实例
+     * @param url                       url
+     * @return APIConnection            APIConnection实例
+     * @throws MalformedURLException    邮箱格式不对
+     */
+    public static APIConnection create(String url) throws MalformedURLException {
+        return new APIConnection(url);
+    }
+
+    /**
+     * post请求
+     * @param body      请求数据
+     * @return Response 响应
+     */
+    @Nullable
+    public Response post(String body) {
+        RequestBody requestBody = RequestBody.create(JSON,body);
+        OkHttpClient okHttpClient = this.createClient();
+        final Request request = new Request.Builder()
+                .url(this.url)
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_VALUE_JSON)
+                .post(requestBody)
+                .build();
+
+        try {
+            return okHttpClient.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static APIConnection createGET(String url) throws MalformedURLException {
@@ -55,7 +95,7 @@ public class APIConnection implements Callable<String> {
     @Nullable
     public String requestSyncCall() {
         connectToApi();
-        return response;
+        return body;
     }
 
     private void connectToApi() {
@@ -67,7 +107,7 @@ public class APIConnection implements Callable<String> {
                 .build();
 
         try {
-            this.response = okHttpClient.newCall(request).execute().body().string();
+            this.body = okHttpClient.newCall(request).execute().body().string();
         } catch (IOException e) {
             e.printStackTrace();
         }

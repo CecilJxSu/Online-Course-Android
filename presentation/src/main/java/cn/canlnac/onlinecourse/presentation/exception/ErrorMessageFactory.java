@@ -17,7 +17,7 @@ package cn.canlnac.onlinecourse.presentation.exception;
 
 import android.content.Context;
 import cn.canlnac.onlinecourse.data.exception.NetworkConnectionException;
-import cn.canlnac.onlinecourse.data.exception.CourseNotFoundException;
+import cn.canlnac.onlinecourse.data.exception.NotFoundException;
 import cn.canlnac.onlinecourse.presentation.R;
 
 /**
@@ -41,8 +41,8 @@ public class ErrorMessageFactory {
 
     if (exception instanceof NetworkConnectionException) {
       message = context.getString(R.string.exception_message_no_connection);
-    } else if (exception instanceof CourseNotFoundException) {
-      message = context.getString(R.string.exception_message_course_not_found);
+    } else if (exception instanceof NotFoundException) {
+      message = context.getString(R.string.exception_message_not_found);
     }
 
     return message;

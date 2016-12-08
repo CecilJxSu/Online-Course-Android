@@ -4,12 +4,16 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.fernandocejas.frodo.annotation.RxLogObservable;
+import com.google.gson.Gson;
+import com.squareup.okhttp.Response;
 
 import java.net.MalformedURLException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
-import cn.canlnac.onlinecourse.data.entity.LoginEntity;
-import cn.canlnac.onlinecourse.data.entity.mapper.LoginEntityJsonMapper;
+import cn.canlnac.onlinecourse.data.entity.ResponseEntity;
 import cn.canlnac.onlinecourse.data.exception.NetworkConnectionException;
 import rx.Observable;
 
@@ -18,59 +22,72 @@ import rx.Observable;
  */
 public class RestApiImpl implements RestApi {
     private final Context context;
-    private final LoginEntityJsonMapper loginEntityJsonMapper;
 
     /**
      * 构造函数
      *
      * @param context               {@link android.content.Context}               安卓内容上下文
-     * @param loginEntityJsonMapper {@link LoginEntityJsonMapper}   json处理类
      */
-    public RestApiImpl(Context context, LoginEntityJsonMapper loginEntityJsonMapper) {
-        if (context == null || loginEntityJsonMapper == null) {
+    public RestApiImpl(Context context) {
+        if (context == null) {
             throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
         }
         this.context = context.getApplicationContext();
-        this.loginEntityJsonMapper = loginEntityJsonMapper;
     }
 
     /**
-     * 登录
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return 登录实体类
+     * 注册
+     * @param username  用户名
+     * @param password  密码
+     * @param email     邮箱
+     * @return
      */
-    @RxLogObservable
     @Override
-    public Observable<LoginEntity> login(String username, String password) {
+    public Observable<ResponseEntity> register(String username, String password, String email) {
         return Observable.create(subscriber -> {
-            if (isThereInternetConnection()) {
-                try {
-                    String responseLogin = getLoginEntityFromApi();
-                    if (responseLogin != null) {
-                        subscriber.onNext(loginEntityJsonMapper.transformLoginEntity(responseLogin));
-                        subscriber.onCompleted();
-                    } else {
-                        subscriber.onError(new NetworkConnectionException());
-                    }
-                } catch (Exception e) {
-                    subscriber.onError(new NetworkConnectionException(e.getCause()));
-                }
-            } else {
-                subscriber.onError(new NetworkConnectionException());
-            }
+           if (isThereInternetConnection()) {
+               try {
+                   Response response = registerFromApi(username, password, email);
+                   if (null != response) {
+                       ResponseEntity responseEntity = new ResponseEntity();
+                       responseEntity.setResponseBody(response.body().toString());
+                       responseEntity.setResponseStatus(response.headers("status").get(0));
+
+                       subscriber.onNext(responseEntity);
+                       subscriber.onCompleted();
+                   } else {
+                       subscriber.onError(new NetworkConnectionException());
+                   }
+               } catch (Exception e) {
+                   subscriber.onError(new NetworkConnectionException(e.getCause()));
+               }
+           } else {
+               subscriber.onError(new NetworkConnectionException());
+           }
         });
     }
 
     /**
-     * 登录请求
-     *
-     * @return 登录数据
-     * @throws MalformedURLException URL格式错误
+     * 注册请求
+     * @param username  用户名
+     * @param password  密码
+     * @param email     邮箱
+     * @return Response 响应
+     * @throws MalformedURLException
      */
-    private String getLoginEntityFromApi() throws MalformedURLException {
-        return APIConnection.createGET(API_LOGIN_POST).requestSyncCall();
+    private Response registerFromApi(String username, String password, String email) throws MalformedURLException, NoSuchAlgorithmException {
+        Map<String, String> map = new HashMap<>();
+
+        //MD5加密
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        messageDigest.update(password.getBytes());
+        password = new String(messageDigest.digest());
+
+        map.put("username", username);
+        map.put("password", password);
+        map.put("email", email);
+
+        return APIConnection.create(API_USER).post(new Gson().toJson(map));
     }
 
     /**
