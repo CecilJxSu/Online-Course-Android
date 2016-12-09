@@ -1,8 +1,6 @@
 package cn.canlnac.onlinecourse.data.repository.datasource;
 
-import cn.canlnac.onlinecourse.data.cache.EntityCache;
-import cn.canlnac.onlinecourse.data.entity.ResponseEntity;
-import cn.canlnac.onlinecourse.data.entity.UserEntity;
+import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
 import cn.canlnac.onlinecourse.data.net.RestApi;
 import rx.Observable;
 
@@ -10,18 +8,15 @@ import rx.Observable;
  * 从服务器中获取用户数据.
  */
 
-public class CloudUserDataStore implements UserDataStore {
+public class CloudRegisterDataStore implements RegisterDataStore {
     private final RestApi restApi;
-    private final EntityCache<UserEntity> entityCache;
 
     /**
      * 构造函数.
      * @param restApi       网络接口.
-     * @param entityCache   缓存接口.
      */
-    CloudUserDataStore(RestApi restApi, EntityCache<UserEntity> entityCache) {
+    CloudRegisterDataStore(RestApi restApi) {
         this.restApi = restApi;
-        this.entityCache = entityCache;
     }
 
     /**
@@ -32,7 +27,7 @@ public class CloudUserDataStore implements UserDataStore {
      * @return
      */
     @Override
-    public Observable<ResponseEntity> register(String username, String password, String email) {
+    public Observable<RegisterEntity> register(String username, String password, String email) {
         return this.restApi.register(username, password, email);
     }
 }

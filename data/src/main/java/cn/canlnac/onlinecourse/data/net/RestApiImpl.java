@@ -13,8 +13,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.canlnac.onlinecourse.data.entity.ResponseEntity;
+import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
 import cn.canlnac.onlinecourse.data.exception.NetworkConnectionException;
+import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import rx.Observable;
 
 /**
@@ -43,27 +44,38 @@ public class RestApiImpl implements RestApi {
      * @return
      */
     @Override
-    public Observable<ResponseEntity> register(String username, String password, String email) {
+    public Observable<RegisterEntity> register(String username, String password, String email) {
         return Observable.create(subscriber -> {
-           if (isThereInternetConnection()) {
-               try {
-                   Response response = registerFromApi(username, password, email);
-                   if (null != response) {
-                       ResponseEntity responseEntity = new ResponseEntity();
-                       responseEntity.setResponseBody(response.body().toString());
-                       responseEntity.setResponseStatus(response.headers("status").get(0));
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
 
-                       subscriber.onNext(responseEntity);
-                       subscriber.onCompleted();
-                   } else {
-                       subscriber.onError(new NetworkConnectionException());
-                   }
-               } catch (Exception e) {
-                   subscriber.onError(new NetworkConnectionException(e.getCause()));
-               }
-           } else {
-               subscriber.onError(new NetworkConnectionException());
-           }
+            try {
+                Response response = registerFromApi(username, password, email); //注册
+                if (response == null) {//网络异常
+                    subscriber.onError(new NetworkConnectionException());
+                    return;
+                }
+
+                if (response.code() == 200) {//状态码正确响应
+                    RegisterEntity registerEntity = new Gson().fromJson(response.body().toString(), RegisterEntity.class);
+
+                    subscriber.onNext(registerEntity);
+                    subscriber.onCompleted();
+                    return;
+                }
+
+                switch (response.code()) {//状态码异常
+                    case 400:
+                        subscriber.onError(new ResponseStatusException(400, "参数错误"));
+                        break;
+                    case 409:
+                        subscriber.onError(new ResponseStatusException(409, "用户或邮箱已经被注册"));
+                }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
         });
     }
 
@@ -87,7 +99,7 @@ public class RestApiImpl implements RestApi {
         map.put("password", password);
         map.put("email", email);
 
-        return APIConnection.create(API_USER).post(new Gson().toJson(map));
+        return APIConnection.create(METHOD.POST, API_USER, new Gson().toJson(map), null).request();
     }
 
     /**

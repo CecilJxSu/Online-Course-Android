@@ -1,6 +1,6 @@
 package cn.canlnac.onlinecourse.data.net;
 
-import cn.canlnac.onlinecourse.data.entity.ResponseEntity;
+import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
 import rx.Observable;
 
 /**
@@ -15,5 +15,5 @@ public interface RestApi {
     /** 用户 */
     String API_USER = API_BASE_URL + "user";
 
-    Observable<ResponseEntity> register(String username, String password, String email);
+    Observable<RegisterEntity> register(String username, String password, String email);
 }
