@@ -1,6 +1,5 @@
 package cn.canlnac.onlinecourse.presentation.ui.activity;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -15,12 +14,17 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerRegisterComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.RegisterComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.RegisterModule;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.RegisterFragment;
 
 /**
  * 注册页面.
  */
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends BaseActivity implements HasComponent<RegisterComponent> {
     @BindView(R.id.register_close_button)
     Button closeButton;
     @BindView(R.id.register_username)
@@ -34,8 +38,17 @@ public class RegisterActivity extends Activity {
     @BindView(R.id.register_is_visible)
     ImageView isVisible;
 
+    private static boolean canSubmit = false;
+
     private final HideReturnsTransformationMethod visible = HideReturnsTransformationMethod.getInstance();
     private final PasswordTransformationMethod invisible = PasswordTransformationMethod.getInstance();
+
+    private RegisterComponent registerComponent;
+
+    @Override
+    public RegisterComponent getComponent() {
+        return registerComponent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +59,19 @@ public class RegisterActivity extends Activity {
 
         //设置密码不可见
         password.setTransformationMethod(invisible);
+
+        this.initializeInjector();
+        if (savedInstanceState == null) {
+            addFragment(R.id.register_frame_container, new RegisterFragment());
+        }
+    }
+
+    private void initializeInjector() {
+        this.registerComponent = DaggerRegisterComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .registerModule(new RegisterModule(username.getText().toString(), password.getText().toString(), email.getText().toString()))
+                .build();
     }
 
     /**
@@ -85,8 +111,21 @@ public class RegisterActivity extends Activity {
     public void onTextChange(CharSequence s, int start, int before, int count) {
         if (username.getText().length() > 0 && password.getText().length() > 0 && email.getText().length() >0) {
             done.setBackgroundColor(Color.parseColor("#2196F3"));
+            canSubmit = true;
         } else {
             done.setBackgroundColor(Color.parseColor("#AFAFAF"));
+            canSubmit = false;
+        }
+    }
+
+    /**
+     * 点击完成按钮
+     * @param v
+     */
+    @OnClick(R.id.register_done)
+    public void onClickDone(View v) {
+        if (canSubmit) {
+
         }
     }
 }

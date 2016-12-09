@@ -9,5 +9,5 @@ public interface Presenter {
 
     void pause();
 
-    void destory();
+    void destroy();
 }
