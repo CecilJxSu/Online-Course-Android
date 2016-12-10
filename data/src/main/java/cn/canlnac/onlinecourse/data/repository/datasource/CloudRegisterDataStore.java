@@ -23,11 +23,10 @@ public class CloudRegisterDataStore implements RegisterDataStore {
      * 用户注册
      * @param username  用户名
      * @param password  密码
-     * @param email     邮箱
      * @return
      */
     @Override
-    public Observable<RegisterEntity> register(String username, String password, String email) {
-        return this.restApi.register(username, password, email);
+    public Observable<RegisterEntity> register(String username, String password) {
+        return this.restApi.register(username, password);
     }
 }

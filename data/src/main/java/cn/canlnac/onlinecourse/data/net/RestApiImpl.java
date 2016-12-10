@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -40,11 +41,10 @@ public class RestApiImpl implements RestApi {
      * 注册
      * @param username  用户名
      * @param password  密码
-     * @param email     邮箱
      * @return
      */
     @Override
-    public Observable<RegisterEntity> register(String username, String password, String email) {
+    public Observable<RegisterEntity> register(String username, String password) {
         return Observable.create(subscriber -> {
             if (!isThereInternetConnection()) {//检查网络
                 subscriber.onError(new NetworkConnectionException());
@@ -52,26 +52,18 @@ public class RestApiImpl implements RestApi {
             }
 
             try {
-                Response response = registerFromApi(username, password, email); //注册
+                Response response = registerFromApi(username, password); //注册
                 if (response == null) {//网络异常
                     subscriber.onError(new NetworkConnectionException());
                     return;
                 }
 
                 if (response.code() == 200) {//状态码正确响应
-                    RegisterEntity registerEntity = new Gson().fromJson(response.body().toString(), RegisterEntity.class);
-
+                    RegisterEntity registerEntity = new Gson().fromJson(response.body().string(), RegisterEntity.class);
                     subscriber.onNext(registerEntity);
                     subscriber.onCompleted();
-                    return;
-                }
-
-                switch (response.code()) {//状态码异常
-                    case 400:
-                        subscriber.onError(new ResponseStatusException(400, "参数错误"));
-                        break;
-                    case 409:
-                        subscriber.onError(new ResponseStatusException(409, "用户或邮箱已经被注册"));
+                } else {//状态码错误
+                    subscriber.onError(setCommentStatusError(response.code()));
                 }
             } catch (Exception e) {
                 subscriber.onError(new NetworkConnectionException(e.getCause()));
@@ -83,21 +75,20 @@ public class RestApiImpl implements RestApi {
      * 注册请求
      * @param username  用户名
      * @param password  密码
-     * @param email     邮箱
      * @return Response 响应
      * @throws MalformedURLException
      */
-    private Response registerFromApi(String username, String password, String email) throws MalformedURLException, NoSuchAlgorithmException {
+    private Response registerFromApi(String username, String password) throws MalformedURLException, NoSuchAlgorithmException {
         Map<String, String> map = new HashMap<>();
 
         //MD5加密
         MessageDigest messageDigest = MessageDigest.getInstance("MD5");
         messageDigest.update(password.getBytes());
-        password = new String(messageDigest.digest());
+        password = String.format("%032X", new BigInteger(1, messageDigest.digest()));
 
         map.put("username", username);
         map.put("password", password);
-        map.put("email", email);
+        map.put("userStatus", "student");
 
         return APIConnection.create(METHOD.POST, API_USER, new Gson().toJson(map), null).request();
     }
@@ -116,5 +107,29 @@ public class RestApiImpl implements RestApi {
         isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
 
         return isConnected;
+    }
+
+    /**
+     * 请求返回状态码错误
+     * @param code  状态码
+     * @return
+     */
+    private ResponseStatusException setCommentStatusError(int code) {
+        switch (code) {
+            case 400:
+                return new ResponseStatusException(code, "参数错误");
+            case 401:
+                return new ResponseStatusException(code, "未登录");
+            case 403:
+                return new ResponseStatusException(code, "权限不足");
+            case 404:
+                return new ResponseStatusException(code, "资源不存在");
+            case 409:
+                return new ResponseStatusException(code, "资源冲突");
+            case 500:
+                return new ResponseStatusException(code, "服务器内部错误");
+            default:
+                return new ResponseStatusException(code,"未知错误");
+        }
     }
 }

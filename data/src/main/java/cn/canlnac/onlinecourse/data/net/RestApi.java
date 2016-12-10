@@ -15,5 +15,5 @@ public interface RestApi {
     /** 用户 */
     String API_USER = API_BASE_URL + "user";
 
-    Observable<RegisterEntity> register(String username, String password, String email);
+    Observable<RegisterEntity> register(String username, String password);
 }

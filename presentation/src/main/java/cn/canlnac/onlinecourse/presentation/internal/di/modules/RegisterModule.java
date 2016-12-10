@@ -16,16 +16,14 @@ import dagger.Provides;
 public class RegisterModule {
     private final String username;
     private final String password;
-    private final String email;
 
-    public RegisterModule(String username, String password, String email) {
+    public RegisterModule(String username, String password) {
         this.username = username;
         this.password = password;
-        this.email = email;
     }
 
     @Provides @PerActivity UseCase provideRegisterUseCase(RegisterRepository registerRepository, ThreadExecutor threadExecutor,
                                    PostExecutionThread postExecutionThread){
-        return new RegisterUseCase(username, password, email, registerRepository, threadExecutor, postExecutionThread);
+        return new RegisterUseCase(username, password, registerRepository, threadExecutor, postExecutionThread);
     }
 }

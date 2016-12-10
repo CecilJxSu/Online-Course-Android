@@ -9,7 +9,7 @@ import cn.canlnac.onlinecourse.domain.Register;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.mapper.RegisterModelDataMapper;
-import cn.canlnac.onlinecourse.presentation.ui.fragment.RegisterFragment;
+import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
 
 /**
  * 注册Presenter.
@@ -17,7 +17,7 @@ import cn.canlnac.onlinecourse.presentation.ui.fragment.RegisterFragment;
 
 public class RegisterPresenter implements Presenter {
 
-    RegisterFragment registerFragment;
+    RegisterActivity registerActivity;
 
     private final UseCase registerUseCase;
     private final RegisterModelDataMapper registerModelDataMapper;
@@ -28,8 +28,8 @@ public class RegisterPresenter implements Presenter {
         this.registerModelDataMapper = registerModelDataMapper;
     }
 
-    public void setView(@NonNull RegisterFragment registerFragment) {
-        this.registerFragment = registerFragment;
+    public void setView(@NonNull RegisterActivity registerActivity) {
+        this.registerActivity = registerActivity;
     }
 
     public void initialize() {
@@ -54,20 +54,32 @@ public class RegisterPresenter implements Presenter {
     private final class RegisterSubscriber extends DefaultSubscriber<Register> {
         @Override
         public void onCompleted() {
-            super.onCompleted();
         }
 
         @Override
         public void onError(Throwable e) {
-            switch (((ResponseStatusException)e).code) {
-
+            if (e instanceof ResponseStatusException) {
+                switch (((ResponseStatusException)e).code) {
+                    case 400:
+                        RegisterPresenter.this.registerActivity.showToastMessage("参数错误！");
+                        break;
+                    case 404:
+                        RegisterPresenter.this.registerActivity.showToastMessage("资源不存在！");
+                        break;
+                    case 409:
+                        RegisterPresenter.this.registerActivity.showToastMessage("用户名已被注册！");
+                        break;
+                    default:
+                        RegisterPresenter.this.registerActivity.showToastMessage("服务器错误！");
+                }
+            } else {
+                RegisterPresenter.this.registerActivity.showToastMessage("网络连接错误！");
             }
-            RegisterPresenter.this.registerFragment.showError("");
         }
 
         @Override
         public void onNext(Register register) {
-            RegisterPresenter.this.registerFragment.showError("注册成功");
+            RegisterPresenter.this.registerActivity.showToastMessage("注册成功");
         }
     }
 }

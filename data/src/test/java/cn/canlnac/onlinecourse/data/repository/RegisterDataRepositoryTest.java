@@ -46,10 +46,10 @@ public class RegisterDataRepositoryTest extends ApplicationTestCase {
         RegisterEntity registerEntity = new RegisterEntity();
         registerEntity.setUserId(1);
 
-        given(mockRegisterDataStore.register("username", "password", "email")).willReturn(Observable.just(registerEntity));
-        registerDataRepository.register("username", "password", "email");
+        given(mockRegisterDataStore.register("username", "password")).willReturn(Observable.just(registerEntity));
+        registerDataRepository.register("username", "password");
         verify(mockRegisterDataStoreFactory).create();
-        verify(mockRegisterDataStore).register("username", "password", "email");
+        verify(mockRegisterDataStore).register("username", "password");
     }
 
 }

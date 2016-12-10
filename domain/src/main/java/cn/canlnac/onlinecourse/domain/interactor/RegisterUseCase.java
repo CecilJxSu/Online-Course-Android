@@ -15,7 +15,6 @@ public class RegisterUseCase extends UseCase {
 
     private final String username;
     private final String password;
-    private final String email;
 
     private final RegisterRepository registerRepository;
 
@@ -23,7 +22,6 @@ public class RegisterUseCase extends UseCase {
     public RegisterUseCase(
             String username,
             String password,
-            String email,
             RegisterRepository registerRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
@@ -32,12 +30,11 @@ public class RegisterUseCase extends UseCase {
 
         this.username = username;
         this.password = password;
-        this.email = email;
         this.registerRepository = registerRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password, email);
+        return this.registerRepository.register(username, password);
     }
 }
