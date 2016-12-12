@@ -1,18 +1,3 @@
-/**
- * Copyright (C) 2015 Fernando Cejas Open Source Project
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package cn.canlnac.onlinecourse.data.cache;
 
 import android.content.Context;
@@ -28,7 +13,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 /**
- * 文件管理.
+ * 缓存文件管理.
  */
 @Singleton
 public class FileManager {
@@ -38,11 +23,9 @@ public class FileManager {
     }
 
     /**
-     * 将文件写入磁盘.
-     * This is an I/O operation and this method executes in the main thread, so it is recommended to
-     * perform this operation using another thread.
+     * 将缓存文件写入磁盘.
      *
-     * @param file The file to write to Disk.
+     * @param file 将要被写入的缓存文件.
      */
     public void writeToFile(File file, String fileContent) {
         if (!file.exists()) {
@@ -57,12 +40,10 @@ public class FileManager {
     }
 
     /**
-     * 读取文件.
-     * This is an I/O operation and this method executes in the main thread, so it is recommended to
-     * perform the operation using another thread.
+     * 读取缓存文件.
      *
-     * @param file The file to read from.
-     * @return A string with the content of the file.
+     * @param file 将要读取的缓存文件.
+     * @return 缓存文件内容.
      */
     public String readFileContent(File file) {
         StringBuilder fileContentBuilder = new StringBuilder();
@@ -85,10 +66,10 @@ public class FileManager {
     }
 
     /**
-     * 文件是否存在.
+     * 缓存文件是否存在.
      *
-     * @param file The file to check existence.
-     * @return true if this file exists, false otherwise.
+     * @param file 缓存文件.
+     * @return true 缓存文件存在, false 缓存文件不存在.
      */
     public boolean exists(File file) {
         return file.exists();
@@ -96,11 +77,8 @@ public class FileManager {
 
     /**
      * 清空目录下的文件
-     * Warning: Deletes the content of a directory.
-     * This is an I/O operation and this method executes in the main thread, so it is recommended to
-     * perform the operation using another thread.
      *
-     * @param directory The directory which its content will be deleted.
+     * @param directory 缓存文件目录.
      */
     public boolean clearDirectory(File directory) {
         boolean result = false;
@@ -115,10 +93,10 @@ public class FileManager {
     /**
      * 将值写进偏好文件中.
      *
-     * @param context {@link Context} to retrieve android user preferences.
-     * @param preferenceFileName A file name reprensenting where data will be written to.
-     * @param key A string for the key that will be used to retrieve the value in the future.
-     * @param value A long representing the value to be inserted.
+     * @param context               android的上下文.
+     * @param preferenceFileName    偏好文件名.
+     * @param key                   键.
+     * @param value                 值.
      */
     public void writeToPreferences(Context context, String preferenceFileName, String key,
                                    long value) {
@@ -133,10 +111,10 @@ public class FileManager {
     /**
      * 从偏好文件中读取值.
      *
-     * @param context {@link Context} to retrieve android user preferences.
-     * @param preferenceFileName A file name representing where data will be get from.
-     * @param key A key that will be used to retrieve the value from the preference file.
-     * @return A long representing the value retrieved from the preferences file.
+     * @param context               android的上下文.
+     * @param preferenceFileName    偏好文件名.
+     * @param key                   键.
+     * @return 值.
      */
     public long getFromPreferences(Context context, String preferenceFileName, String key) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceFileName,

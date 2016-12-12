@@ -9,7 +9,7 @@
   //Exception messages
   <string name="exception_message_generic">应用异常</string>
   <string name="exception_message_no_connection">网络未连接</string>
-  <string name="exception_message_course_not_found">获取课程失败，检查你的网络</string>
+  <string name="exception_message_not_found">获取失败，检查你的网络</string>
 
   <string name="course_item_1">推荐课程</string>
 </resources>

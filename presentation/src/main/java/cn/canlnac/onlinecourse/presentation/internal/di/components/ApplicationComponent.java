@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
+import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.ApplicationModule;
 import cn.canlnac.onlinecourse.presentation.ui.activity.BaseActivity;
 import dagger.Component;
@@ -21,4 +22,5 @@ public interface ApplicationComponent {
     Context context();
     ThreadExecutor threadExecutor();
     PostExecutionThread postExecutionThread();
+    RegisterRepository registerRepository();
 }

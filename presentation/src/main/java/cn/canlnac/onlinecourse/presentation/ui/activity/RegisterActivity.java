@@ -1,6 +1,5 @@
 package cn.canlnac.onlinecourse.presentation.ui.activity;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -9,24 +8,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerRegisterComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.RegisterComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.RegisterModule;
+import cn.canlnac.onlinecourse.presentation.presenter.RegisterPresenter;
 
 /**
  * 注册页面.
  */
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends BaseActivity implements HasComponent<RegisterComponent> {
     @BindView(R.id.register_close_button)
     Button closeButton;
     @BindView(R.id.register_username)
     EditText username;
-    @BindView(R.id.register_email)
-    EditText email;
     @BindView(R.id.register_password)
     EditText password;
     @BindView(R.id.register_done)
@@ -34,8 +39,20 @@ public class RegisterActivity extends Activity {
     @BindView(R.id.register_is_visible)
     ImageView isVisible;
 
+    private static boolean canSubmit = false;
+
     private final HideReturnsTransformationMethod visible = HideReturnsTransformationMethod.getInstance();
     private final PasswordTransformationMethod invisible = PasswordTransformationMethod.getInstance();
+
+    private RegisterComponent registerComponent;
+
+    @Inject
+    RegisterPresenter registerPresenter;
+
+    @Override
+    public RegisterComponent getComponent() {
+        return registerComponent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +63,14 @@ public class RegisterActivity extends Activity {
 
         //设置密码不可见
         password.setTransformationMethod(invisible);
+    }
+
+    private void initializeInjector() {
+        this.registerComponent = DaggerRegisterComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .registerModule(new RegisterModule(username.getText().toString(), password.getText().toString()))
+                .build();
     }
 
     /**
@@ -81,12 +106,43 @@ public class RegisterActivity extends Activity {
      * @param before
      * @param count
      */
-    @OnTextChanged({R.id.register_username,R.id.register_email,R.id.register_password})
+    @OnTextChanged({R.id.register_username,R.id.register_password})
     public void onTextChange(CharSequence s, int start, int before, int count) {
-        if (username.getText().length() > 0 && password.getText().length() > 0 && email.getText().length() >0) {
+        if (username.getText().length() > 0 && password.getText().length() > 0) {
             done.setBackgroundColor(Color.parseColor("#2196F3"));
+            canSubmit = true;
         } else {
             done.setBackgroundColor(Color.parseColor("#AFAFAF"));
+            canSubmit = false;
         }
+    }
+
+    /**
+     * 点击完成按钮
+     * @param v
+     */
+    @OnClick(R.id.register_done)
+    public void onClickDone(View v) {
+        if (canSubmit) {
+            this.initializeInjector();
+            this.getComponent(RegisterComponent.class).inject(this);
+
+            this.registerPresenter.setView(this);
+
+            this.registerPresenter.initialize();
+        }
+    }
+
+    /**
+     * 显示消息
+     * @param message   消息
+     */
+    public void showToastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <C> C getComponent(Class<C> componentType) {
+        return componentType.cast(((HasComponent<C>) this).getComponent());
     }
 }

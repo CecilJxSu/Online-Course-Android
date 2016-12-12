@@ -64,30 +64,6 @@
             android:layout_width="300dp"
             android:layout_height="1px"
             android:background="#dddddd" />
-        <LinearLayout
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:orientation="horizontal"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:text="邮箱：" />
-
-            <EditText
-                android:id="@+id/register_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
-                android:background="@null"
-                android:textColor="#666666"/>
-        </LinearLayout>
-        <View
-            android:layout_width="300dp"
-            android:layout_height="1px"
-            android:background="#dddddd" />
         <RelativeLayout
             android:layout_width="300dp"
             android:layout_height="40dp"
@@ -134,5 +110,10 @@
             android:textColor="#FFFFFF"
             android:background="#AFAFAF"/>
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/register_frame_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
 
 </RelativeLayout>
