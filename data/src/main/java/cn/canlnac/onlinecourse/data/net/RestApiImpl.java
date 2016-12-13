@@ -12,8 +12,25 @@ import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import cn.canlnac.onlinecourse.data.entity.AnswerEntity;
+import cn.canlnac.onlinecourse.data.entity.CatalogEntity;
+import cn.canlnac.onlinecourse.data.entity.ChatEntity;
+import cn.canlnac.onlinecourse.data.entity.ChatListEntity;
+import cn.canlnac.onlinecourse.data.entity.CommentListEntity;
+import cn.canlnac.onlinecourse.data.entity.CourseEntity;
+import cn.canlnac.onlinecourse.data.entity.CourseListEntity;
+import cn.canlnac.onlinecourse.data.entity.DocumentEntity;
+import cn.canlnac.onlinecourse.data.entity.DocumentListEntity;
+import cn.canlnac.onlinecourse.data.entity.FollowerEntity;
+import cn.canlnac.onlinecourse.data.entity.LearnRecordEntity;
+import cn.canlnac.onlinecourse.data.entity.LearnRecordListEntity;
+import cn.canlnac.onlinecourse.data.entity.MessageEntity;
+import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
+import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
+import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
 import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
 import cn.canlnac.onlinecourse.data.exception.NetworkConnectionException;
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
@@ -91,6 +108,281 @@ public class RestApiImpl implements RestApi {
         map.put("userStatus", "student");
 
         return APIConnection.create(METHOD.POST, API_USER, new Gson().toJson(map), null).request();
+    }
+
+    @Override
+    public Observable<ProfileEntity> getUserProfile(int userId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> updateUserProfile(Map<String, String> profile) {
+        return null;
+    }
+
+    @Override
+    public Observable<MessageListEntity> getMessages(int start, int count, boolean isRead) {
+        return null;
+    }
+
+    @Override
+    public Observable<MessageEntity> getMessage(int messageId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> deleteMessage(int messageId) {
+        return null;
+    }
+
+    @Override
+    public Observable<LearnRecordListEntity> getOtherUserLearnRecord(int userId, int start, int count) {
+        return null;
+    }
+
+    @Override
+    public Observable<FollowerEntity> getFollower(int start, int count) {
+        return null;
+    }
+
+    @Override
+    public Observable<FollowerEntity> getUserFollowing(int userId, int start, int count) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> followUser(int userId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> unfollowUser(int userId) {
+        return null;
+    }
+
+    @Override
+    public Observable<DocumentEntity> getDocument(int documentId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> deleteDocument(int documentId) {
+        return null;
+    }
+
+    @Override
+    public Observable<CourseEntity> getCourse(int courseId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> updateCourse(int courseId, Map<String, String> course) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> deleteCourse(int courseId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> createCourse(Map<String, String> course) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> likeCourse(int courseId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> unlikeCourse(int courseId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> favoriteCourse(int courseId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> unfavoriteCourse(int courseId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> createDocument(int courseId, Map<String, String> document) {
+        return null;
+    }
+
+    @Override
+    public Observable<DocumentListEntity> getDocumentsInCourse(int courseId, int start, int count, String sort) {
+        return null;
+    }
+
+    @Override
+    public Observable<CommentListEntity> getCommentsInCourse(int courseId, int start, int count, String sort) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> createCommentInCourse(int courseId, Map<String, Object> comment) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> replyCommentInCourse(int courseId, int commentId, Map<String, Object> reply) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> createCatalog(int courseId, Map<String, Object> catalog) {
+        return null;
+    }
+
+    @Override
+    public Observable<List<CatalogEntity>> getCatalogs(int courseId) {
+        return null;
+    }
+
+    @Override
+    public Observable<CourseListEntity> getCourses(int start, int count, String sort, List<String> departments) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> likeComment(int commentId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> unlikeComment(int commentId) {
+        return null;
+    }
+
+    @Override
+    public Observable<ChatEntity> getChat(int chatId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> deleteChat(int chatId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> createChat(Map<String, Object> chat) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> likeChat(int chatId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> unlikeChat(int chatId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> favoriteChat(int chatId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> unfavoriteChat(int chatId) {
+        return null;
+    }
+
+    @Override
+    public Observable<CommentListEntity> getCommentsInChat(int chatId, int start, int count, String sort) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> createCommentInChat(int chatId, Map<String, Object> comment) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> replyCommentInChat(int chatId, int commentId, Map<String, Object> reply) {
+        return null;
+    }
+
+    @Override
+    public Observable<ChatListEntity> getChats(int start, int count, String sort) {
+        return null;
+    }
+
+    @Override
+    public Observable<CatalogEntity> getCatalog(int catalogId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> updateCatalog(int catalogId, Map<String, Object> catalog) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> deleteCatalog(int catalogId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> createQuestion(int catalogId, Map<String, Object> question) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> updateQuestion(int catalogId, Map<String, Object> question) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> deleteQuestion(int catalogId) {
+        return null;
+    }
+
+    @Override
+    public Observable<QuestionEntity> getQuestion(int catalogId) {
+        return null;
+    }
+
+    @Override
+    public Observable<LearnRecordEntity> getLearnRecord(int catalogId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> createLearnRecord(int catalogId, Map<String, Object> learnRecord) {
+        return null;
+    }
+
+    @Override
+    public Observable<Void> updateLearnRecord(int catalogId, Map<String, Object> learnRecord) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> getDocumentInCatalog(int catalogId, Map<String, Object> document) {
+        return null;
+    }
+
+    @Override
+    public Observable<DocumentListEntity> getDocumentsInCatalog(int catalogId, int start, int count, String sort) {
+        return null;
+    }
+
+    @Override
+    public Observable<AnswerEntity> getAnswer(int catalogId) {
+        return null;
+    }
+
+    @Override
+    public Observable<Integer> createAnser(int catalogId, Map<String, Object> answer) {
+        return null;
     }
 
     /**
