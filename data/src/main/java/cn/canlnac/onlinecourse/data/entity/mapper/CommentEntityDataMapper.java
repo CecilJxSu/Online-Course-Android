@@ -1,5 +1,8 @@
 package cn.canlnac.onlinecourse.data.entity.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -41,5 +44,23 @@ public class CommentEntityDataMapper {
             comment.setReplyCount(commentEntity.getReplyCount());
         }
         return comment;
+    }
+
+    /**
+     * 转换列表
+     * @param commentEntityList    评论列表实体类列表
+     * @return
+     */
+    public List<Comment> transform(List<CommentEntity> commentEntityList) {
+        List<Comment> commentList = new ArrayList<>(commentEntityList.size());
+        Comment comment;
+        for (CommentEntity commentEntity : commentEntityList) {
+            comment = transform(commentEntity);
+            if (comment != null) {
+                commentList.add(comment);
+            }
+        }
+
+        return commentList;
     }
 }
