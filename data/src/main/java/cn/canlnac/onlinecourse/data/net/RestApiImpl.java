@@ -7,11 +7,6 @@ import android.net.NetworkInfo;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
-import java.math.BigInteger;
-import java.net.MalformedURLException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,17 +36,21 @@ import rx.Observable;
  */
 public class RestApiImpl implements RestApi {
     private final Context context;
+    private RestApiConnection restApiConnection;
 
     /**
      * 构造函数
      *
-     * @param context               {@link android.content.Context}               安卓内容上下文
+     * @param context           安卓内容上下文
+     * @param restApiConnection 接口连接
      */
-    public RestApiImpl(Context context) {
+    public RestApiImpl(Context context, RestApiConnection restApiConnection) {
         if (context == null) {
             throw new IllegalArgumentException("The constructor parameters cannot be null!!!");
         }
+
         this.context = context.getApplicationContext();
+        this.restApiConnection = restApiConnection;
     }
 
     /**
@@ -69,7 +68,7 @@ public class RestApiImpl implements RestApi {
             }
 
             try {
-                Response response = registerFromApi(username, password); //注册
+                Response response = restApiConnection.registerFromApi(username, password); //注册
                 if (response == null) {//网络异常
                     subscriber.onError(new NetworkConnectionException());
                     return;
@@ -86,28 +85,6 @@ public class RestApiImpl implements RestApi {
                 subscriber.onError(new NetworkConnectionException(e.getCause()));
             }
         });
-    }
-
-    /**
-     * 注册请求
-     * @param username  用户名
-     * @param password  密码
-     * @return Response 响应
-     * @throws MalformedURLException
-     */
-    private Response registerFromApi(String username, String password) throws MalformedURLException, NoSuchAlgorithmException {
-        Map<String, String> map = new HashMap<>();
-
-        //MD5加密
-        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-        messageDigest.update(password.getBytes());
-        password = String.format("%032X", new BigInteger(1, messageDigest.digest()));
-
-        map.put("username", username);
-        map.put("password", password);
-        map.put("userStatus", "student");
-
-        return APIConnection.create(METHOD.POST, API_USER, new Gson().toJson(map), null).request();
     }
 
     @Override

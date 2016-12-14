@@ -27,24 +27,6 @@ import rx.Observable;
  */
 
 public interface RestApi {
-    /** api地址 */
-    String API_BASE_URL = "http://120.24.221.156:8080/";
-
-    //用户
-    String API_USER = API_BASE_URL + "user";
-    //文档
-    String API_DOCUMENT = API_BASE_URL + "document";
-    //课程
-    String API_COURSE = API_BASE_URL + "course";
-    String API_COURSES = API_BASE_URL + "courses";
-    //评论
-    String API_COMMENT = API_BASE_URL + "comment";
-    //话题
-    String API_CHAT = API_BASE_URL + "chat";
-    String API_CHATS = API_BASE_URL + "chats";
-    //目录
-    String API_CATALOG = API_BASE_URL + "catalog";
-
     /********************************** 用户 ***********************************/
     /** 注册 */
     Observable<RegisterEntity> register(String username, String password);

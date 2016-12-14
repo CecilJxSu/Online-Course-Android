@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.net.RestApi;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.data.net.RestApiImpl;
 
 /**
@@ -15,14 +16,16 @@ import cn.canlnac.onlinecourse.data.net.RestApiImpl;
 @Singleton
 public class RegisterDataStoreFactory {
     private final Context context;
+    private final RestApiConnection restApiConnection;
 
     @Inject
     public RegisterDataStoreFactory(@NonNull Context context) {
         this.context = context.getApplicationContext();
+        this.restApiConnection = new RestApiConnection();
     }
 
     public RegisterDataStore create() {
-        RestApi restApi = new RestApiImpl(this.context);
+        RestApi restApi = new RestApiImpl(this.context, restApiConnection);
         return new CloudRegisterDataStore(restApi);
     }
 
