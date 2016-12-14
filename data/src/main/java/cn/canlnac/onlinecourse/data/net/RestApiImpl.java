@@ -87,51 +87,108 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    /**
+     * 获取用户资料
+     * @param userId            分页开始位置
+     * @return ProfileEntity    用户资料
+     */
     @Override
     public Observable<ProfileEntity> getUserProfile(int userId) {
         return null;
     }
 
+    /**
+     * 更新用户资料
+     * @param profile   用户资料
+     * @return Void
+     */
     @Override
     public Observable<Void> updateUserProfile(Map<String, String> profile) {
         return null;
     }
 
+    /**
+     * 获取用户消息列表
+     * @param start                 分页开始位置
+     * @param count                 分页返回数目
+     * @param isRead                是否阅读，Y|N
+     * @return MessageListEntity    消息列表
+     */
     @Override
     public Observable<MessageListEntity> getMessages(int start, int count, boolean isRead) {
         return null;
     }
 
+    /**
+     * 获取单个消息
+     * @param messageId         消息ID
+     * @return MessageEntity    消息
+     */
     @Override
     public Observable<MessageEntity> getMessage(int messageId) {
         return null;
     }
 
+    /**
+     * 删除消息
+     * @param messageId 消息ID
+     * @return Void
+     */
     @Override
     public Observable<Void> deleteMessage(int messageId) {
         return null;
     }
 
+    /**
+     * 获取其它用户学习记录
+     * @param userId    用户ID
+     * @param start     分页开始位置
+     * @param count     分页返回数目
+     * @return LearnRecordListEntity
+     */
     @Override
     public Observable<LearnRecordListEntity> getOtherUserLearnRecord(int userId, int start, int count) {
         return null;
     }
 
+    /**
+     * 获取粉丝
+     * @param start 分页开始位置
+     * @param count 分页返回数目
+     * @return FollowerEntity
+     */
     @Override
     public Observable<FollowerEntity> getFollower(int start, int count) {
         return null;
     }
 
+    /**
+     * 获取关注用户
+     * @param userId    用户ID
+     * @param start     分页开始位置
+     * @param count     分页返回数目
+     * @return FollowerEntity
+     */
     @Override
     public Observable<FollowerEntity> getUserFollowing(int userId, int start, int count) {
         return null;
     }
 
+    /**
+     * 关注用户
+     * @param userId    用户ID
+     * @return Void
+     */
     @Override
     public Observable<Void> followUser(int userId) {
         return null;
     }
 
+    /**
+     * 取消关注
+     * @param userId    用户ID
+     * @return Void
+     */
     @Override
     public Observable<Void> unfollowUser(int userId) {
         return null;
