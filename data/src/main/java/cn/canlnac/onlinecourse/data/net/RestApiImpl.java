@@ -22,6 +22,7 @@ import cn.canlnac.onlinecourse.data.entity.DocumentListEntity;
 import cn.canlnac.onlinecourse.data.entity.FollowerEntity;
 import cn.canlnac.onlinecourse.data.entity.LearnRecordEntity;
 import cn.canlnac.onlinecourse.data.entity.LearnRecordListEntity;
+import cn.canlnac.onlinecourse.data.entity.LoginEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
@@ -77,6 +78,34 @@ public class RestApiImpl implements RestApi {
                 if (response.code() == 200) {//状态码正确响应
                     RegisterEntity registerEntity = new Gson().fromJson(response.body().string(), RegisterEntity.class);
                     subscriber.onNext(registerEntity);
+                    subscriber.onCompleted();
+                } else {//状态码错误
+                    subscriber.onError(setCommentStatusError(response.code()));
+                }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<LoginEntity> login(String username, String password) {
+        return Observable.create(subscriber -> {
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
+
+            try {
+                Response response = restApiConnection.loginFromApi(username, password); //登录
+                if (response == null) {//网络异常
+                    subscriber.onError(new NetworkConnectionException());
+                    return;
+                }
+
+                if (response.code() == 200) {//状态码正确响应
+                    LoginEntity loginEntity = new Gson().fromJson(response.body().string(), LoginEntity.class);
+                    subscriber.onNext(loginEntity);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));

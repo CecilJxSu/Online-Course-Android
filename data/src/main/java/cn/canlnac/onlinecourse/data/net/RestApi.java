@@ -15,6 +15,7 @@ import cn.canlnac.onlinecourse.data.entity.DocumentListEntity;
 import cn.canlnac.onlinecourse.data.entity.FollowerEntity;
 import cn.canlnac.onlinecourse.data.entity.LearnRecordEntity;
 import cn.canlnac.onlinecourse.data.entity.LearnRecordListEntity;
+import cn.canlnac.onlinecourse.data.entity.LoginEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
@@ -27,6 +28,9 @@ import rx.Observable;
  */
 
 public interface RestApi {
+    /********************************** 注册 ***********************************/
+    Observable<LoginEntity> login(String username, String password);
+
     /********************************** 用户 ***********************************/
     /** 注册 */
     Observable<RegisterEntity> register(String username, String password);

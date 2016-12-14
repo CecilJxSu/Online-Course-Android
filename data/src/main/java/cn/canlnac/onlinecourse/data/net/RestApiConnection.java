@@ -19,6 +19,8 @@ public class RestApiConnection {
     /** api地址 */
     String API_BASE_URL = "http://120.24.221.156:8080/";
 
+    //登录
+    String API_LOGIN = API_BASE_URL + "login";
     //用户
     String API_USER = API_BASE_URL + "user";
     //文档
@@ -57,6 +59,20 @@ public class RestApiConnection {
         map.put("userStatus", "student");
 
         return APIConnection.create(METHOD.POST, API_USER, new Gson().toJson(map), null).request();
+    }
+
+    public Response loginFromApi(String username, String password) throws MalformedURLException, NoSuchAlgorithmException {
+        Map<String, String> map = new HashMap<>();
+
+        //MD5加密
+        MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+        messageDigest.update(password.getBytes());
+        password = String.format("%032X", new BigInteger(1, messageDigest.digest()));
+
+        map.put("username", username);
+        map.put("password", password);
+
+        return APIConnection.create(METHOD.POST, API_LOGIN, new Gson().toJson(map), null).request();
     }
 
     /**
