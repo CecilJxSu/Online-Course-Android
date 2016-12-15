@@ -1,5 +1,8 @@
 package cn.canlnac.onlinecourse.data.entity.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
@@ -35,5 +38,23 @@ public class CatalogEntityDataMapper {
             catalog.setUrl(catalogEntity.getUrl());
         }
         return catalog;
+    }
+
+    /**
+     * 转换列表
+     * @param catalogEntityList 目录实体类列表
+     * @return
+     */
+    public List<Catalog> transform(List<CatalogEntity> catalogEntityList) {
+        List<Catalog> catalogList = new ArrayList<>(catalogEntityList.size());
+        Catalog catalog;
+        for (CatalogEntity catalogEntity : catalogEntityList) {
+            catalog = transform(catalogEntity);
+            if (catalog != null) {
+                catalogList.add(catalog);
+            }
+        }
+
+        return catalogList;
     }
 }
