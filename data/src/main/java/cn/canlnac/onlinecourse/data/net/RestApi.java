@@ -1,5 +1,7 @@
 package cn.canlnac.onlinecourse.data.net;
 
+import android.support.annotation.Nullable;
+
 import java.util.List;
 import java.util.Map;
 
@@ -39,17 +41,17 @@ public interface RestApi {
     /** 更新个人资料 */
     Observable<Void> updateUserProfile(Map<String,String> profile);
     /** 获取个人消息 */
-    Observable<MessageListEntity> getMessages(int start, int count, boolean isRead);
+    Observable<MessageListEntity> getMessages(@Nullable Integer start, @Nullable Integer count, @Nullable Boolean isRead);
     /** 获取指定消息 */
     Observable<MessageEntity> getMessage(int messageId);
     /** 删除消息 */
     Observable<Void> deleteMessage(int messageId);
     /** 获取别人学习记录 */
-    Observable<LearnRecordListEntity> getOtherUserLearnRecord(int userId, int start, int count);
+    Observable<LearnRecordListEntity> getOtherUserLearnRecord(int userId, @Nullable Integer start, @Nullable Integer count);
     /** 获取自己的粉丝 */
-    Observable<FollowerEntity> getFollower(int start, int count);
+    Observable<FollowerEntity> getFollower(@Nullable Integer start, @Nullable Integer count);
     /** 获取用户的关注 */
-    Observable<FollowerEntity> getUserFollowing(int userId, int start, int count);
+    Observable<FollowerEntity> getUserFollowing(int userId, @Nullable Integer start, @Nullable Integer count);
     /** 关注用户 */
     Observable<Void> followUser(int userId);
     /** 取消关注 */
@@ -81,9 +83,9 @@ public interface RestApi {
     /** 创建文档 */
     Observable<Integer> createDocument(int courseId, Map<String,String> document);
     /** 课程下的文档 */
-    Observable<DocumentListEntity> getDocumentsInCourse(int courseId, int start, int count, String sort);
+    Observable<DocumentListEntity> getDocumentsInCourse(int courseId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort);
     /** 获取课程下的评论 */
-    Observable<CommentListEntity> getCommentsInCourse(int courseId, int start, int count, String sort);
+    Observable<CommentListEntity> getCommentsInCourse(int courseId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort);
     /** 创建评论 */
     Observable<Integer> createCommentInCourse(int courseId, Map<String,Object> comment);
     /** 回复评论 */
@@ -94,7 +96,7 @@ public interface RestApi {
     Observable<List<CatalogEntity>> getCatalogs(int courseId);
 
     /** 获取课程列表 */
-    Observable<CourseListEntity> getCourses(int start, int count, String sort, List<String> departments);
+    Observable<CourseListEntity> getCourses(@Nullable Integer start, @Nullable Integer count, String sort, List<String> departments);
 
     /********************************** 评论 ***********************************/
     /** 点赞评论 */
@@ -118,14 +120,14 @@ public interface RestApi {
     /** 取消收藏话题 */
     Observable<Void> unfavoriteChat(int chatId);
     /** 获取话题下的评论 */
-    Observable<CommentListEntity> getCommentsInChat(int chatId, int start, int count, String sort);
+    Observable<CommentListEntity> getCommentsInChat(int chatId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort);
     /** 评论话题 */
     Observable<Integer> createCommentInChat(int chatId, Map<String,Object> comment);
     /** 回复评论 */
     Observable<Integer> replyCommentInChat(int chatId, int commentId, Map<String,Object> reply);
 
     /** 话题列表 */
-    Observable<ChatListEntity> getChats(int start, int count, String sort);
+    Observable<ChatListEntity> getChats(@Nullable Integer start, @Nullable Integer count, @Nullable String sort);
 
     /********************************** 目录 ***********************************/
     /** 获取目录 */
@@ -151,7 +153,7 @@ public interface RestApi {
     /** 创建文档 */
     Observable<Integer> getDocumentInCatalog(int catalogId, Map<String,Object> document);
     /** 文档列表 */
-    Observable<DocumentListEntity> getDocumentsInCatalog(int catalogId, int start, int count, String sort);
+    Observable<DocumentListEntity> getDocumentsInCatalog(int catalogId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort);
     /** 获取章节下的回答 */
     Observable<AnswerEntity> getAnswer(int catalogId);
     /** 创建回答 */
