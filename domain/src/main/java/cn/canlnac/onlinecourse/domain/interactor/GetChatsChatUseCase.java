@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.domain.interactor;
 
-import com.sun.istack.internal.Nullable;
-
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
@@ -23,9 +21,9 @@ public class GetChatsChatUseCase extends UseCase {
 
     @Inject
     public GetChatsChatUseCase(
-            @Nullable Integer start,
-            @Nullable Integer count,
-            @Nullable String sort,
+            Integer start,
+            Integer count,
+            String sort,
             ChatRepository chatRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread

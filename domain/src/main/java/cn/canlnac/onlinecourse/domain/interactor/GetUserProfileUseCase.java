@@ -4,37 +4,34 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 获取用户资料使用用例.
  */
 
 public class GetUserProfileUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int userId;
 
-    private final RegisterRepository registerRepository;
+    private final UserRepository userRepository;
 
     @Inject
     public GetUserProfileUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            int userId,
+            UserRepository userRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.userId = userId;
+        this.userRepository = userRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.userRepository.getUserProfile(userId);
     }
 }

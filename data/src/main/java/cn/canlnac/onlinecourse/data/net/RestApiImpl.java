@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,6 @@ import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionIdEntity;
 import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
-import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import cn.canlnac.onlinecourse.data.entity.ReplyIdEntity;
 import cn.canlnac.onlinecourse.data.exception.NetworkConnectionException;
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
@@ -1624,7 +1622,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<Integer> getDocumentInCatalog(int catalogId, Map<String, Object> document) {
+    public Observable<Integer> createDocumentInCatalog(int catalogId, Map<String, Object> document) {
         return Observable.create(subscriber -> {
             if (!isThereInternetConnection()) {//检查网络
                 subscriber.onError(new NetworkConnectionException());
@@ -1632,7 +1630,7 @@ public class RestApiImpl implements RestApi {
             }
 
             try {
-                Response response = restApiConnection.getDocumentInCatalogFromApi(catalogId, document);
+                Response response = restApiConnection.createDocumentInCatalogFromApi(catalogId, document);
                 if (response == null) {//网络异常
                     subscriber.onError(new NetworkConnectionException());
                     return;

@@ -20,7 +20,6 @@ public class DeleteMessageUseCase extends UseCase {
     @Inject
     public DeleteMessageUseCase(
             int messageId,
-            String password,
             UserRepository userRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread

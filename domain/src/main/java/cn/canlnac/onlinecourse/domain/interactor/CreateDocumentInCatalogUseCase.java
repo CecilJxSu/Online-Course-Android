@@ -1,5 +1,7 @@
 package cn.canlnac.onlinecourse.domain.interactor;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
@@ -8,18 +10,20 @@ import cn.canlnac.onlinecourse.domain.repository.CatalogRepository;
 import rx.Observable;
 
 /**
- * 获取问题使用用例.
+ * 创建目录文件使用用例.
  */
 
-public class GetQuestionUseCase extends UseCase {
+public class CreateDocumentInCatalogUseCase extends UseCase {
 
     private final int catalogId;
+    private final Map<String,Object> document;
 
     private final CatalogRepository catalogRepository;
 
     @Inject
-    public GetQuestionUseCase(
+    public CreateDocumentInCatalogUseCase(
             int catalogId,
+            Map<String,Object> document,
             CatalogRepository catalogRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
@@ -27,11 +31,12 @@ public class GetQuestionUseCase extends UseCase {
         super(threadExecutor, postExecutionThread);
 
         this.catalogId = catalogId;
+        this.document = document;
         this.catalogRepository = catalogRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.catalogRepository.getQuestion(catalogId);
+        return this.catalogRepository.createDocumentInCatalog(catalogId, document);
     }
 }

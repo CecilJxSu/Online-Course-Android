@@ -4,37 +4,34 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.CourseRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 取消收藏使用用例.
  */
 
 public class UnfavoriteCourseUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int courseId;
 
-    private final RegisterRepository registerRepository;
+    private final CourseRepository courseRepository;
 
     @Inject
     public UnfavoriteCourseUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            int courseId,
+            CourseRepository courseRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.courseId = courseId;
+        this.courseRepository = courseRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.courseRepository.unfavoriteCourse(courseId);
     }
 }

@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.domain.repository;
 
-import com.sun.istack.internal.Nullable;
-
 import java.util.Map;
 
 import cn.canlnac.onlinecourse.domain.Answer;
@@ -36,9 +34,9 @@ public interface CatalogRepository {
     /** 更新学习记录 */
     Observable<Void> updateLearnRecord(int catalogId, Map<String,Object> learnRecord);
     /** 创建文档 */
-    Observable<Integer> getDocumentInCatalog(int catalogId, Map<String,Object> document);
+    Observable<Integer> createDocumentInCatalog(int catalogId, Map<String,Object> document);
     /** 文档列表 */
-    Observable<DocumentList> getDocumentsInCatalog(int catalogId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort);
+    Observable<DocumentList> getDocumentsInCatalog(int catalogId, Integer start, Integer count, String sort);
     /** 获取章节下的回答 */
     Observable<Answer> getAnswer(int catalogId);
     /** 创建回答 */

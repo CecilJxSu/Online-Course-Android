@@ -4,37 +4,43 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.CatalogRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 获取目录下的文档使用用例.
  */
 
 public class GetDocumentsInCatalogUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int catalogId;
+    private final Integer start;
+    private final Integer count;
+    private final String sort;
 
-    private final RegisterRepository registerRepository;
+    private final CatalogRepository catalogRepository;
 
     @Inject
     public GetDocumentsInCatalogUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            int catalogId,
+            Integer start,
+            Integer count,
+            String sort,
+            CatalogRepository catalogRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.catalogId = catalogId;
+        this.start = start;
+        this.count = count;
+        this.sort = sort;
+        this.catalogRepository = catalogRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.catalogRepository.getDocumentsInCatalog(catalogId, start, count, sort);
     }
 }

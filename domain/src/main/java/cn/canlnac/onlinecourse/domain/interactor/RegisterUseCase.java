@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import rx.Observable;
 
 /**
@@ -16,13 +16,13 @@ public class RegisterUseCase extends UseCase {
     private final String username;
     private final String password;
 
-    private final RegisterRepository registerRepository;
+    private final UserRepository userRepository;
 
     @Inject
     public RegisterUseCase(
             String username,
             String password,
-            RegisterRepository registerRepository,
+            UserRepository userRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
@@ -30,11 +30,11 @@ public class RegisterUseCase extends UseCase {
 
         this.username = username;
         this.password = password;
-        this.registerRepository = registerRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.userRepository.register(username, password);
     }
 }

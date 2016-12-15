@@ -4,37 +4,37 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 获取自己的粉丝使用用例.
  */
 
 public class GetFollowerUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final Integer start;
+    private final Integer count;
 
-    private final RegisterRepository registerRepository;
+    private final UserRepository userRepository;
 
     @Inject
     public GetFollowerUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            Integer start,
+            Integer count,
+            UserRepository userRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.start = start;
+        this.count = count;
+        this.userRepository = userRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.userRepository.getFollower(start,count);
     }
 }

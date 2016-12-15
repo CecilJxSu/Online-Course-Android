@@ -5,10 +5,10 @@ import android.content.Context;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.executor.JobExecutor;
-import cn.canlnac.onlinecourse.data.repository.RegisterDataRepository;
+import cn.canlnac.onlinecourse.data.repository.UserDataRepository;
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import cn.canlnac.onlinecourse.presentation.AndroidApplication;
 import cn.canlnac.onlinecourse.presentation.UIThread;
 import dagger.Module;
@@ -46,7 +46,7 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    RegisterRepository provideRegisterRepository(RegisterDataRepository registerDataRepository) {
-        return registerDataRepository;
+    UserRepository provideUserRepository(UserDataRepository userDataRepository) {
+        return userDataRepository;
     }
 }

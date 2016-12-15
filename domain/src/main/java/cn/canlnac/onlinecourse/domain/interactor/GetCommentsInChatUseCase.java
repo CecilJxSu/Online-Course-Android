@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.ChatRepository;
 import rx.Observable;
 
 /**
@@ -13,28 +13,34 @@ import rx.Observable;
 
 public class GetCommentsInChatUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int chatId;
+    private final Integer start;
+    private final Integer count;
+    private final String sort;
 
-    private final RegisterRepository registerRepository;
+    private final ChatRepository chatRepository;
 
     @Inject
     public GetCommentsInChatUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            int chatId,
+            Integer start,
+            Integer count,
+            String sort,
+            ChatRepository chatRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.chatId = chatId;
+        this.start = start;
+        this.count = count;
+        this.sort = sort;
+        this.chatRepository = chatRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.chatRepository.getCommentsInChat(chatId, start,count,sort);
     }
 }

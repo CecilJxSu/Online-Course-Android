@@ -4,37 +4,34 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.CatalogRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 获取目录下的学习记录使用用例.
  */
 
 public class GetLearnRecordUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int catalogId;
 
-    private final RegisterRepository registerRepository;
+    private final CatalogRepository catalogRepository;
 
     @Inject
     public GetLearnRecordUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            int catalogId,
+            CatalogRepository catalogRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.catalogId = catalogId;
+        this.catalogRepository = catalogRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.catalogRepository.getLearnRecord(catalogId);
     }
 }

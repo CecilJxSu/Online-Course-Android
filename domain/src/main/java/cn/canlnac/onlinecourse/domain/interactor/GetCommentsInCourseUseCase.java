@@ -4,37 +4,43 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.CourseRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 获取课程评论使用用例.
  */
 
 public class GetCommentsInCourseUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int courseId;
+    private final Integer start;
+    private final Integer count;
+    private final String sort;
 
-    private final RegisterRepository registerRepository;
+    private final CourseRepository courseRepository;
 
     @Inject
     public GetCommentsInCourseUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            int courseId,
+            Integer start,
+            Integer count,
+            String sort,
+            CourseRepository courseRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.courseId = courseId;
+        this.start = start;
+        this.count = count;
+        this.sort = sort;
+        this.courseRepository = courseRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.courseRepository.getCommentsInCourse(courseId, start,count,sort);
     }
 }

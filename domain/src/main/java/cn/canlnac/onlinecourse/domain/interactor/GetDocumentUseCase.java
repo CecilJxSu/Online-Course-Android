@@ -4,37 +4,34 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.DocumentRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 获取文档使用用例.
  */
 
 public class GetDocumentUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int documentId;
 
-    private final RegisterRepository registerRepository;
+    private final DocumentRepository documentRepository;
 
     @Inject
     public GetDocumentUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            int documentId,
+            DocumentRepository documentRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.documentId = documentId;
+        this.documentRepository = documentRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.documentRepository.getDocument(documentId);
     }
 }

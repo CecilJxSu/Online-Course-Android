@@ -1,40 +1,42 @@
 package cn.canlnac.onlinecourse.domain.interactor;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.CatalogRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 更新目录使用用例.
  */
 
 public class UpdateCatalogUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int catalogId;
+    private final Map<String,Object> catalog;
 
-    private final RegisterRepository registerRepository;
+    private final CatalogRepository catalogRepository;
 
     @Inject
     public UpdateCatalogUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            int catalogId,
+            Map<String,Object> catalog,
+            CatalogRepository catalogRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.catalogId = catalogId;
+        this.catalog = catalog;
+        this.catalogRepository = catalogRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.catalogRepository.updateCatalog(catalogId,catalog);
     }
 }

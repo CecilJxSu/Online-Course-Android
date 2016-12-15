@@ -4,37 +4,34 @@ import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.CommentRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 取消点赞使用用例.
  */
 
 public class UnlikeCommentUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int commentId;
 
-    private final RegisterRepository registerRepository;
+    private final CommentRepository commentRepository;
 
     @Inject
     public UnlikeCommentUseCase(
-            String username,
-            String password,
-            RegisterRepository registerRepository,
+            int commentId,
+            CommentRepository commentRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
-        this.registerRepository = registerRepository;
+        this.commentId = commentId;
+        this.commentRepository = commentRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.registerRepository.register(username, password);
+        return this.commentRepository.unlikeComment(commentId);
     }
 }
