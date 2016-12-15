@@ -121,4 +121,34 @@ public class FileManager {
                 Context.MODE_PRIVATE);
         return sharedPreferences.getLong(key, 0);
     }
+
+    /**
+     * 将值写进偏好文件中.
+     * @param context               android的上下文.
+     * @param preferenceFileName    偏好文件名.
+     * @param key                   键.
+     * @param value                 值.
+     */
+    public void writeStringToPreferences(Context context, String preferenceFileName, String key,
+                                   String value) {
+
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceFileName,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    /**
+     * 从偏好文件中读取字符串类型的值
+     * @param context               android的上下文.
+     * @param preferenceFileName    偏好文件名.
+     * @param key                   键.
+     * @return
+     */
+    public String getStringFromPreferences(Context context, String preferenceFileName, String key) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(preferenceFileName,
+                Context.MODE_PRIVATE);
+        return sharedPreferences.getString(key, null);
+    }
 }

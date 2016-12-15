@@ -1,5 +1,7 @@
 package cn.canlnac.onlinecourse.data.net;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
@@ -10,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cn.canlnac.onlinecourse.data.cache.FileManager;
 
 /**
  * 接口连接.
@@ -36,7 +40,29 @@ public class RestApiConnection {
     //目录
     String API_CATALOG = API_BASE_URL + "catalog";
 
-    public RestApiConnection() {}
+    private final Context context;
+    private final FileManager fileManager;
+
+    public RestApiConnection(Context context) {
+        this.context = context;
+        fileManager = new FileManager();
+    }
+
+    /**
+     * 获取jwt
+     * @return
+     */
+    public String getJwt() {
+        return fileManager.getStringFromPreferences(context,"jwt","jwt");
+    }
+
+    /**
+     * 设置偏好
+     * @param jwt   json web token
+     */
+    public void setJwt(String jwt) {
+        fileManager.writeStringToPreferences(context,"jwt","jwt",jwt);
+    }
 
     /**
      * 注册请求
@@ -58,9 +84,17 @@ public class RestApiConnection {
         map.put("password", password);
         map.put("userStatus", "student");
 
-        return APIConnection.create(METHOD.POST, API_USER, new Gson().toJson(map), null).request();
+        return APIConnection.create(METHOD.POST, API_USER, new Gson().toJson(map), getJwt()).request();
     }
 
+    /**
+     * 登录请求
+     * @param username  用户名
+     * @param password  密码
+     * @return
+     * @throws MalformedURLException
+     * @throws NoSuchAlgorithmException
+     */
     public Response loginFromApi(String username, String password) throws MalformedURLException, NoSuchAlgorithmException {
         Map<String, String> map = new HashMap<>();
 
@@ -72,7 +106,7 @@ public class RestApiConnection {
         map.put("username", username);
         map.put("password", password);
 
-        return APIConnection.create(METHOD.POST, API_LOGIN, new Gson().toJson(map), null).request();
+        return APIConnection.create(METHOD.POST, API_LOGIN, new Gson().toJson(map), getJwt()).request();
     }
 
     /**

@@ -75,7 +75,7 @@ public class RestApiImpl implements RestApi {
                     return;
                 }
 
-                if (response.code() == 200) {//状态码正确响应
+                if (response.code() == 200 || (response.code() == 403 && response.body().toString().length() > 2)) {//状态码正确响应或封号
                     RegisterEntity registerEntity = new Gson().fromJson(response.body().string(), RegisterEntity.class);
                     subscriber.onNext(registerEntity);
                     subscriber.onCompleted();
@@ -105,6 +105,10 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     LoginEntity loginEntity = new Gson().fromJson(response.body().string(), LoginEntity.class);
+                    //设置jwt
+                    loginEntity.setJwt(response.header("Authorization"));
+                    restApiConnection.setJwt(loginEntity.getJwt());
+                    //完成
                     subscriber.onNext(loginEntity);
                     subscriber.onCompleted();
                 } else {//状态码错误

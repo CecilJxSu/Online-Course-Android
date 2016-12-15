@@ -21,7 +21,7 @@ public class RegisterDataStoreFactory {
     @Inject
     public RegisterDataStoreFactory(@NonNull Context context) {
         this.context = context.getApplicationContext();
-        this.restApiConnection = new RestApiConnection();
+        this.restApiConnection = new RestApiConnection(this.context);
     }
 
     public RegisterDataStore create() {
