@@ -1,6 +1,7 @@
 package cn.canlnac.onlinecourse.data.net;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
@@ -116,7 +117,7 @@ public class RestApiConnection {
      * @throws MalformedURLException
      */
     public Response getUserProfileFromApi(int userId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_USER + "/" + userId + "/profile", null, getJwt()).request();
     }
 
     /**
@@ -126,7 +127,7 @@ public class RestApiConnection {
      * @throws MalformedURLException
      */
     public Response updateUserProfileFromApi(Map<String, String> profile) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.PUT, API_USER + "/profile", new Gson().toJson(profile), getJwt()).request();
     }
 
     /**
@@ -137,8 +138,18 @@ public class RestApiConnection {
      * @return Response 响应
      * @throws MalformedURLException
      */
-    public Response getMessagesFromApi(int start, int count, boolean isRead) throws MalformedURLException {
-        return null;
+    public Response getMessagesFromApi(@Nullable Integer start, @Nullable Integer count, @Nullable Boolean isRead) throws MalformedURLException {
+        String MESSAGES = API_USER + "/messages?";
+        if (null != start) {
+            MESSAGES += "start="+start+"&";
+        }
+        if (null != count) {
+            MESSAGES += "count="+count+"&";
+        }
+        if (null != isRead) {
+            MESSAGES += "isRead="+(isRead?"Y":"N")+"&";
+        }
+        return APIConnection.create(METHOD.GET, MESSAGES, null, getJwt()).request();
     }
 
     /**
@@ -147,210 +158,296 @@ public class RestApiConnection {
      * @return Response 响应
      */
     public Response getMessageFromApi(int messageId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_USER+"/message/"+messageId, null, getJwt()).request();
     }
 
     public Response deleteMessageFromApi(int messageId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_USER+"/message/"+messageId, null, getJwt()).request();
     }
 
-    public Response getOtherUserLearnRecordFromApi(int userId, int start, int count) throws MalformedURLException {
-        return null;
+    public Response getOtherUserLearnRecordFromApi(int userId, @Nullable Integer start, @Nullable Integer count) throws MalformedURLException {
+        String API_LEARN_RECORD = API_USER + "/" + userId + "/learnRecord?";
+        if (null != start) {
+            API_LEARN_RECORD += "start=" + start + "&";
+        }
+        if (null != count) {
+            API_LEARN_RECORD += "count=" + count + "&";
+        }
+        return APIConnection.create(METHOD.GET, API_LEARN_RECORD, null, getJwt()).request();
     }
 
-    public Response getFollowerFromApi(int start, int count) throws MalformedURLException {
-        return null;
+    public Response getFollowerFromApi(@Nullable Integer start, @Nullable Integer count) throws MalformedURLException {
+        String API_FOLLOWER = API_USER + "/follower?";
+        if (null != start) {
+            API_FOLLOWER += "start=" + start + "&";
+        }
+        if (null != count) {
+            API_FOLLOWER += "count=" + count + "&";
+        }
+        return APIConnection.create(METHOD.GET, API_FOLLOWER, null, getJwt()).request();
     }
 
-    public Response getUserFollowingFromApi(int userId, int start, int count) throws MalformedURLException {
-        return null;
+    public Response getUserFollowingFromApi(int userId, @Nullable Integer start, @Nullable Integer count) throws MalformedURLException {
+        String API_FOLLOWER = API_USER + "/" + userId + "/following?";
+        if (null != start) {
+            API_FOLLOWER += "start=" + start + "&";
+        }
+        if (null != count) {
+            API_FOLLOWER += "count=" + count + "&";
+        }
+        return APIConnection.create(METHOD.GET, API_FOLLOWER, null, getJwt()).request();
     }
 
     public Response followUserFromApi(int userId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_USER + "/" + userId + "/following", null, getJwt()).request();
     }
 
     public Response unfollowUserFromApi(int userId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_USER + "/" + userId + "/following", null, getJwt()).request();
     }
 
     public Response getDocumentFromApi(int documentId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_DOCUMENT + "/" + documentId, null, getJwt()).request();
     }
 
     public Response deleteDocumentFromApi(int documentId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_DOCUMENT + "/" + documentId, null, getJwt()).request();
     }
 
     public Response getCourseFromApi(int courseId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_COURSE + "/" + courseId, null, getJwt()).request();
     }
 
     public Response updateCourseFromApi(int courseId, Map<String, String> course) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.PUT, API_COURSE + "/" + courseId, new Gson().toJson(course), getJwt()).request();
     }
 
     public Response deleteCourseFromApi(int courseId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_COURSE + "/" + courseId, null, getJwt()).request();
     }
 
     public Response createCourseFromApi(Map<String, String> course) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_COURSE, new Gson().toJson(course), getJwt()).request();
     }
 
     public Response likeCourseFromApi(int courseId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_COURSE + "/" + courseId + "/like", null, getJwt()).request();
     }
 
     public Response unlikeCourseFromApi(int courseId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_COURSE + "/" + courseId + "/like", null, getJwt()).request();
     }
 
     public Response favoriteCourseFromApi(int courseId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_COURSE + "/" + courseId + "/favorite", null, getJwt()).request();
     }
 
     public Response unfavoriteCourseFromApi(int courseId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_COURSE + "/" + courseId + "/favorite", null, getJwt()).request();
     }
 
     public Response createDocumentFromApi(int courseId, Map<String, String> document) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_COURSE + "/" + courseId + "/document", new Gson().toJson(document), getJwt()).request();
     }
 
-    public Response getDocumentsInCourseFromApi(int courseId, int start, int count, String sort) throws MalformedURLException {
-        return null;
+    public Response getDocumentsInCourseFromApi(int courseId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort) throws MalformedURLException {
+        String API_DOCUMENTS = API_COURSE + "/" + courseId + "/documents?";
+        if (null != start) {
+            API_DOCUMENTS += "start=" + start + "&";
+        }
+        if (null != count) {
+            API_DOCUMENTS += "count=" + count + "&";
+        }
+        if (null != sort) {
+            API_DOCUMENTS += "sort=" + sort + "&";
+        }
+        return APIConnection.create(METHOD.GET, API_DOCUMENTS, null, getJwt()).request();
     }
 
-    public Response getCommentsInCourseFromApi(int courseId, int start, int count, String sort) throws MalformedURLException {
-        return null;
+    public Response getCommentsInCourseFromApi(int courseId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort) throws MalformedURLException {
+        String API_COMMENTS = API_COURSE + "/" + courseId + "/comments?";
+        if (null != start) {
+            API_COMMENTS += "start=" + start + "&";
+        }
+        if (null != count) {
+            API_COMMENTS += "count=" + count + "&";
+        }
+        if (null != sort) {
+            API_COMMENTS += "sort=" + sort + "&";
+        }
+        return APIConnection.create(METHOD.GET, API_COMMENTS, null, getJwt()).request();
     }
 
     public Response createCommentInCourseFromApi(int courseId, Map<String, Object> comment) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_COURSE + "/" + courseId + "/comment", new Gson().toJson(comment), getJwt()).request();
     }
 
     public Response replyCommentInCourseFromApi(int courseId, int commentId, Map<String, Object> reply) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_COURSE + "/" + courseId + "/comment/" + commentId, new Gson().toJson(reply), getJwt()).request();
     }
 
     public Response createCatalogFromApi(int courseId, Map<String, Object> catalog) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_COURSE + "/" + courseId + "/catalog", new Gson().toJson(catalog), getJwt()).request();
     }
 
     public Response getCatalogsFromApi(int courseId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_COURSE + "/" + courseId + "/catalogs", null, getJwt()).request();
     }
 
-    public Response getCoursesFromApi(int start, int count, String sort, List<String> departments) throws MalformedURLException {
-        return null;
+    public Response getCoursesFromApi(@Nullable Integer start, @Nullable Integer count, @Nullable String sort, @Nullable List<String> departments) throws MalformedURLException {
+        String API_COURSES_LIST = API_COURSES + "?";
+        if (null != start) {
+            API_COURSES_LIST += "start=" + start + "&";
+        }
+        if (null != count) {
+            API_COURSES_LIST += "count=" + count + "&";
+        }
+        if (null != sort) {
+            API_COURSES_LIST += "sort=" + sort + "&";
+        }
+        if (null != departments) {
+            for (String department:departments) {
+                API_COURSES_LIST += "departments=" + department + "&";
+            }
+        }
+        return APIConnection.create(METHOD.GET, API_COURSES_LIST, null, getJwt()).request();
     }
 
     public Response likeCommentFromApi(int commentId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_COMMENT + "/" + commentId + "/like", null, getJwt()).request();
     }
 
     public Response unlikeCommentFromApi(int commentId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_COMMENT + "/" + commentId + "/like", null, getJwt()).request();
     }
 
     public Response getChatFromApi(int chatId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_CHAT + "/" + chatId, null, getJwt()).request();
     }
 
     public Response deleteChatFromApi(int chatId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_CHAT + "/" + chatId, null, getJwt()).request();
     }
 
     public Response createChatFromApi(Map<String, Object> chat) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_CHAT, new Gson().toJson(chat), getJwt()).request();
     }
 
     public Response likeChatFromApi(int chatId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_CHAT + "/" + chatId + "/like", null, getJwt()).request();
     }
 
     public Response unlikeChatFromApi(int chatId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_CHAT + "/" + chatId + "/like", null, getJwt()).request();
     }
 
     public Response favoriteChatFromApi(int chatId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_CHAT + "/" + chatId + "/favorite", null, getJwt()).request();
     }
 
     public Response unfavoriteChatFromApi(int chatId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_CHAT + "/" + chatId + "/favorite", null, getJwt()).request();
     }
 
-    public Response getCommentsInChatFromApi(int chatId, int start, int count, String sort) throws MalformedURLException {
-        return null;
+    public Response getCommentsInChatFromApi(int chatId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort) throws MalformedURLException {
+        String API_COMMENTS = API_CHAT + "/" + chatId + "/comments?";
+        if (null != start) {
+            API_COMMENTS += "start=" + start + "&";
+        }
+        if (null != count) {
+            API_COMMENTS += "count=" + count + "&";
+        }
+        if (null != sort) {
+            API_COMMENTS += "sort=" + sort + "&";
+        }
+        return APIConnection.create(METHOD.GET, API_COMMENTS, null, getJwt()).request();
     }
 
     public Response createCommentInChatFromApi(int chatId, Map<String, Object> comment) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_CHAT + "/" + chatId + "/comment", new Gson().toJson(comment), getJwt()).request();
     }
 
     public Response replyCommentInChatFromApi(int chatId, int commentId, Map<String, Object> reply) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_CHAT + "/" + chatId + "/comment/" + commentId, new Gson().toJson(reply), getJwt()).request();
     }
 
-    public Response getChatsFromApi(int start, int count, String sort) throws MalformedURLException {
-        return null;
+    public Response getChatsFromApi(@Nullable Integer start, @Nullable Integer count, @Nullable String sort) throws MalformedURLException {
+        String API_CHATS_LIST = API_CHATS + "?";
+        if (null != start) {
+            API_CHATS_LIST += "start=" + start + "&";
+        }
+        if (null != count) {
+            API_CHATS_LIST += "count=" + start + "&";
+        }
+        if (null != sort) {
+            API_CHATS_LIST += "sort=" + start + "&";
+        }
+        return APIConnection.create(METHOD.GET, API_CHATS_LIST, null, getJwt()).request();
     }
 
     public Response getCatalogFromApi(int catalogId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_CATALOG + "/" + catalogId, null, getJwt()).request();
     }
 
     public Response updateCatalogFromApi(int catalogId, Map<String, Object> catalog) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.PUT, API_CATALOG + "/" + catalogId, new Gson().toJson(catalog), getJwt()).request();
     }
 
     public Response deleteCatalogFromApi(int catalogId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_CATALOG + "/" + catalogId, null, getJwt()).request();
     }
 
     public Response createQuestionFromApi(int catalogId, Map<String, Object> question) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_CATALOG + "/" + catalogId + "/question", new Gson().toJson(question), getJwt()).request();
     }
 
     public Response updateQuestionFromApi(int catalogId, Map<String, Object> question) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.PUT, API_CATALOG + "/" + catalogId + "/question", new Gson().toJson(question), getJwt()).request();
     }
 
     public Response deleteQuestionFromApi(int catalogId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.DELETE, API_CATALOG + "/" + catalogId + "/question", null, getJwt()).request();
     }
 
     public Response getQuestionFromApi(int catalogId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_CATALOG + "/" + catalogId + "/question", null, getJwt()).request();
     }
 
     public Response getLearnRecordFromApi(int catalogId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_CATALOG + "/" + catalogId + "/learnRecord", null, getJwt()).request();
     }
 
     public Response createLearnRecordFromApi(int catalogId, Map<String, Object> learnRecord) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_CATALOG + "/" + catalogId + "/learnRecord", new Gson().toJson(learnRecord), getJwt()).request();
     }
 
     public Response updateLearnRecordFromApi(int catalogId, Map<String, Object> learnRecord) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.PUT, API_CATALOG + "/" + catalogId + "/learnRecord", new Gson().toJson(learnRecord), getJwt()).request();
     }
 
     public Response getDocumentInCatalogFromApi(int catalogId, Map<String, Object> document) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_CATALOG + "/" + catalogId + "/document", new Gson().toJson(document), getJwt()).request();
     }
 
-    public Response getDocumentsInCatalogFromApi(int catalogId, int start, int count, String sort) throws MalformedURLException {
-        return null;
+    public Response getDocumentsInCatalogFromApi(int catalogId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort) throws MalformedURLException {
+        String API_DOCUMENTS = API_CATALOG + "/" + catalogId + "/documents?";
+        if (null != start) {
+            API_DOCUMENTS += "start=" + start + "&";
+        }
+        if (null != count) {
+            API_DOCUMENTS += "count=" + count + "&";
+        }
+        if (null != sort) {
+            API_DOCUMENTS += "sort=" + sort + "&";
+        }
+        return APIConnection.create(METHOD.GET, API_DOCUMENTS, null, getJwt()).request();
     }
 
     public Response getAnswerFromApi(int catalogId) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.GET, API_CATALOG + "/" + catalogId + "/answer", null, getJwt()).request();
     }
 
     public Response createAnserFromApi(int catalogId, Map<String, Object> answer) throws MalformedURLException {
-        return null;
+        return APIConnection.create(METHOD.POST, API_CATALOG + "/" + catalogId + "/answer", new Gson().toJson(answer), getJwt()).request();
     }
 }
