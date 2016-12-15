@@ -14,19 +14,19 @@ import cn.canlnac.onlinecourse.data.net.RestApiImpl;
  * 创建用户数据储存工厂类.
  */
 @Singleton
-public class RegisterDataStoreFactory {
+public class UserDataStoreFactory {
     private final Context context;
     private final RestApiConnection restApiConnection;
 
     @Inject
-    public RegisterDataStoreFactory(@NonNull Context context) {
+    public UserDataStoreFactory(@NonNull Context context) {
         this.context = context.getApplicationContext();
         this.restApiConnection = new RestApiConnection(this.context);
     }
 
-    public RegisterDataStore create() {
+    public UserDataStore create() {
         RestApi restApi = new RestApiImpl(this.context, restApiConnection);
-        return new CloudRegisterDataStore(restApi);
+        return new CloudUserDataStore(restApi);
     }
 
 }

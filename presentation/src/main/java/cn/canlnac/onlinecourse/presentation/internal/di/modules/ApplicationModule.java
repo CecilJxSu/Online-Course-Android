@@ -8,8 +8,6 @@ import cn.canlnac.onlinecourse.data.executor.JobExecutor;
 import cn.canlnac.onlinecourse.data.repository.RegisterDataRepository;
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.interactor.RegisterUseCase;
-import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
 import cn.canlnac.onlinecourse.presentation.AndroidApplication;
 import cn.canlnac.onlinecourse.presentation.UIThread;
