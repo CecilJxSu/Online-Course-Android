@@ -8,10 +8,10 @@ import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 登录使用用例.
  */
 
-public class RegisterUseCase extends UseCase {
+public class LoginUseCase extends UseCase {
 
     private final String username;
     private final String password;
@@ -19,7 +19,7 @@ public class RegisterUseCase extends UseCase {
     private final UserRepository userRepository;
 
     @Inject
-    public RegisterUseCase(
+    public LoginUseCase(
             String username,
             String password,
             UserRepository userRepository,
@@ -35,6 +35,6 @@ public class RegisterUseCase extends UseCase {
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.userRepository.register(username, password);
+        return this.userRepository.login(username, password);
     }
 }

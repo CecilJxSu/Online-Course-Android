@@ -1,5 +1,7 @@
 package cn.canlnac.onlinecourse.domain.interactor;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
@@ -8,33 +10,30 @@ import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 更新用户资料使用用例.
  */
 
-public class RegisterUseCase extends UseCase {
+public class UpdateUserProfileUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final Map<String,String> profile;
 
     private final UserRepository userRepository;
 
     @Inject
-    public RegisterUseCase(
-            String username,
-            String password,
+    public UpdateUserProfileUseCase(
+            Map<String,String> profile,
             UserRepository userRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
+        this.profile = profile;
         this.userRepository = userRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.userRepository.register(username, password);
+        return this.userRepository.updateUserProfile(profile);
     }
 }

@@ -8,33 +8,30 @@ import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 删除消息使用用例.
  */
 
-public class RegisterUseCase extends UseCase {
+public class DeleteMessageUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int messageId;
 
     private final UserRepository userRepository;
 
     @Inject
-    public RegisterUseCase(
-            String username,
-            String password,
+    public DeleteMessageUseCase(
+            int messageId,
             UserRepository userRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
+        this.messageId = messageId;
         this.userRepository = userRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.userRepository.register(username, password);
+        return this.userRepository.deleteMessage(messageId);
     }
 }

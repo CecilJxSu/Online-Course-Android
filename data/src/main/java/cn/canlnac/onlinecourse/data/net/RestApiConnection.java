@@ -425,7 +425,7 @@ public class RestApiConnection {
         return APIConnection.create(METHOD.PUT, API_CATALOG + "/" + catalogId + "/learnRecord", new Gson().toJson(learnRecord), getJwt()).request();
     }
 
-    public Response getDocumentInCatalogFromApi(int catalogId, Map<String, Object> document) throws MalformedURLException {
+    public Response createDocumentInCatalogFromApi(int catalogId, Map<String, Object> document) throws MalformedURLException {
         return APIConnection.create(METHOD.POST, API_CATALOG + "/" + catalogId + "/document", new Gson().toJson(document), getJwt()).request();
     }
 

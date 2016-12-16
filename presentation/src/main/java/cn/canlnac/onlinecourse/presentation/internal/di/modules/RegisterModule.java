@@ -4,7 +4,7 @@ import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
 import cn.canlnac.onlinecourse.domain.interactor.RegisterUseCase;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
-import cn.canlnac.onlinecourse.domain.repository.RegisterRepository;
+import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import dagger.Module;
 import dagger.Provides;
@@ -22,8 +22,8 @@ public class RegisterModule {
         this.password = password;
     }
 
-    @Provides @PerActivity UseCase provideRegisterUseCase(RegisterRepository registerRepository, ThreadExecutor threadExecutor,
-                                   PostExecutionThread postExecutionThread){
-        return new RegisterUseCase(username, password, registerRepository, threadExecutor, postExecutionThread);
+    @Provides @PerActivity UseCase provideRegisterUseCase(UserRepository userRepository, ThreadExecutor threadExecutor,
+                                                          PostExecutionThread postExecutionThread){
+        return new RegisterUseCase(username, password, userRepository, threadExecutor, postExecutionThread);
     }
 }

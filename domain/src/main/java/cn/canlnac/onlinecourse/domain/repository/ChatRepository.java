@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.domain.repository;
 
-import com.sun.istack.internal.Nullable;
-
 import java.util.Map;
 
 import cn.canlnac.onlinecourse.domain.Chat;
@@ -28,12 +26,12 @@ public interface ChatRepository {
     /** 取消收藏话题 */
     Observable<Void> unfavoriteChat(int chatId);
     /** 获取话题下的评论 */
-    Observable<CommentList> getCommentsInChat(int chatId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort);
+    Observable<CommentList> getCommentsInChat(int chatId, Integer start, Integer count, String sort);
     /** 评论话题 */
     Observable<Integer> createCommentInChat(int chatId, Map<String,Object> comment);
     /** 回复评论 */
     Observable<Integer> replyCommentInChat(int chatId, int commentId, Map<String,Object> reply);
 
     /** 话题列表 */
-    Observable<ChatList> getChats(@Nullable Integer start, @Nullable Integer count, @Nullable String sort);
+    Observable<ChatList> getChats(Integer start, Integer count, String sort);
 }

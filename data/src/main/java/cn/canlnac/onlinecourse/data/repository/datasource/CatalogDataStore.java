@@ -37,7 +37,7 @@ public interface CatalogDataStore {
     /** 更新学习记录 */
     Observable<Void> updateLearnRecord(int catalogId, Map<String,Object> learnRecord);
     /** 创建文档 */
-    Observable<Integer> getDocumentInCatalog(int catalogId, Map<String,Object> document);
+    Observable<Integer> createDocumentInCatalog(int catalogId, Map<String,Object> document);
     /** 文档列表 */
     Observable<DocumentListEntity> getDocumentsInCatalog(int catalogId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort);
     /** 获取章节下的回答 */

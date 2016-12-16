@@ -74,8 +74,8 @@ public class CloudCatalogDataStore implements CatalogDataStore {
     }
 
     @Override
-    public Observable<Integer> getDocumentInCatalog(int catalogId, Map<String, Object> document) {
-        return this.restApi.getDocumentInCatalog(catalogId, document);
+    public Observable<Integer> createDocumentInCatalog(int catalogId, Map<String, Object> document) {
+        return this.restApi.createDocumentInCatalog(catalogId, document);
     }
 
     @Override

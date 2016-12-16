@@ -8,33 +8,36 @@ import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 获取消息列表使用用例.
  */
 
-public class RegisterUseCase extends UseCase {
+public class GetMessagesUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final Integer start;
+    private final Integer count;
+    private final Boolean isRead;
 
     private final UserRepository userRepository;
 
     @Inject
-    public RegisterUseCase(
-            String username,
-            String password,
+    public GetMessagesUseCase(
+            Integer start,
+            Integer count,
+            Boolean isRead,
             UserRepository userRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
+        this.start = start;
+        this.count = count;
+        this.isRead = isRead;
         this.userRepository = userRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.userRepository.register(username, password);
+        return this.userRepository.getMessages(start,count,isRead);
     }
 }

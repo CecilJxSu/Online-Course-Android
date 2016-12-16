@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.domain.repository;
 
-import com.sun.istack.internal.Nullable;
-
 import java.util.List;
 import java.util.Map;
 
@@ -35,9 +33,9 @@ public interface CourseRepository {
     /** 创建文档 */
     Observable<Integer> createDocument(int courseId, Map<String,String> document);
     /** 课程下的文档 */
-    Observable<DocumentList> getDocumentsInCourse(int courseId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort);
+    Observable<DocumentList> getDocumentsInCourse(int courseId, Integer start, Integer count, String sort);
     /** 获取课程下的评论 */
-    Observable<CommentList> getCommentsInCourse(int courseId, @Nullable Integer start, @Nullable Integer count, @Nullable String sort);
+    Observable<CommentList> getCommentsInCourse(int courseId, Integer start, Integer count, String sort);
     /** 创建评论 */
     Observable<Integer> createCommentInCourse(int courseId, Map<String,Object> comment);
     /** 回复评论 */
@@ -48,5 +46,5 @@ public interface CourseRepository {
     Observable<List<Catalog>> getCatalogs(int courseId);
 
     /** 获取课程列表 */
-    Observable<CourseList> getCourses(@Nullable Integer start, @Nullable Integer count, String sort, List<String> departments);
+    Observable<CourseList> getCourses(Integer start, Integer count, String sort, List<String> departments);
 }

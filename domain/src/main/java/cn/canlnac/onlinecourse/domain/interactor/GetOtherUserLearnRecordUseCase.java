@@ -8,33 +8,36 @@ import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import rx.Observable;
 
 /**
- * 注册使用用例.
+ * 获取别人的学习记录使用用例.
  */
 
-public class RegisterUseCase extends UseCase {
+public class GetOtherUserLearnRecordUseCase extends UseCase {
 
-    private final String username;
-    private final String password;
+    private final int userId;
+    private final Integer start;
+    private final Integer count;
 
     private final UserRepository userRepository;
 
     @Inject
-    public RegisterUseCase(
-            String username,
-            String password,
+    public GetOtherUserLearnRecordUseCase(
+            int userId,
+            Integer start,
+            Integer count,
             UserRepository userRepository,
             ThreadExecutor threadExecutor,
             PostExecutionThread postExecutionThread
     ) {
         super(threadExecutor, postExecutionThread);
 
-        this.username = username;
-        this.password = password;
+        this.userId = userId;
+        this.start = start;
+        this.count = count;
         this.userRepository = userRepository;
     }
 
     @Override
     protected Observable buildUseCaseObservable() {
-        return this.userRepository.register(username, password);
+        return this.userRepository.getOtherUserLearnRecord(userId,start,count);
     }
 }

@@ -102,8 +102,8 @@ public class CatalogDataRepository implements CatalogRepository {
     }
 
     @Override
-    public Observable<Integer> getDocumentInCatalog(int catalogId, Map<String, Object> document) {
-        return catalogDataStore.getDocumentInCatalog(catalogId,document);
+    public Observable<Integer> createDocumentInCatalog(int catalogId, Map<String, Object> document) {
+        return catalogDataStore.createDocumentInCatalog(catalogId,document);
     }
 
     @Override

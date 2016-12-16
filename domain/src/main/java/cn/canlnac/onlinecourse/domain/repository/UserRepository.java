@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.domain.repository;
 
-import com.sun.istack.internal.Nullable;
-
 import java.util.Map;
 
 import cn.canlnac.onlinecourse.domain.Follower;
@@ -26,17 +24,17 @@ public interface UserRepository {
     /** 更新个人资料 */
     Observable<Void> updateUserProfile(Map<String,String> profile);
     /** 获取个人消息 */
-    Observable<MessageList> getMessages(@Nullable Integer start, @Nullable Integer count, @Nullable Boolean isRead);
+    Observable<MessageList> getMessages(Integer start, Integer count, Boolean isRead);
     /** 获取指定消息 */
     Observable<Message> getMessage(int messageId);
     /** 删除消息 */
     Observable<Void> deleteMessage(int messageId);
     /** 获取别人学习记录 */
-    Observable<LearnRecordList> getOtherUserLearnRecord(int userId, @Nullable Integer start, @Nullable Integer count);
+    Observable<LearnRecordList> getOtherUserLearnRecord(int userId, Integer start, Integer count);
     /** 获取自己的粉丝 */
-    Observable<Follower> getFollower(@Nullable Integer start, @Nullable Integer count);
+    Observable<Follower> getFollower(Integer start, Integer count);
     /** 获取用户的关注 */
-    Observable<Follower> getUserFollowing(int userId, @Nullable Integer start, @Nullable Integer count);
+    Observable<Follower> getUserFollowing(int userId, Integer start, Integer count);
     /** 关注用户 */
     Observable<Void> followUser(int userId);
     /** 取消关注 */
