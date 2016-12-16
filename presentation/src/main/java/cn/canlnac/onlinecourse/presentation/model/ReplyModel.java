@@ -1,30 +1,52 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
+import java.util.Date;
+
 /**
  * 回复评论数据模型.
  */
 
 public class ReplyModel {
-    private String userName;
-    private String toUserName;
+    private int id;
+
+    private Date date;
+
+    private LoginModel toUser;
+
+    private LoginModel author;
+
     private String content;
-    private String postTime;
-    private boolean isReply;
 
-    public String getUserName() {
-        return userName;
+    public int getId() {
+        return id;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getToUserName() {
-        return toUserName;
+    public Date getDate() {
+        return date;
     }
 
-    public void setToUserName(String toUserName) {
-        this.toUserName = toUserName;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public LoginModel getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(LoginModel toUser) {
+        this.toUser = toUser;
+    }
+
+    public LoginModel getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(LoginModel author) {
+        this.author = author;
     }
 
     public String getContent() {
@@ -33,21 +55,5 @@ public class ReplyModel {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getPostTime() {
-        return postTime;
-    }
-
-    public void setPostTime(String postTime) {
-        this.postTime = postTime;
-    }
-
-    public boolean isReply() {
-        return isReply;
-    }
-
-    public void setReply(boolean reply) {
-        isReply = reply;
     }
 }

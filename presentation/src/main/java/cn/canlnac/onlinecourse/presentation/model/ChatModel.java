@@ -4,27 +4,33 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 评论数据模型.
+ * 话题数据模型.
  */
 
-public class CommentModel {
+public class ChatModel {
     private int id;
 
     private Date date;
 
-    private LoginModel author;
+    private String title;
 
     private String content;
 
+    private LoginModel author;
+
     private List<String> pictureUrls;
+
+    private int watchCount;
 
     private int likeCount;
 
-    private int replyCount;
+    private int commentCount;
 
-    private List<ReplyModel> replies;
+    private int favoriteCount;
 
     private boolean isLike;
+
+    private boolean isFavorite;
 
     public int getId() {
         return id;
@@ -42,12 +48,12 @@ public class CommentModel {
         this.date = date;
     }
 
-    public LoginModel getAuthor() {
-        return author;
+    public String getTitle() {
+        return title;
     }
 
-    public void setAuthor(LoginModel author) {
-        this.author = author;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getContent() {
@@ -58,12 +64,28 @@ public class CommentModel {
         this.content = content;
     }
 
+    public LoginModel getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(LoginModel author) {
+        this.author = author;
+    }
+
     public List<String> getPictureUrls() {
         return pictureUrls;
     }
 
     public void setPictureUrls(List<String> pictureUrls) {
         this.pictureUrls = pictureUrls;
+    }
+
+    public int getWatchCount() {
+        return watchCount;
+    }
+
+    public void setWatchCount(int watchCount) {
+        this.watchCount = watchCount;
     }
 
     public int getLikeCount() {
@@ -74,20 +96,20 @@ public class CommentModel {
         this.likeCount = likeCount;
     }
 
-    public int getReplyModelCount() {
-        return replyCount;
+    public int getCommentCount() {
+        return commentCount;
     }
 
-    public void setReplyModelCount(int replyCount) {
-        this.replyCount = replyCount;
+    public void setCommentCount(int commentCount) {
+        this.commentCount = commentCount;
     }
 
-    public List<ReplyModel> getReplies() {
-        return replies;
+    public int getFavoriteCount() {
+        return favoriteCount;
     }
 
-    public void setReplies(List<ReplyModel> replies) {
-        this.replies = replies;
+    public void setFavoriteCount(int favoriteCount) {
+        this.favoriteCount = favoriteCount;
     }
 
     public boolean isLike() {
@@ -96,5 +118,13 @@ public class CommentModel {
 
     public void setLike(boolean like) {
         isLike = like;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 }

@@ -1,10 +1,10 @@
-package cn.canlnac.onlinecourse.domain;
+package cn.canlnac.onlinecourse.presentation.model;
 
 /**
- * 消息发生位置.
+ * 消息发生位置数据模型.
  */
 
-public class Position {
+public class PositionModel {
     private int id;
 
     private String name;
