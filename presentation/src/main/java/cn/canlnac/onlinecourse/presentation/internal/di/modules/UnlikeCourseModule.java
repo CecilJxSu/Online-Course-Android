@@ -1,38 +1,32 @@
 package cn.canlnac.onlinecourse.presentation.internal.di.modules;
 
-import javax.inject.Inject;
-
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
+import cn.canlnac.onlinecourse.domain.interactor.UnlikeCourseUseCase;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.domain.repository.CourseRepository;
-import rx.Observable;
+import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
+import dagger.Module;
+import dagger.Provides;
 
 /**
- * 取消点赞使用用例.
+ * 注入模块.
  */
-
-public class UnlikeCourseModule extends UseCase {
+@Module
+public class UnlikeCourseModule {
 
     private final int courseId;
 
-    private final CourseRepository courseRepository;
-
-    @Inject
     public UnlikeCourseModule(
-            int courseId,
-            CourseRepository courseRepository,
-            ThreadExecutor threadExecutor,
-            PostExecutionThread postExecutionThread
+            int courseId
     ) {
-        super(threadExecutor, postExecutionThread);
-
         this.courseId = courseId;
-        this.courseRepository = courseRepository;
     }
 
-    @Override
-    protected Observable buildUseCaseObservable() {
-        return this.courseRepository.unlikeCourse(courseId);
+    @Provides
+    @PerActivity
+    UseCase provideUnlikeCourseUseCase(CourseRepository courseRepository, ThreadExecutor threadExecutor,
+                                        PostExecutionThread postExecutionThread){
+        return new UnlikeCourseUseCase(courseId, courseRepository, threadExecutor, postExecutionThread);
     }
 }

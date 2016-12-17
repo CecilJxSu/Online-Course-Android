@@ -2,42 +2,36 @@ package cn.canlnac.onlinecourse.presentation.internal.di.modules;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
+import cn.canlnac.onlinecourse.domain.interactor.UpdateCourseUseCase;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.domain.repository.CourseRepository;
-import rx.Observable;
+import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
+import dagger.Module;
+import dagger.Provides;
 
 /**
- * 更新课程使用用例.
+ * 注入模块.
  */
-
-public class UpdateCourseModule extends UseCase {
+@Module
+public class UpdateCourseModule {
 
     private final int courseId;
     private final Map<String,String> course;
 
-    private final CourseRepository courseRepository;
-
-    @Inject
     public UpdateCourseModule(
             int courseId,
-            Map<String,String> course,
-            CourseRepository courseRepository,
-            ThreadExecutor threadExecutor,
-            PostExecutionThread postExecutionThread
+            Map<String,String> course
     ) {
-        super(threadExecutor, postExecutionThread);
-
         this.courseId = courseId;
         this.course = course;
-        this.courseRepository = courseRepository;
     }
 
-    @Override
-    protected Observable buildUseCaseObservable() {
-        return this.courseRepository.updateCourse(courseId, course);
+    @Provides
+    @PerActivity
+    UseCase provideUpdateCourseUseCase(CourseRepository courseRepository, ThreadExecutor threadExecutor,
+                                        PostExecutionThread postExecutionThread){
+        return new UpdateCourseUseCase(courseId,course, courseRepository, threadExecutor, postExecutionThread);
     }
 }

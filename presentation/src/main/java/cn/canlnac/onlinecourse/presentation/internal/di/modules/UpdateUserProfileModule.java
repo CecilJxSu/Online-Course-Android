@@ -2,39 +2,33 @@ package cn.canlnac.onlinecourse.presentation.internal.di.modules;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
+import cn.canlnac.onlinecourse.domain.interactor.UpdateUserProfileUseCase;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.domain.repository.UserRepository;
-import rx.Observable;
+import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
+import dagger.Module;
+import dagger.Provides;
 
 /**
- * 更新用户资料使用用例.
+ * 注入模块.
  */
-
-public class UpdateUserProfileModule extends UseCase {
+@Module
+public class UpdateUserProfileModule {
 
     private final Map<String,String> profile;
 
-    private final UserRepository userRepository;
-
-    @Inject
     public UpdateUserProfileModule(
-            Map<String,String> profile,
-            UserRepository userRepository,
-            ThreadExecutor threadExecutor,
-            PostExecutionThread postExecutionThread
+            Map<String,String> profile
     ) {
-        super(threadExecutor, postExecutionThread);
-
         this.profile = profile;
-        this.userRepository = userRepository;
     }
 
-    @Override
-    protected Observable buildUseCaseObservable() {
-        return this.userRepository.updateUserProfile(profile);
+    @Provides
+    @PerActivity
+    UseCase provideUpdateUserProfileUseCase(UserRepository userRepository, ThreadExecutor threadExecutor,
+                                        PostExecutionThread postExecutionThread){
+        return new UpdateUserProfileUseCase(profile, userRepository, threadExecutor, postExecutionThread);
     }
 }
