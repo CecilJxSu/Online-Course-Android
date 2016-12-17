@@ -66,7 +66,7 @@ public class ReplyAdapter extends BaseAdapter {
         public ViewHolder(Activity activity,View view, ReplyModel reply) {
             ButterKnife.bind(this, view);
 
-            userName.setText(reply.getUserName() + ":");
+            /*userName.setText(reply.getUserName() + ":");
 
             StringBuilder prefixContent = new StringBuilder();
             if (reply.getUserName() != null && !reply.getUserName().isEmpty()) {
@@ -98,7 +98,7 @@ public class ReplyAdapter extends BaseAdapter {
                 replyImageView.setImageResource(R.drawable.comment_green_icon);
             } else {
                 replyImageView.setImageResource(R.drawable.comment_icon);
-            }
+            }*/
         }
     }
 }

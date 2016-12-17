@@ -89,29 +89,29 @@ public class CourseCommentFragment extends Fragment {
         });
 
         CommentModel comment1 = new CommentModel();
-        comment1.setUserIcon(R.drawable.header);
-        comment1.setUserName("弗拉德丽嘉1");
+        //comment1.setUserIcon(R.drawable.header);
+        //comment1.setUserName("弗拉德丽嘉1");
         comment1.setContent("啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦" +
                 "啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦" +
                 "啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦");
-        comment1.setPostTime("昨天");
-        comment1.setLikeCount("100");
+        //comment1.setPostTime("昨天");
+        //comment1.setLikeCount("100");
         comment1.setLike(false);
-        comment1.setReply(true);
+        //comment1.setReply(true);
 
         List<ReplyModel> replies = new ArrayList<>();
         ReplyModel reply1 = new ReplyModel();
-        reply1.setUserName("abdsfdsffsdf");
+        //reply1.setUserName("abdsfdsffsdf");
         reply1.setContent("啦啦啦!!!");
-        reply1.setPostTime("一小时前");
-        reply1.setReply(true);
+        //reply1.setPostTime("一小时前");
+        //reply1.setReply(true);
 
         ReplyModel reply2 = new ReplyModel();
-        reply2.setUserName("弗拉德丽嘉1");
-        reply2.setToUserName("abdsfdsffsdf");
+        //reply2.setUserName("弗拉德丽嘉1");
+        //reply2.setToUserName("abdsfdsffsdf");
         reply2.setContent("Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla!!!");
-        reply2.setPostTime("一小时前");
-        reply2.setReply(false);
+        //reply2.setPostTime("一小时前");
+        //reply2.setReply(false);
 
         replies.add(reply1);
         replies.add(reply2);
@@ -120,15 +120,15 @@ public class CourseCommentFragment extends Fragment {
         comments.add(comment1);
 
         CommentModel comment2 = new CommentModel();
-        comment2.setUserIcon(R.drawable.header);
-        comment2.setUserName("弗拉德丽嘉2");
+        //comment2.setUserIcon(R.drawable.header);
+        //comment2.setUserName("弗拉德丽嘉2");
         comment2.setContent("Blala...Blala...Blala...Blala..." +
                 "Blala...Blala...Blala...Blala..." +
                 "Blala...Blala...Blala...Blala...");
-        comment2.setPostTime("1小时前");
-        comment2.setLikeCount("212");
+        //comment2.setPostTime("1小时前");
+        //comment2.setLikeCount("212");
         comment2.setLike(true);
-        comment2.setReply(false);
+        //comment2.setReply(false);
         comments.add(comment2);
 
         adapter = new CommentAdapter(getActivity(), comments);

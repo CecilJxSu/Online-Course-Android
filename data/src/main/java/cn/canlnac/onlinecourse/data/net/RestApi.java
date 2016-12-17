@@ -22,7 +22,6 @@ import cn.canlnac.onlinecourse.data.entity.MessageEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
-import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
 import rx.Observable;
 
 /**
@@ -35,7 +34,7 @@ public interface RestApi {
 
     /********************************** 用户 ***********************************/
     /** 注册 */
-    Observable<RegisterEntity> register(String username, String password);
+    Observable<Integer> register(String username, String password);
     /** 获取用户资料 */
     Observable<ProfileEntity> getUserProfile(int userId);
     /** 更新个人资料 */

@@ -10,7 +10,6 @@ import cn.canlnac.onlinecourse.data.entity.LoginEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
-import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
 import cn.canlnac.onlinecourse.data.net.RestApi;
 import rx.Observable;
 
@@ -31,7 +30,7 @@ public class CloudUserDataStore implements UserDataStore {
     }
 
     @Override
-    public Observable<RegisterEntity> register(String username, String password) {
+    public Observable<Integer> register(String username, String password) {
         return this.restApi.register(username, password);
     }
 

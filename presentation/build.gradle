@@ -76,6 +76,8 @@ dependencies {
     compile presentationDependencies.carouselview
     compile presentationDependencies.fab
     compile presentationDependencies.picasso
+    compile presentationDependencies.fresco
+    compile presentationDependencies.prettytime
 
     apt presentationDependencies.daggerCompiler
     compile presentationDependencies.dagger

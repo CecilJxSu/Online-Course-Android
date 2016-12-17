@@ -2,6 +2,7 @@ package cn.canlnac.onlinecourse.presentation;
 
 import android.app.Application;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 
 import cn.canlnac.onlinecourse.presentation.internal.di.components.ApplicationComponent;
@@ -21,6 +22,7 @@ public class AndroidApplication extends Application {
         super.onCreate();
         this.initializeInjector();
         this.initializeLeakDetection();
+        Fresco.initialize(this);
     }
 
     private void initializeInjector() {
