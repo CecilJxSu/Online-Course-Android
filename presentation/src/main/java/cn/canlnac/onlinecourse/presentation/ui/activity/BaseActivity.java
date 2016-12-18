@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import cn.canlnac.onlinecourse.presentation.AndroidApplication;
+import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.ApplicationComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.ActivityModule;
 
@@ -37,5 +39,18 @@ public class BaseActivity extends Activity {
 
     protected ActivityModule getActivityModule() {
         return new ActivityModule(this);
+    }
+
+    /**
+     * 显示消息
+     * @param message   消息
+     */
+    public void showToastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <C> C getComponent(Class<C> componentType) {
+        return componentType.cast(((HasComponent<C>) this).getComponent());
     }
 }

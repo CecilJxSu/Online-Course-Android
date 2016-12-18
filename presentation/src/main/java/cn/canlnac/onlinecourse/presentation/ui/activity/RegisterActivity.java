@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -126,18 +125,5 @@ public class RegisterActivity extends BaseActivity implements HasComponent<Regis
             this.registerPresenter.setView(this);
             this.registerPresenter.initialize();
         }
-    }
-
-    /**
-     * 显示消息
-     * @param message   消息
-     */
-    public void showToastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <C> C getComponent(Class<C> componentType) {
-        return componentType.cast(((HasComponent<C>) this).getComponent());
     }
 }
