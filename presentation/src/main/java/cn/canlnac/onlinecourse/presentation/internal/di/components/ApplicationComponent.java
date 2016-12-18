@@ -14,6 +14,7 @@ import cn.canlnac.onlinecourse.domain.repository.DocumentRepository;
 import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.ApplicationModule;
 import cn.canlnac.onlinecourse.presentation.ui.activity.BaseActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.BaseFragmentActivity;
 import dagger.Component;
 
 /**
@@ -23,6 +24,7 @@ import dagger.Component;
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
     void inject(BaseActivity baseActivity);
+    void inject(BaseFragmentActivity baseFragmentActivity);
 
     Context context();
     ThreadExecutor threadExecutor();

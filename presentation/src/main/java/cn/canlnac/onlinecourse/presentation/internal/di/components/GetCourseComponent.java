@@ -2,12 +2,12 @@ package cn.canlnac.onlinecourse.presentation.internal.di.components;
 
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.ActivityModule;
-import cn.canlnac.onlinecourse.presentation.internal.di.modules.CreateAnswerModule;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCourseModule;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 import dagger.Component;
 
 @PerActivity
-@Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class, CreateAnswerModule.class})
+@Component(dependencies = ApplicationComponent.class, modules = {ActivityModule.class, GetCourseModule.class})
 public interface GetCourseComponent extends ActivityComponent {
-    void inject(RegisterActivity registerActivity);
+    void inject(CourseActivity courseActivity);
 }

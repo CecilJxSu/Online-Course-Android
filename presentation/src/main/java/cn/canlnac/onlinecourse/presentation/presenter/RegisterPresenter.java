@@ -70,6 +70,7 @@ public class RegisterPresenter implements Presenter {
                         RegisterPresenter.this.registerActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
+                e.printStackTrace();
                 RegisterPresenter.this.registerActivity.showToastMessage("网络连接错误！");
             }
         }

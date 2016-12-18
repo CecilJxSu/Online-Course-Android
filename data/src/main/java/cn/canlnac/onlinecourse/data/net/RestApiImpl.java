@@ -117,7 +117,8 @@ public class RestApiImpl implements RestApi {
                 if (response.code() == 200) {//状态码正确响应
                     LoginEntity loginEntity = new Gson().fromJson(response.body().string(), LoginEntity.class);
                     //设置jwt
-                    loginEntity.setJwt(response.header("Authorization"));
+                    loginEntity.setJwt(response.header("Authentication"));
+
                     restApiConnection.setJwt(loginEntity.getJwt());
                     //完成
                     subscriber.onNext(loginEntity);
@@ -126,6 +127,7 @@ public class RestApiImpl implements RestApi {
                     subscriber.onError(setCommentStatusError(response.code()));
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 subscriber.onError(new NetworkConnectionException(e.getCause()));
             }
         });
@@ -1749,7 +1751,7 @@ public class RestApiImpl implements RestApi {
                 (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
-
+System.out.println(isConnected+"---------");
         return isConnected;
     }
 

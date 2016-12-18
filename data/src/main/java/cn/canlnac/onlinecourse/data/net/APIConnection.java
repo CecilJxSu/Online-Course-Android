@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class APIConnection implements Callable<Response> {
 
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
-    private static final String JWT_LABEL = "";
+    private static final String JWT_LABEL = "Authentication";
     private static final String CONTENT_TYPE_VALUE_JSON = "application/json; charset=utf-8";
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 

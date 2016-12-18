@@ -3,24 +3,30 @@ package cn.canlnac.onlinecourse.presentation.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.GetCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCourseModule;
+import cn.canlnac.onlinecourse.presentation.presenter.GetCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CoursePagerAdapter;
 
 /**
  * 课程详情.
  */
 
-public class CourseActivity extends FragmentActivity {
+public class CourseActivity extends BaseFragmentActivity implements HasComponent<GetCourseComponent> {
     @BindView(R.id.course_close) ImageView close;
     @BindView(R.id.course_like) ImageView like;
     @BindView(R.id.course_share) ImageView share;
@@ -37,6 +43,16 @@ public class CourseActivity extends FragmentActivity {
     private Boolean isFavorite = false;
     private Boolean isShare = false;
 
+    private GetCourseComponent getCourseComponent;
+
+    @Inject
+    GetCoursePresenter getCoursePresenter;
+
+    @Override
+    public GetCourseComponent getComponent() {
+        return getCourseComponent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +68,17 @@ public class CourseActivity extends FragmentActivity {
 
         //获取意图和数据
         Intent intent = getIntent();
-        int courseId = intent.getIntExtra("courseId", -1);  //课程ID
+        int courseId = 1; //intent.getIntExtra("courseId", -1);  //课程ID
+
+        this.getCourseComponent = DaggerGetCourseComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .getCourseModule(new GetCourseModule(courseId))
+                .build();
+        this.getComponent(GetCourseComponent.class).inject(this);
+
+        this.getCoursePresenter.setView(this);
+        this.getCoursePresenter.initialize();
 
         //观看人数
         watchingCount.setText("1.1 万");
