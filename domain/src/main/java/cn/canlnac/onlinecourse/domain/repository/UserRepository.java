@@ -8,7 +8,6 @@ import cn.canlnac.onlinecourse.domain.Login;
 import cn.canlnac.onlinecourse.domain.Message;
 import cn.canlnac.onlinecourse.domain.MessageList;
 import cn.canlnac.onlinecourse.domain.Profile;
-import cn.canlnac.onlinecourse.domain.Register;
 import rx.Observable;
 
 /**
@@ -18,7 +17,7 @@ public interface UserRepository {
     /** 登录 */
     Observable<Login> login(String username, String password);
     /** 注册 */
-    Observable<Register> register(String username, String password);
+    Observable<Integer> register(String username, String password);
     /** 获取用户资料 */
     Observable<Profile> getUserProfile(int userId);
     /** 更新个人资料 */

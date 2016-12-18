@@ -11,7 +11,6 @@ import cn.canlnac.onlinecourse.data.entity.mapper.LoginEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.MessageEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.MessageListEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.ProfileEntityDataMapper;
-import cn.canlnac.onlinecourse.data.entity.mapper.RegisterEntityDataMapper;
 import cn.canlnac.onlinecourse.data.repository.datasource.UserDataStore;
 import cn.canlnac.onlinecourse.data.repository.datasource.UserDataStoreFactory;
 import cn.canlnac.onlinecourse.domain.Follower;
@@ -20,7 +19,6 @@ import cn.canlnac.onlinecourse.domain.Login;
 import cn.canlnac.onlinecourse.domain.Message;
 import cn.canlnac.onlinecourse.domain.MessageList;
 import cn.canlnac.onlinecourse.domain.Profile;
-import cn.canlnac.onlinecourse.domain.Register;
 import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import rx.Observable;
 
@@ -32,7 +30,6 @@ public class UserDataRepository implements UserRepository {
     private final UserDataStore userDataStore;
 
     private final LoginEntityDataMapper loginEntityDataMapper;
-    private final RegisterEntityDataMapper registerEntityDataMapper;
     private final ProfileEntityDataMapper profileEntityDataMapper;
     private final MessageListEntityDataMapper messageListEntityDataMapper;
     private final MessageEntityDataMapper messageEntityDataMapper;
@@ -43,7 +40,6 @@ public class UserDataRepository implements UserRepository {
     public UserDataRepository(
             UserDataStoreFactory userDataStoreFactory,
             LoginEntityDataMapper loginEntityDataMapper,
-            RegisterEntityDataMapper registerEntityDataMapper,
             ProfileEntityDataMapper profileEntityDataMapper,
             MessageListEntityDataMapper messageListEntityDataMapper,
             MessageEntityDataMapper messageEntityDataMapper,
@@ -52,7 +48,6 @@ public class UserDataRepository implements UserRepository {
     ) {
         this.userDataStore = userDataStoreFactory.create();
         this.loginEntityDataMapper = loginEntityDataMapper;
-        this.registerEntityDataMapper = registerEntityDataMapper;
         this.profileEntityDataMapper = profileEntityDataMapper;
         this.messageListEntityDataMapper = messageListEntityDataMapper;
         this.messageEntityDataMapper = messageEntityDataMapper;
@@ -66,8 +61,8 @@ public class UserDataRepository implements UserRepository {
     }
 
     @Override
-    public Observable<Register> register(String username, String password) {
-        return userDataStore.register(username,password).map(registerEntityDataMapper::transform);
+    public Observable<Integer> register(String username, String password) {
+        return userDataStore.register(username,password);
     }
 
     @Override

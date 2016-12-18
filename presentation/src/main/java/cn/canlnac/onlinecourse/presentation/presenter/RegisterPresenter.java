@@ -5,27 +5,24 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
-import cn.canlnac.onlinecourse.domain.Register;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
-import cn.canlnac.onlinecourse.presentation.mapper.RegisterModelDataMapper;
+import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
 
 /**
  * 注册Presenter.
  */
-
+@PerActivity
 public class RegisterPresenter implements Presenter {
 
     RegisterActivity registerActivity;
 
     private final UseCase registerUseCase;
-    private final RegisterModelDataMapper registerModelDataMapper;
 
     @Inject
-    public RegisterPresenter(UseCase registerUseCase, RegisterModelDataMapper registerModelDataMapper) {
+    public RegisterPresenter(UseCase registerUseCase) {
         this.registerUseCase = registerUseCase;
-        this.registerModelDataMapper = registerModelDataMapper;
     }
 
     public void setView(@NonNull RegisterActivity registerActivity) {
@@ -51,7 +48,7 @@ public class RegisterPresenter implements Presenter {
         this.registerUseCase.unsubscribe();
     }
 
-    private final class RegisterSubscriber extends DefaultSubscriber<Register> {
+    private final class RegisterSubscriber extends DefaultSubscriber<Integer> {
         @Override
         public void onCompleted() {
         }
@@ -70,7 +67,7 @@ public class RegisterPresenter implements Presenter {
                         RegisterPresenter.this.registerActivity.showToastMessage("用户名已被注册！");
                         break;
                     default:
-                        RegisterPresenter.this.registerActivity.showToastMessage("服务器错误！");
+                        RegisterPresenter.this.registerActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
                 RegisterPresenter.this.registerActivity.showToastMessage("网络连接错误！");
@@ -78,7 +75,7 @@ public class RegisterPresenter implements Presenter {
         }
 
         @Override
-        public void onNext(Register register) {
+        public void onNext(Integer userId) {
             RegisterPresenter.this.registerActivity.showToastMessage("注册成功");
         }
     }

@@ -75,14 +75,14 @@ public class CommentAdapter extends BaseAdapter {
         public ViewHolder(Activity activity, View view, CommentModel comment) {
             ButterKnife.bind(this, view);
 
-            userIcon.setImageResource(comment.getUserIcon());
+            /*userIcon.setImageResource(comment.getUserIcon());
             userName.setText(comment.getUserName());
             content.setText(comment.getContent());
             postTime.setText(comment.getPostTime());
             likeCount.setText(comment.getLikeCount());
 
             isLike = comment.isLike();
-            isReply = comment.isReply();
+            isReply = comment.isReply();*/
             if (isLike) {
                 like.setImageResource(R.drawable.thump_up_green_icon);
             } else {

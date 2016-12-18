@@ -1,7 +1,7 @@
 package cn.canlnac.onlinecourse.domain;
 
 /**
- * 消息发生位置位置.
+ * 消息发生位置.
  */
 
 public class Position {

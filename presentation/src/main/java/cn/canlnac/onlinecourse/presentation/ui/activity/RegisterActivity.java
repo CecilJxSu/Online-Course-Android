@@ -65,14 +65,6 @@ public class RegisterActivity extends BaseActivity implements HasComponent<Regis
         password.setTransformationMethod(invisible);
     }
 
-    private void initializeInjector() {
-        this.registerComponent = DaggerRegisterComponent.builder()
-                .applicationComponent(getApplicationComponent())
-                .activityModule(getActivityModule())
-                .registerModule(new RegisterModule(username.getText().toString(), password.getText().toString()))
-                .build();
-    }
-
     /**
      * 关闭页面
      * @param v 视图
@@ -124,11 +116,14 @@ public class RegisterActivity extends BaseActivity implements HasComponent<Regis
     @OnClick(R.id.register_done)
     public void onClickDone(View v) {
         if (canSubmit) {
-            this.initializeInjector();
+            this.registerComponent = DaggerRegisterComponent.builder()
+                    .applicationComponent(getApplicationComponent())
+                    .activityModule(getActivityModule())
+                    .registerModule(new RegisterModule(username.getText().toString(), password.getText().toString()))
+                    .build();
             this.getComponent(RegisterComponent.class).inject(this);
 
             this.registerPresenter.setView(this);
-
             this.registerPresenter.initialize();
         }
     }

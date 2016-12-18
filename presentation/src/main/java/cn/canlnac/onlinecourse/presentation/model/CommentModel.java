@@ -1,5 +1,6 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -7,29 +8,46 @@ import java.util.List;
  */
 
 public class CommentModel {
-    private int userIcon;
-    private String userName;
+    private int id;
+
+    private Date date;
+
+    private LoginModel author;
+
     private String content;
-    private String postTime;
-    private String likeCount;
-    private boolean isLike;
-    private boolean isReply;
+
+    private List<String> pictureUrls;
+
+    private int likeCount;
+
+    private int replyCount;
+
     private List<ReplyModel> replies;
 
-    public int getUserIcon() {
-        return userIcon;
+    private boolean isLike;
+
+    public int getId() {
+        return id;
     }
 
-    public void setUserIcon(int userIcon) {
-        this.userIcon = userIcon;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public Date getDate() {
+        return date;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public LoginModel getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(LoginModel author) {
+        this.author = author;
     }
 
     public String getContent() {
@@ -40,36 +58,28 @@ public class CommentModel {
         this.content = content;
     }
 
-    public String getPostTime() {
-        return postTime;
+    public List<String> getPictureUrls() {
+        return pictureUrls;
     }
 
-    public void setPostTime(String postTime) {
-        this.postTime = postTime;
+    public void setPictureUrls(List<String> pictureUrls) {
+        this.pictureUrls = pictureUrls;
     }
 
-    public String getLikeCount() {
+    public int getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(String likeCount) {
+    public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
     }
 
-    public boolean isLike() {
-        return isLike;
+    public int getReplyModelCount() {
+        return replyCount;
     }
 
-    public void setLike(boolean like) {
-        isLike = like;
-    }
-
-    public boolean isReply() {
-        return isReply;
-    }
-
-    public void setReply(boolean reply) {
-        isReply = reply;
+    public void setReplyModelCount(int replyCount) {
+        this.replyCount = replyCount;
     }
 
     public List<ReplyModel> getReplies() {
@@ -78,5 +88,13 @@ public class CommentModel {
 
     public void setReplies(List<ReplyModel> replies) {
         this.replies = replies;
+    }
+
+    public boolean isLike() {
+        return isLike;
+    }
+
+    public void setLike(boolean like) {
+        isLike = like;
     }
 }

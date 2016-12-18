@@ -72,7 +72,7 @@ public class RestApiImpl implements RestApi {
      * @return
      */
     @Override
-    public Observable<RegisterEntity> register(String username, String password) {
+    public Observable<Integer> register(String username, String password) {
         return Observable.create(subscriber -> {
             if (!isThereInternetConnection()) {//检查网络
                 subscriber.onError(new NetworkConnectionException());
@@ -88,7 +88,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200 || (response.code() == 403 && response.body().toString().length() > 2)) {//状态码正确响应或封号
                     RegisterEntity registerEntity = new Gson().fromJson(response.body().string(), RegisterEntity.class);
-                    subscriber.onNext(registerEntity);
+                    subscriber.onNext(registerEntity.getUserId());
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
