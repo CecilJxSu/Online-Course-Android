@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
-import java.util.Date;
-
 /**
  * 回复评论数据模型.
  */
@@ -9,7 +7,7 @@ import java.util.Date;
 public class ReplyModel {
     private int id;
 
-    private Date date;
+    private long date;
 
     private LoginModel toUser;
 
@@ -25,11 +23,11 @@ public class ReplyModel {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

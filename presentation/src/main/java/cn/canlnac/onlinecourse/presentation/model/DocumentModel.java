@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
-import java.util.Date;
-
 /**
  * 文档数据模型.
  */
@@ -9,7 +7,7 @@ import java.util.Date;
 public class DocumentModel {
     private int id;
 
-    private Date date;
+    private long date;
 
     private String targetType;
 
@@ -31,11 +29,11 @@ public class DocumentModel {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

@@ -2,7 +2,6 @@ package cn.canlnac.onlinecourse.data.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,7 +13,7 @@ public class ChatEntity {
     private int id;
 
     @SerializedName("date")
-    private Date date;
+    private long date;
 
     @SerializedName("title")
     private String title;
@@ -54,11 +53,11 @@ public class ChatEntity {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

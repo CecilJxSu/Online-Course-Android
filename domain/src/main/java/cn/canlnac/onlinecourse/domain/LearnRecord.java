@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.domain;
 
-import java.util.Date;
-
 /**
  * 学习记录.
  */
@@ -9,7 +7,7 @@ import java.util.Date;
 public class LearnRecord {
     private int id;
 
-    private Date date;
+    private long date;
 
     private Catalog catalog;
 
@@ -17,7 +15,7 @@ public class LearnRecord {
 
     private float progress;
 
-    private Date lastDate;
+    private long lastDate;
 
     private long lastPosition;
 
@@ -29,11 +27,11 @@ public class LearnRecord {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -61,11 +59,11 @@ public class LearnRecord {
         this.progress = progress;
     }
 
-    public Date getLastDate() {
+    public long getLastDate() {
         return lastDate;
     }
 
-    public void setLastDate(Date lastDate) {
+    public void setLastDate(long lastDate) {
         this.lastDate = lastDate;
     }
 

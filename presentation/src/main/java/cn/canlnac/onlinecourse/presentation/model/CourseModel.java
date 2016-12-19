@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
-import java.util.Date;
-
 /**
  * 课程数据模型.
  */
@@ -9,7 +7,7 @@ import java.util.Date;
 public class CourseModel {
     private int id;
 
-    private Date date;
+    private long date;
 
     private String name;
 
@@ -39,11 +37,11 @@ public class CourseModel {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

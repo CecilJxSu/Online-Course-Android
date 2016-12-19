@@ -1,6 +1,5 @@
 package cn.canlnac.onlinecourse.domain;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,7 +9,7 @@ import java.util.List;
 public class Chat {
     private int id;
 
-    private Date date;
+    private long date;
 
     private String title;
 
@@ -40,11 +39,11 @@ public class Chat {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.domain;
 
-import java.util.Date;
-
 /**
  * 回复评论.
  */
@@ -9,7 +7,7 @@ import java.util.Date;
 public class Reply {
     private int id;
 
-    private Date date;
+    private long date;
 
     private Login toUser;
 
@@ -25,11 +23,11 @@ public class Reply {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

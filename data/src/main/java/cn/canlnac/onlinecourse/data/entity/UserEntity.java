@@ -2,8 +2,6 @@ package cn.canlnac.onlinecourse.data.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 /**
  * 用户实体类.
  */
@@ -13,7 +11,7 @@ public class UserEntity {
     private int id;
 
     @SerializedName("date")
-    private Date date;
+    private long date;
 
     @SerializedName("status")
     private String status;
@@ -22,10 +20,10 @@ public class UserEntity {
     private String userStatus;
 
     @SerializedName("lock_date")
-    private Date lockDate;
+    private long lockDate;
 
     @SerializedName("lock_end_date")
-    private Date lockEndDate;
+    private long lockEndDate;
 
     @SerializedName("username")
     private String username;
@@ -41,11 +39,11 @@ public class UserEntity {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -65,19 +63,19 @@ public class UserEntity {
         this.userStatus = userStatus;
     }
 
-    public Date getLockDate() {
+    public long getLockDate() {
         return lockDate;
     }
 
-    public void setLockDate(Date lockDate) {
+    public void setLockDate(long locklong) {
         this.lockDate = lockDate;
     }
 
-    public Date getLockEndDate() {
+    public long getLockEndDate() {
         return lockEndDate;
     }
 
-    public void setLockEndDate(Date lockEndDate) {
+    public void setLockEndDate(long lockEndDate) {
         this.lockEndDate = lockEndDate;
     }
 

@@ -2,8 +2,6 @@ package cn.canlnac.onlinecourse.data.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 /**
  * 学习记录.
  */
@@ -13,7 +11,7 @@ public class LearnRecordEntity {
     private int id;
 
     @SerializedName("date")
-    private Date date;
+    private long date;
 
     @SerializedName("catalog")
     private CatalogEntity catalog;
@@ -25,7 +23,7 @@ public class LearnRecordEntity {
     private float progress;
 
     @SerializedName("lastDate")
-    private Date lastDate;
+    private long lastDate;
 
     @SerializedName("lastPosition")
     private long lastPosition;
@@ -38,11 +36,11 @@ public class LearnRecordEntity {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -70,11 +68,11 @@ public class LearnRecordEntity {
         this.progress = progress;
     }
 
-    public Date getLastDate() {
+    public long getLastDate() {
         return lastDate;
     }
 
-    public void setLastDate(Date lastDate) {
+    public void setLastDate(long lastDate) {
         this.lastDate = lastDate;
     }
 
