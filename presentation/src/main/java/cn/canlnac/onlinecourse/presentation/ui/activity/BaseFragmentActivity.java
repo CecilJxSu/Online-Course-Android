@@ -1,5 +1,6 @@
 package cn.canlnac.onlinecourse.presentation.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
@@ -35,5 +36,13 @@ public class BaseFragmentActivity extends FragmentActivity {
     @SuppressWarnings("unchecked")
     protected <C> C getComponent(Class<C> componentType) {
         return componentType.cast(((HasComponent<C>) this).getComponent());
+    }
+
+    /**
+     * 未登陆用户需要登陆
+     */
+    public void toLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }

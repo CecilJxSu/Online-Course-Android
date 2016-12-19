@@ -19,8 +19,10 @@ import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCourseComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.GetCourseComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCourseModule;
+import cn.canlnac.onlinecourse.presentation.model.CourseModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CoursePagerAdapter;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseIntroFragment;
 
 /**
  * 课程详情.
@@ -70,21 +72,6 @@ public class CourseActivity extends BaseFragmentActivity implements HasComponent
         Intent intent = getIntent();
         int courseId = 1; //intent.getIntExtra("courseId", -1);  //课程ID
 
-        this.getCourseComponent = DaggerGetCourseComponent.builder()
-                .applicationComponent(getApplicationComponent())
-                .activityModule(getActivityModule())
-                .getCourseModule(new GetCourseModule(courseId))
-                .build();
-        this.getComponent(GetCourseComponent.class).inject(this);
-
-        this.getCoursePresenter.setView(this);
-        this.getCoursePresenter.initialize();
-
-        //观看人数
-        watchingCount.setText("1.1 万");
-        //课程标题
-        courseTitle.setText("课程标题");
-
         courseTab.addTab(courseTab.newTab().setText("简介"));
         courseTab.addTab(courseTab.newTab().setText("目录"));
         courseTab.addTab(courseTab.newTab().setText("评论"));
@@ -113,6 +100,55 @@ public class CourseActivity extends BaseFragmentActivity implements HasComponent
 
             }
         });
+
+        coursePager.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View view) {
+                //获取课程
+                CourseActivity.this.getCourseComponent = DaggerGetCourseComponent.builder()
+                        .applicationComponent(getApplicationComponent())
+                        .activityModule(getActivityModule())
+                        .getCourseModule(new GetCourseModule(1))
+                        .build();
+                CourseActivity.this.getComponent(GetCourseComponent.class).inject(CourseActivity.this);
+
+                CourseActivity.this.getCoursePresenter.setView(CourseActivity.this);
+                CourseActivity.this.getCoursePresenter.initialize();
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View view) {
+
+            }
+        });
+    }
+
+    /**
+     * 显示课程信息
+     * @param courseModel
+     */
+    public void showCourse(CourseModel courseModel) {
+        //观看人数
+        String watchingCountStr = courseModel.getWatchCount() + "";
+        watchingCount.setText(watchingCountStr);
+        //课程标题
+        courseTitle.setText(courseModel.getName());
+
+        if (courseModel.isLike()) {
+            like.setImageResource(R.drawable.thump_up_green_icon);
+        } else {
+            like.setImageResource(R.drawable.thump_up_icon);
+        }
+
+        if (courseModel.isFavorite()) {
+            favorite.setImageResource(R.drawable.favorite_green);
+        } else {
+            favorite.setImageResource(R.drawable.unfavorite);
+        }
+
+        if (coursePager.getCurrentItem() == 0) {
+            ((CourseIntroFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(0)).showCourseInfo(courseModel);
+        }
     }
 
     /**

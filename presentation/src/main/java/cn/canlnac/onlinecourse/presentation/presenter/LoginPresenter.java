@@ -76,6 +76,7 @@ public class LoginPresenter implements Presenter {
         @Override
         public void onNext(Login login) {
             LoginPresenter.this.loginActivity.showToastMessage("登陆成功");
+            LoginPresenter.this.loginActivity.finish();
         }
     }
 }

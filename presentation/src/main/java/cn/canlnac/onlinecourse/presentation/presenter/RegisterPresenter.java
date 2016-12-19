@@ -78,6 +78,8 @@ public class RegisterPresenter implements Presenter {
         @Override
         public void onNext(Integer userId) {
             RegisterPresenter.this.registerActivity.showToastMessage("注册成功");
+            RegisterPresenter.this.registerActivity.toLogin();
+            RegisterPresenter.this.registerActivity.finish();
         }
     }
 }

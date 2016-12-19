@@ -9,6 +9,7 @@ import cn.canlnac.onlinecourse.domain.Course;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
+import cn.canlnac.onlinecourse.presentation.mapper.CourseModelDataMapper;
 import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 
 @PerActivity
@@ -17,10 +18,12 @@ public class GetCoursePresenter implements Presenter {
     CourseActivity getCourseActivity;
 
     private final UseCase getCourseUseCase;
+    private final CourseModelDataMapper courseModelDataMapper;
 
     @Inject
-    public GetCoursePresenter(UseCase getCourseUseCase) {
+    public GetCoursePresenter(UseCase getCourseUseCase, CourseModelDataMapper courseModelDataMapper) {
         this.getCourseUseCase = getCourseUseCase;
+        this.courseModelDataMapper = courseModelDataMapper;
     }
 
     public void setView(@NonNull CourseActivity getCourseActivity) {
@@ -63,6 +66,7 @@ public class GetCoursePresenter implements Presenter {
                         break;
                     case 401:
                         GetCoursePresenter.this.getCourseActivity.showToastMessage("未登陆");
+                        GetCoursePresenter.this.getCourseActivity.toLogin();
                         break;
                     default:
                         GetCoursePresenter.this.getCourseActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
@@ -71,11 +75,14 @@ public class GetCoursePresenter implements Presenter {
                 e.printStackTrace();
                 GetCoursePresenter.this.getCourseActivity.showToastMessage("网络连接错误！");
             }
+            GetCoursePresenter.this.getCourseActivity.finish();
         }
 
         @Override
         public void onNext(Course course) {
-            GetCoursePresenter.this.getCourseActivity.showToastMessage("获取成功");
+            if (course != null) {
+                GetCoursePresenter.this.getCourseActivity.showCourse(courseModelDataMapper.transform(course));
+            }
         }
     }
 }

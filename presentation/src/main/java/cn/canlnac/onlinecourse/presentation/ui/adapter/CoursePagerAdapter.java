@@ -4,6 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCatalogFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCommentFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseIntroFragment;
@@ -14,26 +17,20 @@ import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseIntroFragment;
 
 public class CoursePagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
+    private List<Fragment> fragmentList;
     public CoursePagerAdapter(FragmentManager fm, int numOfTabs) {
         super(fm);
         mNumOfTabs = numOfTabs;
+
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new CourseIntroFragment());
+        fragmentList.add(new CourseCatalogFragment());
+        fragmentList.add(new CourseCommentFragment());
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                CourseIntroFragment courseIntro = new CourseIntroFragment();
-                return courseIntro;
-            case 1:
-                CourseCatalogFragment courseCatalog = new CourseCatalogFragment();
-                return courseCatalog;
-            case 2:
-                CourseCommentFragment courseComment = new CourseCommentFragment();
-                return courseComment;
-            default:
-                return null;
-        }
+        return fragmentList.get(position);
     }
 
     @Override

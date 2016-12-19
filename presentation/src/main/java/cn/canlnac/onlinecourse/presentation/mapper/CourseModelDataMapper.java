@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.Course;
+import cn.canlnac.onlinecourse.domain.Login;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import cn.canlnac.onlinecourse.presentation.model.CourseModel;
 
@@ -24,6 +25,11 @@ public class CourseModelDataMapper {
         CourseModel courseModel = new CourseModel();
         courseModel.setFavorite(course.isFavorite());
         courseModel.setLike(course.isLike());
+
+        if (course.getAuthor() == null) {
+            course.setAuthor(new Login());
+        }
+
         courseModel.setAuthor(loginModelDataMapper.transform(course.getAuthor()));
         courseModel.setId(course.getId());
         courseModel.setFavoriteCount(course.getFavoriteCount());

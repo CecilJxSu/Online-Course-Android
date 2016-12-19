@@ -3,6 +3,7 @@ package cn.canlnac.onlinecourse.presentation.ui.activity;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -52,5 +53,13 @@ public class BaseActivity extends Activity {
     @SuppressWarnings("unchecked")
     protected <C> C getComponent(Class<C> componentType) {
         return componentType.cast(((HasComponent<C>) this).getComponent());
+    }
+
+    /**
+     * 未登陆用户需要登陆
+     */
+    public void toLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 }
