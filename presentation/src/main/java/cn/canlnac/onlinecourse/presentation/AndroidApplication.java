@@ -37,7 +37,7 @@ public class AndroidApplication extends Application {
 
     private void initializeLeakDetection() {
         if (BuildConfig.DEBUG) {
-            LeakCanary.install(this);
+            //LeakCanary.install(this);
         }
     }
 }
