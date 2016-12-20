@@ -13,6 +13,8 @@ public class CatalogModel {
 
     private int index;
 
+    private int parentId;
+
     private String name;
 
     private String introduction;
@@ -61,6 +63,14 @@ public class CatalogModel {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public String getIntroduction() {

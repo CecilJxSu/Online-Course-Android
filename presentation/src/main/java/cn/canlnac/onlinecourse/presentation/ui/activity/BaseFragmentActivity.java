@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import cn.canlnac.onlinecourse.presentation.AndroidApplication;
-import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.ApplicationComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.ActivityModule;
 
@@ -31,11 +30,6 @@ public class BaseFragmentActivity extends FragmentActivity {
      */
     public void showToastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <C> C getComponent(Class<C> componentType) {
-        return componentType.cast(((HasComponent<C>) this).getComponent());
     }
 
     /**

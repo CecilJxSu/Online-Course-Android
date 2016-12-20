@@ -9,26 +9,32 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
-import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCatalogsComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCourseComponent;
-import cn.canlnac.onlinecourse.presentation.internal.di.components.GetCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCatalogsModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCourseModule;
+import cn.canlnac.onlinecourse.presentation.model.CatalogModel;
 import cn.canlnac.onlinecourse.presentation.model.CourseModel;
+import cn.canlnac.onlinecourse.presentation.presenter.GetCatalogsPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CoursePagerAdapter;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCatalogFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseIntroFragment;
 
 /**
  * 课程详情.
  */
 
-public class CourseActivity extends BaseFragmentActivity implements HasComponent<GetCourseComponent> {
+public class CourseActivity extends BaseFragmentActivity {
     @BindView(R.id.course_close) ImageView close;
     @BindView(R.id.course_like) ImageView like;
     @BindView(R.id.course_share) ImageView share;
@@ -45,15 +51,13 @@ public class CourseActivity extends BaseFragmentActivity implements HasComponent
     private Boolean isFavorite = false;
     private Boolean isShare = false;
 
-    private GetCourseComponent getCourseComponent;
+    private int courseId;
 
     @Inject
     GetCoursePresenter getCoursePresenter;
 
-    @Override
-    public GetCourseComponent getComponent() {
-        return getCourseComponent;
-    }
+    @Inject
+    GetCatalogsPresenter getCatalogsPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +74,7 @@ public class CourseActivity extends BaseFragmentActivity implements HasComponent
 
         //获取意图和数据
         Intent intent = getIntent();
-        int courseId = 1; //intent.getIntExtra("courseId", -1);  //课程ID
+        courseId = intent.getIntExtra("courseId", -1);  //课程ID
 
         courseTab.addTab(courseTab.newTab().setText("简介"));
         courseTab.addTab(courseTab.newTab().setText("目录"));
@@ -105,15 +109,23 @@ public class CourseActivity extends BaseFragmentActivity implements HasComponent
             @Override
             public void onViewAttachedToWindow(View view) {
                 //获取课程
-                CourseActivity.this.getCourseComponent = DaggerGetCourseComponent.builder()
+                DaggerGetCourseComponent.builder()
                         .applicationComponent(getApplicationComponent())
                         .activityModule(getActivityModule())
-                        .getCourseModule(new GetCourseModule(1))
-                        .build();
-                CourseActivity.this.getComponent(GetCourseComponent.class).inject(CourseActivity.this);
+                        .getCourseModule(new GetCourseModule(CourseActivity.this.courseId))
+                        .build().inject(CourseActivity.this);
 
                 CourseActivity.this.getCoursePresenter.setView(CourseActivity.this);
                 CourseActivity.this.getCoursePresenter.initialize();
+
+                //获取目录
+                DaggerGetCatalogsComponent.builder()
+                        .applicationComponent(getApplicationComponent())
+                        .activityModule(getActivityModule())
+                        .getCatalogsModule(new GetCatalogsModule(CourseActivity.this.courseId))
+                        .build().inject(CourseActivity.this);
+                CourseActivity.this.getCatalogsPresenter.setView(CourseActivity.this);
+                CourseActivity.this.getCatalogsPresenter.initialize();
             }
 
             @Override
@@ -146,9 +158,19 @@ public class CourseActivity extends BaseFragmentActivity implements HasComponent
             favorite.setImageResource(R.drawable.unfavorite);
         }
 
-        if (coursePager.getCurrentItem() == 0) {
-            ((CourseIntroFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(0)).showCourseInfo(courseModel);
+
+        ((CourseIntroFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(0)).showCourseInfo(courseModel);
+    }
+
+    /**
+     * 显示目录
+     * @param catalogModelList
+     */
+    public void showCatalogs(List<CatalogModel> catalogModelList) {
+        if (null == catalogModelList) {
+            catalogModelList = new ArrayList<>();
         }
+        ((CourseCatalogFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(1)).showCatalogs(catalogModelList);
     }
 
     /**

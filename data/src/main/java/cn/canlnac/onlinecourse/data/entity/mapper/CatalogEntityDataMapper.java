@@ -32,6 +32,7 @@ public class CatalogEntityDataMapper {
             catalog.setDate(catalogEntity.getDate());
             catalog.setDuration(catalogEntity.getDuration());
             catalog.setIndex(catalogEntity.getIndex());
+            catalog.setParentId(catalogEntity.getParentId());
             catalog.setIntroduction(catalogEntity.getIntroduction());
             catalog.setName(catalogEntity.getName());
             catalog.setPreviewImage(catalogEntity.getPreviewImage());

@@ -75,7 +75,7 @@ public class TabFragment1 extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //打开课程详情页
                 Intent intent = new Intent(TabFragment1.this.getActivity(), CourseActivity.class);
-                intent.putExtra("courseId", position);      //课程ID
+                intent.putExtra("courseId", 1);      //课程ID
                 TabFragment1.this.startActivity(intent);
             }
         });

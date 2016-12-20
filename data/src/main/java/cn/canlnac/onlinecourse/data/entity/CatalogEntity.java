@@ -16,6 +16,9 @@ public class CatalogEntity {
     @SerializedName("courseId")
     private int courseId;
 
+    @SerializedName("parentId")
+    private int parentId;
+
     @SerializedName("index")
     private int index;
 
@@ -72,6 +75,14 @@ public class CatalogEntity {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public String getIntroduction() {

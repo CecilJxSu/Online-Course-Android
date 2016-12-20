@@ -22,7 +22,7 @@ import cn.canlnac.onlinecourse.data.cache.FileManager;
 
 public class RestApiConnection {
     /** api地址 */
-    String API_BASE_URL = "http://120.24.221.156:8080/";
+    String API_BASE_URL = "http://192.168.3.23:8080/";
 
     //登录
     String API_LOGIN = API_BASE_URL + "login";
