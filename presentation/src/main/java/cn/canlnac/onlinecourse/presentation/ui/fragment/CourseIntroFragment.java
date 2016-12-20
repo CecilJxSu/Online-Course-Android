@@ -65,7 +65,7 @@ public class CourseIntroFragment extends BaseFragment implements HasComponent<Co
      * @param courseModel
      */
     public void showCourseInfo(CourseModel courseModel) {
-        if (null != courseModel.getIntroduction()) {
+        if (null != courseModel.getIntroduction() && content != null) {
             content.setText("\u3000\u3000" + courseModel.getIntroduction().replace("\n","\n\u3000\u3000"));
         }
 

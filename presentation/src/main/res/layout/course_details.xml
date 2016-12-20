@@ -9,10 +9,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF">
-        <VideoView
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="220dp"
+            android:background="#000000"
+            android:id="@+id/course_video_container">
+
+            <ImageView
+                android:id="@+id/course_play_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/biz_video_list_play_icon_big"/>
+
+            <com.android.tedcoder.wkvideoplayer.view.SuperVideoPlayer
+                android:id="@+id/course_video"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+        <!--<VideoView
             android:id="@+id/course_video"
             android:layout_width="match_parent"
-            android:layout_height="220dp" />
+            android:layout_height="220dp" />-->
         <ImageView
             android:id="@+id/course_close"
             android:layout_width="25dp"
@@ -34,7 +55,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/invisible"
-            android:layout_below="@+id/course_video"
+            android:layout_below="@+id/course_video_container"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"/>
         <TextView
@@ -57,13 +78,13 @@
             android:layout_toRightOf="@+id/course_watching_img"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_below="@+id/course_video"/>
+            android:layout_below="@+id/course_video_container"/>
         <ImageView
             android:id="@+id/course_favorite"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/unfavorite"
-            android:layout_below="@+id/course_video"
+            android:layout_below="@+id/course_video_container"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"/>
@@ -82,7 +103,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/share_icon"
-            android:layout_below="@+id/course_video"
+            android:layout_below="@+id/course_video_container"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/course_favorite"/>
