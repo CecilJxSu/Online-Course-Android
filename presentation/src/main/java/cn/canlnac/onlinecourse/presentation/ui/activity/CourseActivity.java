@@ -171,6 +171,8 @@ public class CourseActivity extends BaseFragmentActivity {
             catalogModelList = new ArrayList<>();
         }
         ((CourseCatalogFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(1)).showCatalogs(catalogModelList);
+        Intent intent = new Intent(this, CourseTestActivity.class);
+        startActivity(intent);
     }
 
     /**
