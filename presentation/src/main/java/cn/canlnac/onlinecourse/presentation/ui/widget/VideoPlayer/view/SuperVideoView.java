@@ -1,12 +1,9 @@
-package com.android.tedcoder.wkvideoplayer.view;
+package cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.VideoView;
 
-/**
- * Created by Ted on 2015/8/6.
- */
 public class SuperVideoView extends VideoView {
 
     public SuperVideoView(Context context) {

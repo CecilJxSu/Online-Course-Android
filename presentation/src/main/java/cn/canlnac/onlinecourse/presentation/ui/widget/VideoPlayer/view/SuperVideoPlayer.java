@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package com.android.tedcoder.wkvideoplayer.view;
+package cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -32,13 +32,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.android.tedcoder.wkvideoplayer.R;
-import com.android.tedcoder.wkvideoplayer.model.Video;
-import com.android.tedcoder.wkvideoplayer.model.VideoUrl;
-
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.model.Video;
 
 /**
  * Created by Ted on 2015/8/6.
@@ -59,8 +58,7 @@ public class SuperVideoPlayer extends RelativeLayout {
     private View mProgressBarView;
     private View mCloseBtnView;
 
-    private ArrayList<Video> mAllVideo;
-    private Video mNowPlayVideo;
+    private Video mPlayVideo;
 
     //是否自动隐藏控制栏
     private boolean mAutoHideController = true;
@@ -78,7 +76,7 @@ public class SuperVideoPlayer extends RelativeLayout {
         }
     });
 
-    private View.OnClickListener mOnClickListener = new OnClickListener() {
+    private OnClickListener mOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
             if (view.getId() == R.id.video_close_view) {
@@ -87,7 +85,7 @@ public class SuperVideoPlayer extends RelativeLayout {
         }
     };
 
-    private View.OnTouchListener mOnTouchVideoListener = new OnTouchListener() {
+    private OnTouchListener mOnTouchVideoListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
             if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -101,24 +99,6 @@ public class SuperVideoPlayer extends RelativeLayout {
         @Override
         public void alwaysShowController() {
             SuperVideoPlayer.this.alwaysShowController();
-        }
-
-        @Override
-        public void onSelectSrc(int position) {
-            Video selectVideo = mAllVideo.get(position);
-            if (selectVideo.equal(mNowPlayVideo)) return;
-            mNowPlayVideo = selectVideo;
-            mNowPlayVideo.setPlayUrl(0);
-            mMediaController.initPlayVideo(mNowPlayVideo);
-            loadAndPlay(mNowPlayVideo.getPlayUrl(), 0);
-        }
-
-        @Override
-        public void onSelectFormat(int position) {
-            VideoUrl videoUrl = mNowPlayVideo.getVideoUrl().get(position);
-            if (mNowPlayVideo.getPlayUrl().equal(videoUrl)) return;
-            mNowPlayVideo.setPlayUrl(position);
-            playVideoAtLastPos();
         }
 
         @Override
@@ -220,64 +200,35 @@ public class SuperVideoPlayer extends RelativeLayout {
      */
     @SuppressWarnings("unused")
     public void loadLocalVideo(String fileUrl) {
-        VideoUrl videoUrl = new VideoUrl();
-        videoUrl.setIsOnlineVideo(false);
-        videoUrl.setFormatUrl(fileUrl);
-        videoUrl.setFormatName("本地视频");
         Video video = new Video();
-        ArrayList<VideoUrl> videoUrls = new ArrayList<>();
-        videoUrls.add(videoUrl);
-        video.setVideoUrl(videoUrls);
-        video.setPlayUrl(0);
+        video.setPlayUrl(fileUrl);
 
-        mNowPlayVideo = video;
+        mPlayVideo = video;
 
         /***
          * 初始化控制条的精简模式
          */
         mMediaController.initTrimmedMode();
-        loadAndPlay(mNowPlayVideo.getPlayUrl(), 0);
-    }
-
-    /**
-     * 播放多个视频,默认播放第一个视频，第一个格式
-     *
-     * @param allVideo 所有视频
-     */
-    public void loadMultipleVideo(ArrayList<Video> allVideo) {
-        loadMultipleVideo(allVideo, 0, 0);
-    }
-
-    /**
-     * 播放多个视频
-     *
-     * @param allVideo     所有的视频
-     * @param selectVideo  指定的视频
-     * @param selectFormat 指定的格式
-     */
-    public void loadMultipleVideo(ArrayList<Video> allVideo, int selectVideo, int selectFormat) {
-        loadMultipleVideo(allVideo, selectVideo, selectFormat, 0);
+        loadAndPlay(mPlayVideo.getPlayUrl(), 0);
     }
 
     /***
      *
-     * @param allVideo     所有的视频
-     * @param selectVideo  指定的视频
-     * @param selectFormat 指定的格式
-     * @param seekTime 开始进度
+     * @param video     视频
+     * @param seekTime  开始进度
      */
-    public void loadMultipleVideo(ArrayList<Video> allVideo, int selectVideo, int selectFormat, int seekTime) {
-        if (null == allVideo || allVideo.size() == 0) {
-            Toast.makeText(mContext, "视频列表为空", Toast.LENGTH_SHORT).show();
+    public void loadMultipleVideo(Video video, int seekTime) {
+        if (null == video) {
+            Toast.makeText(mContext, "视频不存在", Toast.LENGTH_SHORT).show();
             return;
         }
-        mAllVideo.clear();
-        mAllVideo.addAll(allVideo);
-        mNowPlayVideo = mAllVideo.get(selectVideo);
-        mNowPlayVideo.setPlayUrl(selectFormat);
-        mMediaController.initVideoList(mAllVideo);
-        mMediaController.initPlayVideo(mNowPlayVideo);
-        loadAndPlay(mNowPlayVideo.getPlayUrl(), seekTime);
+        
+        mPlayVideo = video;
+
+        ArrayList<Video> videos = new ArrayList<>();
+        videos.add(video);
+        mMediaController.initVideoList(videos);
+        loadAndPlay(mPlayVideo.getPlayUrl(), seekTime);
     }
 
     /**
@@ -352,8 +303,6 @@ public class SuperVideoPlayer extends RelativeLayout {
 
         mCloseBtnView.setOnClickListener(mOnClickListener);
         mProgressBarView.setOnClickListener(mOnClickListener);
-
-        mAllVideo = new ArrayList<>();
     }
 
     /**
@@ -366,33 +315,22 @@ public class SuperVideoPlayer extends RelativeLayout {
     }
 
     /**
-     * 更换清晰度地址时，续播
-     */
-    private void playVideoAtLastPos() {
-        int playTime = mSuperVideoView.getCurrentPosition();
-        mSuperVideoView.stopPlayback();
-        loadAndPlay(mNowPlayVideo.getPlayUrl(), playTime);
-    }
-
-    /**
      * 加载并开始播放视频
      *
      * @param videoUrl videoUrl
      */
-    private void loadAndPlay(VideoUrl videoUrl, int seekTime) {
+    private void loadAndPlay(String videoUrl, int seekTime) {
         showProgressView(seekTime > 0);
         setCloseButton(true);
-        if (TextUtils.isEmpty(videoUrl.getFormatUrl())) {
+        if (TextUtils.isEmpty(videoUrl)) {
             Log.e("TAG", "videoUrl should not be null");
             return;
         }
         mSuperVideoView.setOnPreparedListener(mOnPreparedListener);
-        if (videoUrl.isOnlineVideo()) {
-            mSuperVideoView.setVideoPath(videoUrl.getFormatUrl());
-        } else {
-            Uri uri = Uri.parse(videoUrl.getFormatUrl());
-            mSuperVideoView.setVideoURI(uri);
-        }
+
+        Uri uri = Uri.parse(videoUrl);
+        mSuperVideoView.setVideoURI(uri);
+
         mSuperVideoView.setVisibility(VISIBLE);
         startPlayVideo(seekTime);
     }
@@ -450,7 +388,6 @@ public class SuperVideoPlayer extends RelativeLayout {
      *
      */
     private void showOrHideController() {
-        mMediaController.closeAllSwitchList();
         if (mMediaController.getVisibility() == View.VISIBLE) {
             Animation animation = AnimationUtils.loadAnimation(mContext,
                     R.anim.anim_exit_from_bottom);

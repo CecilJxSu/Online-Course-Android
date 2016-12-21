@@ -23,17 +23,13 @@
                 android:layout_gravity="center"
                 android:src="@drawable/biz_video_list_play_icon_big"/>
 
-            <com.android.tedcoder.wkvideoplayer.view.SuperVideoPlayer
+            <cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view.SuperVideoPlayer
                 android:id="@+id/course_video"
                 android:layout_width="match_parent"
                 android:layout_height="220dp"
                 android:visibility="gone"/>
 
         </FrameLayout>
-        <!--<VideoView
-            android:id="@+id/course_video"
-            android:layout_width="match_parent"
-            android:layout_height="220dp" />-->
         <ImageView
             android:id="@+id/course_close"
             android:layout_width="25dp"

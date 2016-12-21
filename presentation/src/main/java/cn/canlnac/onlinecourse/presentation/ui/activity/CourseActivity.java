@@ -3,6 +3,7 @@ package cn.canlnac.onlinecourse.presentation.ui.activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -10,12 +11,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.android.tedcoder.wkvideoplayer.model.Video;
-import com.android.tedcoder.wkvideoplayer.model.VideoUrl;
-import com.android.tedcoder.wkvideoplayer.util.DensityUtil;
-import com.android.tedcoder.wkvideoplayer.view.MediaController;
-import com.android.tedcoder.wkvideoplayer.view.SuperVideoPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +32,10 @@ import cn.canlnac.onlinecourse.presentation.presenter.GetCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CoursePagerAdapter;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCatalogFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseIntroFragment;
+import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.model.Video;
+import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view.MediaController;
+import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view.SuperVideoPlayer;
+import cn.canlnac.onlinecourse.presentation.util.DensityUtil;
 
 /**
  * 课程详情.
@@ -200,16 +199,8 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
     public void changeVideo(String name, String url) {
         mSuperVideoPlayer.pausePlay(true);
 
-        VideoUrl videoUrl = new VideoUrl();
-        videoUrl.setFormatUrl(url);
-        videoUrl.setFormatName("720P");
-        videoUrl.setIsOnlineVideo(true);
-
-        ArrayList<VideoUrl> arrayList = new ArrayList<>();
-        arrayList.add(videoUrl);
-
         video = new Video();
-        video.setVideoUrl(arrayList);
+        video.setPlayUrl(url);
         video.setVideoName(name);
     }
 
@@ -259,15 +250,13 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
     }
 
     @Override
-    public void onClick(View view) {
-        if (video != null && video.getVideoUrl() != null && video.getVideoUrl().size() > 0) {
-            mPlayBtnView.setVisibility(View.VISIBLE);
+    public void onClick(View view) throws Resources.NotFoundException {
+        if (video != null && video.getPlayUrl() != null) {
+            mPlayBtnView.setVisibility(View.GONE);
             mSuperVideoPlayer.setVisibility(View.VISIBLE);
             mSuperVideoPlayer.setAutoHideController(false);
 
-            ArrayList<Video> videos = new ArrayList<>(1);
-            videos.add(video);
-            mSuperVideoPlayer.loadMultipleVideo(videos,0,0,0);
+            mSuperVideoPlayer.loadMultipleVideo(video,0);
         } else {
             showToastMessage("没有视频链接");
         }
@@ -287,7 +276,8 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         if (null == mSuperVideoPlayer) return;
-        /***
+
+        /**
          * 根据屏幕方向重新设置播放器的大小
          */
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -304,7 +294,7 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
             getWindow().setAttributes(attrs);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             float width = DensityUtil.getWidthInPx(this);
-            float height = DensityUtil.dip2px(this, 200.f);
+            float height = DensityUtil.dip2px(this, 220.f);
             mSuperVideoPlayer.getLayoutParams().height = (int) height;
             mSuperVideoPlayer.getLayoutParams().width = (int) width;
         }
