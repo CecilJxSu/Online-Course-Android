@@ -39,12 +39,6 @@
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/biz_news_list_ad_video_close_btn"/>
     </FrameLayout>
 
 </RelativeLayout>

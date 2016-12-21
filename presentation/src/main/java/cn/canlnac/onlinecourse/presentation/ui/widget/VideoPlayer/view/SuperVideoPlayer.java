@@ -56,7 +56,6 @@ public class SuperVideoPlayer extends RelativeLayout {
     private VideoPlayCallbackImpl mVideoPlayCallback;
 
     private View mProgressBarView;
-    private View mCloseBtnView;
 
     private Video mPlayVideo;
 
@@ -79,9 +78,7 @@ public class SuperVideoPlayer extends RelativeLayout {
     private OnClickListener mOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (view.getId() == R.id.video_close_view) {
-                mVideoPlayCallback.onCloseVideo();
-            }
+
         }
     };
 
@@ -142,7 +139,6 @@ public class SuperVideoPlayer extends RelativeLayout {
                     if (what == MediaPlayer.MEDIA_INFO_VIDEO_RENDERING_START
                             || what == MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING) {
                         mProgressBarView.setVisibility(View.GONE);
-                        setCloseButton(true);
                         return true;
                     }
                     return false;
@@ -293,25 +289,13 @@ public class SuperVideoPlayer extends RelativeLayout {
         mSuperVideoView = (SuperVideoView) findViewById(R.id.video_view);
         mMediaController = (MediaController) findViewById(R.id.controller);
         mProgressBarView = findViewById(R.id.progressbar);
-        mCloseBtnView = findViewById(R.id.video_close_view);
 
         mMediaController.setMediaControl(mMediaControl);
         mSuperVideoView.setOnTouchListener(mOnTouchVideoListener);
 
-        setCloseButton(false);
         showProgressView(false);
 
-        mCloseBtnView.setOnClickListener(mOnClickListener);
         mProgressBarView.setOnClickListener(mOnClickListener);
-    }
-
-    /**
-     * 显示关闭视频的按钮
-     *
-     * @param isShow isShow
-     */
-    private void setCloseButton(boolean isShow) {
-        mCloseBtnView.setVisibility(isShow ? VISIBLE : INVISIBLE);
     }
 
     /**
@@ -321,7 +305,7 @@ public class SuperVideoPlayer extends RelativeLayout {
      */
     private void loadAndPlay(String videoUrl, int seekTime) {
         showProgressView(seekTime > 0);
-        setCloseButton(true);
+
         if (TextUtils.isEmpty(videoUrl)) {
             Log.e("TAG", "videoUrl should not be null");
             return;

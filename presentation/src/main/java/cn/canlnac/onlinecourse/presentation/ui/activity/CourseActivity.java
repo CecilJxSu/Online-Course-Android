@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -160,9 +161,9 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         courseTitle.setText(courseModel.getName());
 
         if (courseModel.isLike()) {
-            like.setImageResource(R.drawable.thump_up_green_icon);
+            like.setImageResource(R.drawable.like_with_background);
         } else {
-            like.setImageResource(R.drawable.thump_up_icon);
+            like.setImageResource(R.drawable.unlike_with_background);
         }
 
         if (courseModel.isFavorite()) {
@@ -192,7 +193,22 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
      */
     @OnClick(R.id.course_close)
     public void onClickClose(View v) {
-        finish();
+        if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            mSuperVideoPlayer.setPageType(MediaController.PageType.SHRINK);
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode  == KeyEvent.KEYCODE_BACK && getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            mSuperVideoPlayer.setPageType(MediaController.PageType.SHRINK);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     public void changeVideo(String url) {
@@ -210,10 +226,10 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
     public void onClickLike(View v) {
         if (isLike) {
             isLike = false;
-            like.setImageResource(R.drawable.thump_up_icon);
+            like.setImageResource(R.drawable.unlike_with_background);
         } else {
             isLike = true;
-            like.setImageResource(R.drawable.thump_up_green_icon);
+            like.setImageResource(R.drawable.like_with_background);
         }
     }
 
@@ -252,7 +268,7 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         if (video != null && video.getPlayUrl() != null) {
             mPlayBtnView.setVisibility(View.GONE);
             mSuperVideoPlayer.setVisibility(View.VISIBLE);
-            mSuperVideoPlayer.setAutoHideController(false);
+            mSuperVideoPlayer.setAutoHideController(true);
 
             mSuperVideoPlayer.loadMultipleVideo(video,0);
         } else {
