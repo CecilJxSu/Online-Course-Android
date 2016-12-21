@@ -21,19 +21,25 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerFavoriteCourseComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCatalogsComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCourseComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerLikeCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerUnfavoriteCourseComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerUnlikeCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.FavoriteCourseModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCatalogsModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCourseModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.LikeCourseModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnfavoriteCourseModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnlikeCourseModule;
 import cn.canlnac.onlinecourse.presentation.model.CatalogModel;
 import cn.canlnac.onlinecourse.presentation.model.CourseModel;
+import cn.canlnac.onlinecourse.presentation.presenter.FavoriteCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCatalogsPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.LikeCoursePresenter;
+import cn.canlnac.onlinecourse.presentation.presenter.UnfavoriteCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.UnlikeCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CoursePagerAdapter;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCatalogFragment;
@@ -74,6 +80,11 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
     @Inject LikeCoursePresenter likeCoursePresenter;
     @Inject
     UnlikeCoursePresenter unlikeCoursePresenter;
+
+    @Inject
+    FavoriteCoursePresenter favoriteCoursePresenter;
+    @Inject
+    UnfavoriteCoursePresenter unfavoriteCoursePresenter;
 
     @BindView(R.id.course_video) SuperVideoPlayer mSuperVideoPlayer;
     @BindView(R.id.course_play_btn) View mPlayBtnView;
@@ -171,11 +182,7 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
 
         toggleLike(courseModel.isLike());
 
-        if (courseModel.isFavorite()) {
-            favorite.setImageResource(R.drawable.favorite_green);
-        } else {
-            favorite.setImageResource(R.drawable.unfavorite);
-        }
+        toggleFavorite(courseModel.isFavorite());
 
         ((CourseIntroFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(0)).showCourseInfo(courseModel);
     }
@@ -228,7 +235,6 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
      */
     @OnClick(R.id.course_like)
     public void onClickLike(View v) {
-        System.out.println(courseId+"------------");
         if (courseId <= 0) {
             return;
         }
@@ -289,11 +295,41 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
      */
     @OnClick(R.id.course_favorite)
     public void onClickFavorite(View v) {
+        if (courseId <= 0) {
+            return;
+        }
         if (isFavorite) {
-            isFavorite = false;
+            //取消收藏
+            DaggerUnfavoriteCourseComponent.builder()
+                    .applicationComponent(getApplicationComponent())
+                    .activityModule(getActivityModule())
+                    .unfavoriteCourseModule(new UnfavoriteCourseModule(courseId))
+                    .build().inject(this);
+
+            CourseActivity.this.unfavoriteCoursePresenter.setView(this);
+            CourseActivity.this.unfavoriteCoursePresenter.initialize();
+        } else {
+            //收藏
+            DaggerFavoriteCourseComponent.builder()
+                    .applicationComponent(getApplicationComponent())
+                    .activityModule(getActivityModule())
+                    .favoriteCourseModule(new FavoriteCourseModule(courseId))
+                    .build().inject(this);
+
+            CourseActivity.this.favoriteCoursePresenter.setView(this);
+            CourseActivity.this.favoriteCoursePresenter.initialize();
+        }
+    }
+
+    /**
+     * 收藏切换
+     * @param isFavorite
+     */
+    public void toggleFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+        if (isFavorite) {
             favorite.setImageResource(R.drawable.favorite_green);
         } else {
-            isFavorite = true;
             favorite.setImageResource(R.drawable.unfavorite);
         }
     }

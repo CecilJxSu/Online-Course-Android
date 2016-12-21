@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 
 @PerActivity
 public class UnfavoriteCoursePresenter implements Presenter {
 
-    RegisterActivity unfavoriteCourseActivity;
+    CourseActivity unfavoriteCourseActivity;
 
     private final UseCase unfavoriteCourseUseCase;
 
@@ -22,7 +22,7 @@ public class UnfavoriteCoursePresenter implements Presenter {
         this.unfavoriteCourseUseCase = unfavoriteCourseUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity unfavoriteCourseActivity) {
+    public void setView(@NonNull CourseActivity unfavoriteCourseActivity) {
         this.unfavoriteCourseActivity = unfavoriteCourseActivity;
     }
 
@@ -55,25 +55,25 @@ public class UnfavoriteCoursePresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.showToastMessage("参数错误！");
-                        break;
                     case 404:
-                        UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.showToastMessage("资源不存在！");
+                        UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.showToastMessage("课程不存在");
                         break;
-                    case 409:
-                        UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.showToastMessage("未登陆");
+                        UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.toLogin();
                         break;
                     default:
                         UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
         public void onNext(Void empty) {
-            UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.showToastMessage("创建成功");
+            UnfavoriteCoursePresenter.this.unfavoriteCourseActivity.toggleFavorite(false);
         }
     }
 }
