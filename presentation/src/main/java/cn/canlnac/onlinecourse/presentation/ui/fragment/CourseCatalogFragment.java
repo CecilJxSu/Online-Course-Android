@@ -15,6 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.model.CatalogModel;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 import cn.canlnac.onlinecourse.presentation.ui.widget.TreeView.holder.CatalogViewHolder;
 import cn.canlnac.onlinecourse.presentation.ui.widget.TreeView.holder.CatalogViewHolder.IconTreeItem;
 import cn.canlnac.onlinecourse.presentation.ui.widget.TreeView.model.TreeNode;
@@ -30,6 +31,8 @@ public class CourseCatalogFragment extends Fragment {
     ViewGroup mContainer;
 
     private final TreeNode root = TreeNode.root();
+
+    private int currentPlayerIndex = -1;
 
     @Nullable
     @Override
@@ -47,7 +50,9 @@ public class CourseCatalogFragment extends Fragment {
      * @param catalogModelList
      */
     public void showCatalogs(List<CatalogModel> catalogModelList) {
-        Map<Integer,TreeNode> parents = new HashMap<>();
+        final Map<Integer,TreeNode> parents = new HashMap<>();
+        final Map<Integer,TreeNode> childes = new HashMap<>();
+
         //添加章
         for (CatalogModel catalogModel: catalogModelList) {
             if (!(catalogModel.getParentId() > 0)) {
@@ -63,7 +68,7 @@ public class CourseCatalogFragment extends Fragment {
             }
         }
         //添加节
-        for (CatalogModel catalogModel: catalogModelList) {
+        for (final CatalogModel catalogModel: catalogModelList) {
             if (catalogModel.getParentId() > 0) {
                 IconTreeItem iconTreeItem = new IconTreeItem();
                 iconTreeItem.icon = R.drawable.watching_video;
@@ -71,9 +76,28 @@ public class CourseCatalogFragment extends Fragment {
 
                 iconTreeItem.duration = APIUtil.formatDuration(catalogModel.getDuration());
 
-                CatalogViewHolder catalogViewHolder2 = new CatalogViewHolder(getActivity());
+                final CatalogViewHolder catalogViewHolder2 = new CatalogViewHolder(getActivity());
                 TreeNode child = new TreeNode(iconTreeItem).setViewHolder(catalogViewHolder2);
+                //加入到列表
+                childes.put(catalogModel.getId(), child);
 
+                //点击事件
+                child.setClickListener(new TreeNode.TreeNodeClickListener() {
+                    @Override
+                    public void onClick(TreeNode node, Object value) {
+                        //前一个恢复颜色
+                        if (currentPlayerIndex != -1 && null != childes.get(currentPlayerIndex)){
+                            ((CatalogViewHolder)childes.get(currentPlayerIndex).getViewHolder()).setColor(false);
+                        }
+                        //新的设置颜色
+                        currentPlayerIndex = catalogModel.getId();
+                        ((CatalogViewHolder)node.getViewHolder()).setColor(true);
+                        //切换视频
+                        ((CourseActivity)CourseCatalogFragment.this.getActivity()).changeVideo(catalogModel.getName(), catalogModel.getUrl());
+                    }
+                });
+
+                //添加节
                 TreeNode parent = parents.get(catalogModel.getParentId());
                 if (parent == null) {
                     IconTreeItem parentItem = new IconTreeItem();

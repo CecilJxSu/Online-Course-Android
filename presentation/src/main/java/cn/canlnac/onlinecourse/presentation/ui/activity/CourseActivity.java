@@ -11,8 +11,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.tedcoder.wkvideoplayer.dlna.engine.DLNAContainer;
-import com.android.tedcoder.wkvideoplayer.dlna.service.DLNAService;
 import com.android.tedcoder.wkvideoplayer.model.Video;
 import com.android.tedcoder.wkvideoplayer.model.VideoUrl;
 import com.android.tedcoder.wkvideoplayer.util.DensityUtil;
@@ -71,6 +69,7 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
 
     @BindView(R.id.course_video) SuperVideoPlayer mSuperVideoPlayer;
     @BindView(R.id.course_play_btn) View mPlayBtnView;
+    private Video video;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +90,6 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
 
         mPlayBtnView.setOnClickListener(this);
         mSuperVideoPlayer.setVideoPlayCallback(mVideoPlayCallback);
-        startDLNAService();
 
         courseTab.addTab(courseTab.newTab().setText("简介"));
         courseTab.addTab(courseTab.newTab().setText("目录"));
@@ -199,6 +197,22 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         finish();
     }
 
+    public void changeVideo(String name, String url) {
+        mSuperVideoPlayer.pausePlay(true);
+
+        VideoUrl videoUrl = new VideoUrl();
+        videoUrl.setFormatUrl(url);
+        videoUrl.setFormatName("720P");
+        videoUrl.setIsOnlineVideo(true);
+
+        ArrayList<VideoUrl> arrayList = new ArrayList<>();
+        arrayList.add(videoUrl);
+
+        video = new Video();
+        video.setVideoUrl(arrayList);
+        video.setVideoName(name);
+    }
+
     /**
      * 点赞按钮事件
      * @param v
@@ -246,47 +260,22 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        mPlayBtnView.setVisibility(View.GONE);
-        mSuperVideoPlayer.setVisibility(View.VISIBLE);
-        mSuperVideoPlayer.setAutoHideController(false);
+        if (video != null && video.getVideoUrl() != null && video.getVideoUrl().size() > 0) {
+            mPlayBtnView.setVisibility(View.VISIBLE);
+            mSuperVideoPlayer.setVisibility(View.VISIBLE);
+            mSuperVideoPlayer.setAutoHideController(false);
 
-        Video video = new Video();
-        VideoUrl videoUrl1 = new VideoUrl();
-        videoUrl1.setFormatName("720P");
-        videoUrl1.setFormatUrl("http://192.168.1.101:8080/file/C6C03E7136614860EA9CF4A595E4AD12");
-        VideoUrl videoUrl2 = new VideoUrl();
-        videoUrl2.setFormatName("480P");
-        videoUrl2.setFormatUrl("http://192.168.1.101:8080/file/C6C03E7136614860EA9CF4A595E4AD12");
-        ArrayList<VideoUrl> arrayList1 = new ArrayList<>();
-        arrayList1.add(videoUrl1);
-        arrayList1.add(videoUrl2);
-        video.setVideoName("测试视频一");
-        video.setVideoUrl(arrayList1);
-
-        Video video2 = new Video();
-        VideoUrl videoUrl3 = new VideoUrl();
-        videoUrl3.setFormatName("720P");
-        videoUrl3.setFormatUrl("http://192.168.1.101:8080/file/C6C03E7136614860EA9CF4A595E4AD12");
-        VideoUrl videoUrl4 = new VideoUrl();
-        videoUrl4.setFormatName("480P");
-        videoUrl4.setFormatUrl("http://192.168.1.101:8080/file/C6C03E7136614860EA9CF4A595E4AD12");
-        ArrayList<VideoUrl> arrayList2 = new ArrayList<>();
-        arrayList2.add(videoUrl3);
-        arrayList2.add(videoUrl4);
-        video2.setVideoName("测试视频二");
-        video2.setVideoUrl(arrayList2);
-
-        ArrayList<Video> videoArrayList = new ArrayList<>();
-        videoArrayList.add(video);
-        videoArrayList.add(video2);
-
-        mSuperVideoPlayer.loadMultipleVideo(videoArrayList,0,0,0);
+            ArrayList<Video> videos = new ArrayList<>(1);
+            videos.add(video);
+            mSuperVideoPlayer.loadMultipleVideo(videos,0,0,0);
+        } else {
+            showToastMessage("没有视频链接");
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopDLNAService();
     }
 
     /***
@@ -329,18 +318,6 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             mSuperVideoPlayer.setPageType(MediaController.PageType.SHRINK);
         }
-    }
-
-    private void startDLNAService() {
-        // Clear the device container.
-        DLNAContainer.getInstance().clear();
-        Intent intent = new Intent(this.getApplication().getApplicationContext(), DLNAService.class);
-        this.getApplication().startService(intent);
-    }
-
-    private void stopDLNAService() {
-        Intent intent = new Intent(this.getApplication().getApplicationContext(), DLNAService.class);
-        this.getApplication().stopService(intent);
     }
 
     private SuperVideoPlayer.VideoPlayCallbackImpl mVideoPlayCallback = new SuperVideoPlayer.VideoPlayCallbackImpl() {

@@ -40,10 +40,9 @@
             android:layout_height="48dp"
             android:layout_gravity="center_horizontal"
             android:drawablePadding="3dp"
-            android:singleLine="true"
+            android:maxLines="1"
             android:drawableRight="@drawable/shipin_shang"
             android:gravity="right|center_vertical"
-            android:text="视频"
             android:textColor="@color/switcher_item_text_selector"
             android:textSize="12sp"
             android:visibility="visible"/>

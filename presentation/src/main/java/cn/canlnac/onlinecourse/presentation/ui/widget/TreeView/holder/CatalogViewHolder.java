@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -23,6 +22,18 @@ public class CatalogViewHolder extends TreeNode.BaseNodeViewHolder<CatalogViewHo
 
     public CatalogViewHolder(Context context) {
         super(context);
+    }
+
+    public void setColor(boolean isSet) {
+        if (isSet) {
+            image.setImageResource(R.drawable.watching_video_green);
+            text.setTextColor(0xFF00FF00);
+            duration.setTextColor(0xFF00FF00);
+        } else {
+            image.setImageResource(R.drawable.watching_video);
+            text.setTextColor(0xFF999999);
+            duration.setTextColor(0xFF999999);
+        }
     }
 
     @Override

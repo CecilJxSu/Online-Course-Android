@@ -156,7 +156,7 @@ public class EasySwitcher extends LinearLayout{
     private View getItemView(int position){
         TextView textView = new TextView(mContext);
         textView.setTextAppearance(mContext, R.style.switcher_item_text_style);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.MATCH_PARENT,
                 DensityUtil.dip2px(mContext,35));
         textView.setLayoutParams(layoutParams);
         textView.setSelected(position == mDefaultSelection);
@@ -171,7 +171,7 @@ public class EasySwitcher extends LinearLayout{
     private View getDividerView(){
         View view = new View(mContext);
         view.setBackgroundColor(mContext.getResources().getColor(R.color.divider_color));
-        view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,3));
+        view.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,3));
         return view;
     }
 
@@ -180,7 +180,7 @@ public class EasySwitcher extends LinearLayout{
     }
 
     public interface EasySwitcherCallbackImpl{
-        void onSelectItem(int position,String name);
+        void onSelectItem(int position, String name);
 
         void onShowList();
     }
