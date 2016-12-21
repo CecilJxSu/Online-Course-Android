@@ -3,7 +3,6 @@ package cn.canlnac.onlinecourse.presentation.ui.activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -73,19 +72,19 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        setContentView(R.layout.course_details);
 
-        WindowManager.LayoutParams attrs = getWindow().getAttributes();
-        attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        getWindow().setAttributes(attrs);
+        setContentView(R.layout.course_details);
 
         ButterKnife.bind(this);
 
         //获取意图和数据
         Intent intent = getIntent();
         courseId = intent.getIntExtra("courseId", -1);  //课程ID
+
+        if (courseId == -1) {
+            showToastMessage("没有指定课程");
+            this.finish();
+        }
 
         mPlayBtnView.setOnClickListener(this);
         mSuperVideoPlayer.setVideoPlayCallback(mVideoPlayCallback);
@@ -196,12 +195,11 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         finish();
     }
 
-    public void changeVideo(String name, String url) {
-        mSuperVideoPlayer.pausePlay(true);
+    public void changeVideo(String url) {
+        mVideoPlayCallback.onCloseVideo();
 
         video = new Video();
         video.setPlayUrl(url);
-        video.setVideoName(name);
     }
 
     /**
@@ -250,7 +248,7 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
     }
 
     @Override
-    public void onClick(View view) throws Resources.NotFoundException {
+    public void onClick(View view) {
         if (video != null && video.getPlayUrl() != null) {
             mPlayBtnView.setVisibility(View.GONE);
             mSuperVideoPlayer.setVisibility(View.VISIBLE);

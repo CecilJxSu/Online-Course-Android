@@ -20,6 +20,8 @@ public class CatalogViewHolder extends TreeNode.BaseNodeViewHolder<CatalogViewHo
     @BindView(R.id.course_catalog_list_text) TextView text;
     @BindView(R.id.course_catalog_list_duration) TextView duration;
 
+    private IconTreeItem iconTreeItem;
+
     public CatalogViewHolder(Context context) {
         super(context);
     }
@@ -43,6 +45,8 @@ public class CatalogViewHolder extends TreeNode.BaseNodeViewHolder<CatalogViewHo
 
         ButterKnife.bind(this, view);
 
+        this.iconTreeItem = value;
+
         if (value.icon > 0) {
             image.setImageResource(value.icon);
         } else {
@@ -58,9 +62,14 @@ public class CatalogViewHolder extends TreeNode.BaseNodeViewHolder<CatalogViewHo
         return view;
     }
 
+    public IconTreeItem getIconTreeItem() {
+        return this.iconTreeItem;
+    }
+
     public static class IconTreeItem {
         public int icon;
         public String text;
         public String duration;
+        public String url;
     }
 }

@@ -73,7 +73,7 @@ public class CourseCatalogFragment extends Fragment {
                 IconTreeItem iconTreeItem = new IconTreeItem();
                 iconTreeItem.icon = R.drawable.watching_video;
                 iconTreeItem.text = catalogModel.getParentId()+"-"+catalogModel.getIndex()+". " + catalogModel.getName();
-
+                iconTreeItem.url = catalogModel.getUrl();
                 iconTreeItem.duration = APIUtil.formatDuration(catalogModel.getDuration());
 
                 final CatalogViewHolder catalogViewHolder2 = new CatalogViewHolder(getActivity());
@@ -85,15 +85,16 @@ public class CourseCatalogFragment extends Fragment {
                 child.setClickListener(new TreeNode.TreeNodeClickListener() {
                     @Override
                     public void onClick(TreeNode node, Object value) {
-                        //前一个恢复颜色
-                        if (currentPlayerIndex != -1 && null != childes.get(currentPlayerIndex)){
-                            ((CatalogViewHolder)childes.get(currentPlayerIndex).getViewHolder()).setColor(false);
-                        }
-                        //新的设置颜色
-                        currentPlayerIndex = catalogModel.getId();
-                        ((CatalogViewHolder)node.getViewHolder()).setColor(true);
-                        //切换视频
-                        ((CourseActivity)CourseCatalogFragment.this.getActivity()).changeVideo(catalogModel.getName(), catalogModel.getUrl());
+                    //前一个恢复颜色
+                    TreeNode child = childes.get(currentPlayerIndex);
+                    if (currentPlayerIndex > 0 && null != child){
+                        ((CatalogViewHolder)child.getViewHolder()).setColor(false);
+                    }
+                    //新的设置颜色
+                    currentPlayerIndex = catalogModel.getId();
+                    ((CatalogViewHolder)node.getViewHolder()).setColor(true);
+                    //切换视频
+                    ((CourseActivity)CourseCatalogFragment.this.getActivity()).changeVideo(catalogModel.getUrl());
                     }
                 });
 
@@ -113,5 +114,23 @@ public class CourseCatalogFragment extends Fragment {
         tView.setDefaultAnimation(true);
         tView.setDefaultContainerStyle(R.style.TreeNodeStyleDivided, true);
         mContainer.addView(tView.getView());
+
+        //设置第一个视频源
+        if (childes.size() > 0) {
+            //获取第一章视频源
+            Integer[] keys = childes.keySet().toArray(new Integer[childes.size()]);
+            Integer minIndex = keys[0];
+            for (Integer key: keys) {
+                if (key < minIndex) {
+                    minIndex = key;
+                }
+            }
+
+            currentPlayerIndex = minIndex;
+            ((CatalogViewHolder)childes.get(minIndex).getViewHolder()).setColor(true);
+            //切换视频
+            String url = ((CatalogViewHolder)childes.get(minIndex).getViewHolder()).getIconTreeItem().url;
+            ((CourseActivity)CourseCatalogFragment.this.getActivity()).changeVideo(url);
+        }
     }
 }

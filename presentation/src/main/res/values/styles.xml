@@ -10,6 +10,10 @@
       <item name="colorAccent">#03A9F4</item>
   </style>
 
+    <style name="CourseDetailTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimaryDark">#DD000000</item>
+    </style>
+
     <style name="TreeNodeStyleDivided">
         <item name="android:showDividers">middle</item>
         <item name="android:divider">@android:drawable/divider_horizontal_bright</item>

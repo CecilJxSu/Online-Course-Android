@@ -34,7 +34,6 @@
             android:id="@+id/course_close"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginTop="25dp"
             android:layout_marginLeft="10dp"
             android:src="@drawable/left_arrow"/>
         <ImageView
@@ -42,7 +41,6 @@
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="25dp"
             android:layout_marginRight="10dp"
             android:src="@drawable/thump_up_icon" />
 
