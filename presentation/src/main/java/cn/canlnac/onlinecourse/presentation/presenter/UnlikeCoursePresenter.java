@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 
 @PerActivity
 public class UnlikeCoursePresenter implements Presenter {
 
-    RegisterActivity unlikeCourseActivity;
+    CourseActivity unlikeCourseActivity;
 
     private final UseCase unlikeCourseUseCase;
 
@@ -22,7 +22,7 @@ public class UnlikeCoursePresenter implements Presenter {
         this.unlikeCourseUseCase = unlikeCourseUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity unlikeCourseActivity) {
+    public void setView(@NonNull CourseActivity unlikeCourseActivity) {
         this.unlikeCourseActivity = unlikeCourseActivity;
     }
 
@@ -55,25 +55,25 @@ public class UnlikeCoursePresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        UnlikeCoursePresenter.this.unlikeCourseActivity.showToastMessage("参数错误！");
-                        break;
                     case 404:
-                        UnlikeCoursePresenter.this.unlikeCourseActivity.showToastMessage("资源不存在！");
+                        UnlikeCoursePresenter.this.unlikeCourseActivity.showToastMessage("课程不存在");
                         break;
-                    case 409:
-                        UnlikeCoursePresenter.this.unlikeCourseActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        UnlikeCoursePresenter.this.unlikeCourseActivity.showToastMessage("未登陆");
+                        UnlikeCoursePresenter.this.unlikeCourseActivity.toLogin();
                         break;
                     default:
                         UnlikeCoursePresenter.this.unlikeCourseActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                UnlikeCoursePresenter.this.unlikeCourseActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                UnlikeCoursePresenter.this.unlikeCourseActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
         public void onNext(Void empty) {
-            UnlikeCoursePresenter.this.unlikeCourseActivity.showToastMessage("创建成功");
+            UnlikeCoursePresenter.this.unlikeCourseActivity.toggleLike(false);
         }
     }
 }

@@ -1,6 +1,7 @@
 package cn.canlnac.onlinecourse.presentation.presenter;
 
 import android.support.annotation.NonNull;
+import android.system.ErrnoException;
 
 import javax.inject.Inject;
 
@@ -8,12 +9,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 
 @PerActivity
 public class LikeCoursePresenter implements Presenter {
 
-    RegisterActivity likeCourseActivity;
+    CourseActivity likeCourseActivity;
 
     private final UseCase likeCourseUseCase;
 
@@ -22,7 +23,7 @@ public class LikeCoursePresenter implements Presenter {
         this.likeCourseUseCase = likeCourseUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity likeCourseActivity) {
+    public void setView(@NonNull CourseActivity likeCourseActivity) {
         this.likeCourseActivity = likeCourseActivity;
     }
 
@@ -54,26 +55,29 @@ public class LikeCoursePresenter implements Presenter {
         public void onError(Throwable e) {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
+                    case 304:
+                        LikeCoursePresenter.this.likeCourseActivity.showToastMessage("不能重复点赞");
+                        break;
                     case 400:
-                        LikeCoursePresenter.this.likeCourseActivity.showToastMessage("参数错误！");
-                        break;
                     case 404:
-                        LikeCoursePresenter.this.likeCourseActivity.showToastMessage("资源不存在！");
+                        LikeCoursePresenter.this.likeCourseActivity.showToastMessage("课程不存在");
                         break;
-                    case 409:
-                        LikeCoursePresenter.this.likeCourseActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        LikeCoursePresenter.this.likeCourseActivity.showToastMessage("未登陆");
+                        LikeCoursePresenter.this.likeCourseActivity.toLogin();
                         break;
                     default:
                         LikeCoursePresenter.this.likeCourseActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                LikeCoursePresenter.this.likeCourseActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                LikeCoursePresenter.this.likeCourseActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
         public void onNext(Void empty) {
-            LikeCoursePresenter.this.likeCourseActivity.showToastMessage("创建成功");
+            LikeCoursePresenter.this.likeCourseActivity.toggleLike(true);
         }
     }
 }

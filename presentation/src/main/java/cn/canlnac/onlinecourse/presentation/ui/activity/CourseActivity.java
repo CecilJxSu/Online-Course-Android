@@ -23,12 +23,18 @@ import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCatalogsComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerLikeCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerUnlikeCourseComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCatalogsModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCourseModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.LikeCourseModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnlikeCourseModule;
 import cn.canlnac.onlinecourse.presentation.model.CatalogModel;
 import cn.canlnac.onlinecourse.presentation.model.CourseModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCatalogsPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCoursePresenter;
+import cn.canlnac.onlinecourse.presentation.presenter.LikeCoursePresenter;
+import cn.canlnac.onlinecourse.presentation.presenter.UnlikeCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CoursePagerAdapter;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCatalogFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseIntroFragment;
@@ -62,9 +68,12 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
 
     @Inject
     GetCoursePresenter getCoursePresenter;
-
     @Inject
     GetCatalogsPresenter getCatalogsPresenter;
+
+    @Inject LikeCoursePresenter likeCoursePresenter;
+    @Inject
+    UnlikeCoursePresenter unlikeCoursePresenter;
 
     @BindView(R.id.course_video) SuperVideoPlayer mSuperVideoPlayer;
     @BindView(R.id.course_play_btn) View mPlayBtnView;
@@ -160,18 +169,13 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         //课程标题
         courseTitle.setText(courseModel.getName());
 
-        if (courseModel.isLike()) {
-            like.setImageResource(R.drawable.like_with_background);
-        } else {
-            like.setImageResource(R.drawable.unlike_with_background);
-        }
+        toggleLike(courseModel.isLike());
 
         if (courseModel.isFavorite()) {
             favorite.setImageResource(R.drawable.favorite_green);
         } else {
             favorite.setImageResource(R.drawable.unfavorite);
         }
-
 
         ((CourseIntroFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(0)).showCourseInfo(courseModel);
     }
@@ -224,12 +228,43 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
      */
     @OnClick(R.id.course_like)
     public void onClickLike(View v) {
+        System.out.println(courseId+"------------");
+        if (courseId <= 0) {
+            return;
+        }
         if (isLike) {
-            isLike = false;
-            like.setImageResource(R.drawable.unlike_with_background);
+            //取消点赞
+            DaggerUnlikeCourseComponent.builder()
+                    .applicationComponent(getApplicationComponent())
+                    .activityModule(getActivityModule())
+                    .unlikeCourseModule(new UnlikeCourseModule(courseId))
+                    .build().inject(this);
+
+            CourseActivity.this.unlikeCoursePresenter.setView(this);
+            CourseActivity.this.unlikeCoursePresenter.initialize();
         } else {
-            isLike = true;
+            //点赞
+            DaggerLikeCourseComponent.builder()
+                    .applicationComponent(getApplicationComponent())
+                    .activityModule(getActivityModule())
+                    .likeCourseModule(new LikeCourseModule(courseId))
+                    .build().inject(this);
+
+            CourseActivity.this.likeCoursePresenter.setView(this);
+            CourseActivity.this.likeCoursePresenter.initialize();
+        }
+    }
+
+    /**
+     * 点赞切换
+     * @param isLike
+     */
+    public void toggleLike(boolean isLike) {
+        this.isLike = isLike;
+        if (isLike) {
             like.setImageResource(R.drawable.like_with_background);
+        } else {
+            like.setImageResource(R.drawable.unlike_with_background);
         }
     }
 
