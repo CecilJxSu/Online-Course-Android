@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.adapter.CommentViewHolder;
 
 @PerActivity
 public class LikeCommentPresenter implements Presenter {
 
-    RegisterActivity likeCommentActivity;
+    CommentViewHolder likeCommentActivity;
 
     private final UseCase likeCommentUseCase;
 
@@ -22,7 +22,7 @@ public class LikeCommentPresenter implements Presenter {
         this.likeCommentUseCase = likeCommentUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity likeCommentActivity) {
+    public void setView(@NonNull CommentViewHolder likeCommentActivity) {
         this.likeCommentActivity = likeCommentActivity;
     }
 
@@ -53,27 +53,30 @@ public class LikeCommentPresenter implements Presenter {
         @Override
         public void onError(Throwable e) {
             if (e instanceof ResponseStatusException) {
-                switch (((ResponseStatusException)e).code) {
+                switch (((ResponseStatusException) e).code) {
+                    case 304:
+                        LikeCommentPresenter.this.likeCommentActivity.showToastMessage("不能重复点赞");
+                        break;
                     case 400:
-                        LikeCommentPresenter.this.likeCommentActivity.showToastMessage("参数错误！");
-                        break;
                     case 404:
-                        LikeCommentPresenter.this.likeCommentActivity.showToastMessage("资源不存在！");
+                        LikeCommentPresenter.this.likeCommentActivity.showToastMessage("评论不存在");
                         break;
-                    case 409:
-                        LikeCommentPresenter.this.likeCommentActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        LikeCommentPresenter.this.likeCommentActivity.showToastMessage("未登陆");
+                        LikeCommentPresenter.this.likeCommentActivity.toLogin();
                         break;
                     default:
-                        LikeCommentPresenter.this.likeCommentActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
-                }
-            } else {
-                LikeCommentPresenter.this.likeCommentActivity.showToastMessage("网络连接错误！");
+                        LikeCommentPresenter.this.likeCommentActivity.showToastMessage("服务器错误:" + ((ResponseStatusException) e).code);
+                    }
+            }else{
+                e.printStackTrace();
+                LikeCommentPresenter.this.likeCommentActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
         public void onNext(Void empty) {
-            LikeCommentPresenter.this.likeCommentActivity.showToastMessage("创建成功");
+            LikeCommentPresenter.this.likeCommentActivity.changeLike(true);
         }
     }
 }

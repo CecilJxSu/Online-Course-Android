@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.adapter.CommentViewHolder;
 
 @PerActivity
 public class UnlikeCommentPresenter implements Presenter {
 
-    RegisterActivity unlikeCommentActivity;
+    CommentViewHolder unlikeCommentActivity;
 
     private final UseCase unlikeCommentUseCase;
 
@@ -22,7 +22,7 @@ public class UnlikeCommentPresenter implements Presenter {
         this.unlikeCommentUseCase = unlikeCommentUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity unlikeCommentActivity) {
+    public void setView(@NonNull CommentViewHolder unlikeCommentActivity) {
         this.unlikeCommentActivity = unlikeCommentActivity;
     }
 
@@ -55,25 +55,25 @@ public class UnlikeCommentPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        UnlikeCommentPresenter.this.unlikeCommentActivity.showToastMessage("参数错误！");
-                        break;
                     case 404:
-                        UnlikeCommentPresenter.this.unlikeCommentActivity.showToastMessage("资源不存在！");
+                        UnlikeCommentPresenter.this.unlikeCommentActivity.showToastMessage("评论不存在");
                         break;
-                    case 409:
-                        UnlikeCommentPresenter.this.unlikeCommentActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        UnlikeCommentPresenter.this.unlikeCommentActivity.showToastMessage("未登陆");
+                        UnlikeCommentPresenter.this.unlikeCommentActivity.toLogin();
                         break;
                     default:
                         UnlikeCommentPresenter.this.unlikeCommentActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                UnlikeCommentPresenter.this.unlikeCommentActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                UnlikeCommentPresenter.this.unlikeCommentActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
         public void onNext(Void empty) {
-            UnlikeCommentPresenter.this.unlikeCommentActivity.showToastMessage("创建成功");
+            UnlikeCommentPresenter.this.unlikeCommentActivity.changeLike(false);
         }
     }
 }
