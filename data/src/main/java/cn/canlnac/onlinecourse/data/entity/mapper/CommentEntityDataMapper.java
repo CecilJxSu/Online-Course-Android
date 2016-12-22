@@ -14,13 +14,13 @@ import cn.canlnac.onlinecourse.domain.Comment;
  */
 @Singleton
 public class CommentEntityDataMapper {
-    private LoginEntityDataMapper loginEntityDataMapper;
+    private SimpleUserEntityDataMapper simpleUserEntityDataMapper;
 
     private ReplyEntityDataMapper replyEntityDataMapper;
 
     @Inject
-    public CommentEntityDataMapper(LoginEntityDataMapper loginEntityDataMapper, ReplyEntityDataMapper replyEntityDataMapper) {
-        this.loginEntityDataMapper = loginEntityDataMapper;
+    public CommentEntityDataMapper(SimpleUserEntityDataMapper simpleUserEntityDataMapper, ReplyEntityDataMapper replyEntityDataMapper) {
+        this.simpleUserEntityDataMapper = simpleUserEntityDataMapper;
         this.replyEntityDataMapper = replyEntityDataMapper;
     }
 
@@ -34,7 +34,7 @@ public class CommentEntityDataMapper {
         if (commentEntity != null) {
             comment = new Comment();
             comment.setPictureUrls(commentEntity.getPictureUrls());
-            comment.setAuthor(loginEntityDataMapper.transform(commentEntity.getAuthor()));
+            comment.setAuthor(simpleUserEntityDataMapper.transform(commentEntity.getAuthor()));
             comment.setContent(commentEntity.getContent());
             comment.setDate(commentEntity.getDate());
             comment.setId(commentEntity.getId());
@@ -42,6 +42,7 @@ public class CommentEntityDataMapper {
             comment.setLikeCount(commentEntity.getLikeCount());
             comment.setReplies(replyEntityDataMapper.transform(commentEntity.getReplies()));
             comment.setReplyCount(commentEntity.getReplyCount());
+            comment.setReply(commentEntity.isReply());
         }
         return comment;
     }

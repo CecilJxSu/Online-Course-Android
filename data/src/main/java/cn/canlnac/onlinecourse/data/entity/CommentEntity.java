@@ -16,7 +16,7 @@ public class CommentEntity {
     private long date;
 
     @SerializedName("author")
-    private LoginEntity author;
+    private SimpleUserEntity author;
 
     @SerializedName("content")
     private String content;
@@ -36,6 +36,9 @@ public class CommentEntity {
     @SerializedName("isLike")
     private boolean isLike;
 
+    @SerializedName("isReply")
+    private boolean isReply;
+
     public int getId() {
         return id;
     }
@@ -52,11 +55,11 @@ public class CommentEntity {
         this.date = date;
     }
 
-    public LoginEntity getAuthor() {
+    public SimpleUserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(LoginEntity author) {
+    public void setAuthor(SimpleUserEntity author) {
         this.author = author;
     }
 
@@ -106,5 +109,13 @@ public class CommentEntity {
 
     public void setLike(boolean like) {
         isLike = like;
+    }
+
+    public boolean isReply() {
+        return isReply;
+    }
+
+    public void setReply(boolean reply) {
+        isReply = reply;
     }
 }

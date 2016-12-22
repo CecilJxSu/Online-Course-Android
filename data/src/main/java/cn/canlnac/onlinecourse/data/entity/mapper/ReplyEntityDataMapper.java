@@ -14,11 +14,11 @@ import cn.canlnac.onlinecourse.domain.Reply;
  */
 @Singleton
 public class ReplyEntityDataMapper {
-    private LoginEntityDataMapper loginEntityDataMapper;
+    private SimpleUserEntityDataMapper simpleUserEntityDataMapper;
 
     @Inject
-    public ReplyEntityDataMapper(LoginEntityDataMapper loginEntityDataMapper) {
-        this.loginEntityDataMapper = loginEntityDataMapper;
+    public ReplyEntityDataMapper(SimpleUserEntityDataMapper simpleUserEntityDataMapper) {
+        this.simpleUserEntityDataMapper = simpleUserEntityDataMapper;
     }
 
     /**
@@ -32,9 +32,9 @@ public class ReplyEntityDataMapper {
             reply = new Reply();
             reply.setId(replyEntity.getId());
             reply.setDate(replyEntity.getDate());
-            reply.setAuthor(loginEntityDataMapper.transform(replyEntity.getAuthor()));
+            reply.setAuthor(simpleUserEntityDataMapper.transform(replyEntity.getAuthor()));
             reply.setContent(replyEntity.getContent());
-            reply.setToUser(loginEntityDataMapper.transform(replyEntity.getToUser()));
+            reply.setToUser(simpleUserEntityDataMapper.transform(replyEntity.getToUser()));
         }
         return reply;
     }

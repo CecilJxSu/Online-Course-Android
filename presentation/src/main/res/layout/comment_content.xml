@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="5dp"
@@ -7,11 +8,12 @@
     android:background="#FFFFFF"
     android:padding="10dp">
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/comment_head_icon"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:src="@drawable/header" />
+        fresco:placeholderImage="@drawable/header"
+        fresco:roundedCornerRadius="25dp" />
 
     <TextView
         android:id="@+id/comment_user_name"
@@ -21,7 +23,7 @@
         android:gravity="center_vertical"
         android:layout_toRightOf="@+id/comment_head_icon"
         android:textSize="13sp"
-        android:textColor="#666666"/>
+        android:textColor="#2196F3"/>
 
     <TextView
         android:id="@+id/comment_content"

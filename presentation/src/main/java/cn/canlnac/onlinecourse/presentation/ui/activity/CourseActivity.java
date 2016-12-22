@@ -119,6 +119,8 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
                 (getSupportFragmentManager(), courseTab.getTabCount());
         //设置适配器
         coursePager.setAdapter(adapter);
+        //缓存3个页面，如果不设置，第一页会重建
+        coursePager.setOffscreenPageLimit(3);
         //添加换页事件
         coursePager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(courseTab));
         //设置选项卡选择事件
@@ -185,6 +187,14 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         toggleFavorite(courseModel.isFavorite());
 
         ((CourseIntroFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(0)).showCourseInfo(courseModel);
+    }
+
+    /**
+     * 获取课程ID
+     * @return
+     */
+    public int getCourseId() {
+        return this.courseId;
     }
 
     /**

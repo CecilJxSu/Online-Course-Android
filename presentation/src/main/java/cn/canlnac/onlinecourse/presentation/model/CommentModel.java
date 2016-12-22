@@ -11,7 +11,7 @@ public class CommentModel {
 
     private long date;
 
-    private LoginModel author;
+    private SimpleUserModel author;
 
     private String content;
 
@@ -24,6 +24,8 @@ public class CommentModel {
     private List<ReplyModel> replies;
 
     private boolean isLike;
+
+    private boolean isReply;
 
     public int getId() {
         return id;
@@ -41,11 +43,11 @@ public class CommentModel {
         this.date = date;
     }
 
-    public LoginModel getAuthor() {
+    public SimpleUserModel getAuthor() {
         return author;
     }
 
-    public void setAuthor(LoginModel author) {
+    public void setAuthor(SimpleUserModel author) {
         this.author = author;
     }
 
@@ -73,14 +75,6 @@ public class CommentModel {
         this.likeCount = likeCount;
     }
 
-    public int getReplyModelCount() {
-        return replyCount;
-    }
-
-    public void setReplyModelCount(int replyCount) {
-        this.replyCount = replyCount;
-    }
-
     public List<ReplyModel> getReplies() {
         return replies;
     }
@@ -95,5 +89,21 @@ public class CommentModel {
 
     public void setLike(boolean like) {
         isLike = like;
+    }
+
+    public int getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
+    }
+
+    public boolean isReply() {
+        return isReply;
+    }
+
+    public void setReply(boolean reply) {
+        isReply = reply;
     }
 }

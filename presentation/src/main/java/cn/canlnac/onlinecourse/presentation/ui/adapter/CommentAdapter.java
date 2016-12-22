@@ -2,7 +2,6 @@ package cn.canlnac.onlinecourse.presentation.ui.adapter;
 
 import android.app.Activity;
 import android.support.annotation.Nullable;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,11 +9,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnTouch;
+import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
 
@@ -25,6 +29,7 @@ import cn.canlnac.onlinecourse.presentation.model.CommentModel;
 public class CommentAdapter extends BaseAdapter {
     private Activity activity;
     private List<CommentModel> comments;
+    static final PrettyTime prettyTime = new PrettyTime();
 
     public CommentAdapter(Activity activity, List<CommentModel> comments) {
         this.activity = activity;
@@ -60,7 +65,7 @@ public class CommentAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @BindView(R.id.comment_head_icon) ImageView userIcon;
+        @BindView(R.id.comment_head_icon) SimpleDraweeView userIcon;
         @BindView(R.id.comment_user_name) TextView userName;
         @BindView(R.id.comment_content) TextView content;
         @BindView(R.id.comment_time) TextView postTime;
@@ -75,24 +80,15 @@ public class CommentAdapter extends BaseAdapter {
         public ViewHolder(Activity activity, View view, CommentModel comment) {
             ButterKnife.bind(this, view);
 
-            /*userIcon.setImageResource(comment.getUserIcon());
-            userName.setText(comment.getUserName());
+            userIcon.setImageURI(comment.getAuthor().getIconUrl());
+            userName.setText(comment.getAuthor().getName());
             content.setText(comment.getContent());
-            postTime.setText(comment.getPostTime());
-            likeCount.setText(comment.getLikeCount());
+            postTime.setText(prettyTime.format(new Date(comment.getDate())));
+            likeCount.setText(comment.getLikeCount()+"");
 
-            isLike = comment.isLike();
-            isReply = comment.isReply();*/
-            if (isLike) {
-                like.setImageResource(R.drawable.thump_up_green_icon);
-            } else {
-                like.setImageResource(R.drawable.thump_up_icon);
-            }
-            if (isReply) {
-                reply.setImageResource(R.drawable.comment_green_icon);
-            } else {
-                reply.setImageResource(R.drawable.comment_icon);
-            }
+            changeLike(comment.isLike());
+
+            changeReply(comment.isReply());
 
             //回复评论
             if (comment.getReplies() != null && comment.getReplies().size() > 0) {
@@ -111,16 +107,39 @@ public class CommentAdapter extends BaseAdapter {
             }
         }
 
-        @OnTouch(R.id.comment_like)
-        public boolean onTouch(View v, MotionEvent event) {
+        @OnClick(R.id.comment_like)
+        public void onClickLike(View v) {
             if (isLike) {
-                isLike = false;
-                like.setImageResource(R.drawable.thump_up_icon);
+                changeLike(false);
             } else {
-                isLike = true;
-                like.setImageResource(R.drawable.thump_up_green_icon);
+                changeLike(true);
             }
-            return false;
+        }
+
+        /**
+         * 改变点赞状态
+         * @param isLike
+         */
+        public void changeLike(boolean isLike) {
+            this.isLike = isLike;
+            if (isLike) {
+                like.setImageResource(R.drawable.thump_up_green_icon);
+            } else {
+                like.setImageResource(R.drawable.thump_up_icon);
+            }
+        }
+
+        /**
+         * 改变回复评论状态
+         * @param isReply
+         */
+        public void changeReply(boolean isReply) {
+            this.isReply = isReply;
+            if (isReply) {
+                reply.setImageResource(R.drawable.comment_green_icon);
+            } else {
+                reply.setImageResource(R.drawable.comment_icon);
+            }
         }
     }
 }

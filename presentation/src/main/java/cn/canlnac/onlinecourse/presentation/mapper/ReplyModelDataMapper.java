@@ -11,11 +11,11 @@ import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
 
 @PerActivity
 public class ReplyModelDataMapper {
-    private final LoginModelDataMapper loginModelDataMapper;
+    private final SimpleUserModelDataMapper simpleUserModelDataMapper;
 
     @Inject
-    public ReplyModelDataMapper(LoginModelDataMapper loginModelDataMapper) {
-        this.loginModelDataMapper = loginModelDataMapper;
+    public ReplyModelDataMapper(SimpleUserModelDataMapper simpleUserModelDataMapper) {
+        this.simpleUserModelDataMapper = simpleUserModelDataMapper;
     }
 
     public ReplyModel transform(Reply reply) {
@@ -25,9 +25,9 @@ public class ReplyModelDataMapper {
         ReplyModel replyModel = new ReplyModel();
         replyModel.setId(reply.getId());
         replyModel.setDate(reply.getDate());
-        replyModel.setAuthor(loginModelDataMapper.transform(reply.getAuthor()));
+        replyModel.setAuthor(simpleUserModelDataMapper.transform(reply.getAuthor()));
         replyModel.setContent(reply.getContent());
-        replyModel.setToUser(loginModelDataMapper.transform(reply.getToUser()));
+        replyModel.setToUser(simpleUserModelDataMapper.transform(reply.getToUser()));
 
         return replyModel;
     }

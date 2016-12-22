@@ -6,17 +6,19 @@ import java.util.List;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.Comment;
+import cn.canlnac.onlinecourse.domain.Reply;
+import cn.canlnac.onlinecourse.domain.SimpleUser;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
 
 @PerActivity
 public class CommentModelDataMapper {
-    private final LoginModelDataMapper loginModelDataMapper;
+    private final SimpleUserModelDataMapper simpleUserModelDataMapper;
     private final ReplyModelDataMapper replyModelDataMapper;
 
     @Inject
-    public CommentModelDataMapper(LoginModelDataMapper loginModelDataMapper, ReplyModelDataMapper replyModelDataMapper) {
-        this.loginModelDataMapper = loginModelDataMapper;
+    public CommentModelDataMapper(SimpleUserModelDataMapper simpleUserModelDataMapper, ReplyModelDataMapper replyModelDataMapper) {
+        this.simpleUserModelDataMapper = simpleUserModelDataMapper;
         this.replyModelDataMapper = replyModelDataMapper;
     }
 
@@ -27,13 +29,23 @@ public class CommentModelDataMapper {
         CommentModel commentModel = new CommentModel();
         commentModel.setId(comment.getId());
         commentModel.setPictureUrls(comment.getPictureUrls());
-        commentModel.setAuthor(loginModelDataMapper.transform(comment.getAuthor()));
+
+        if (comment.getAuthor() == null) {
+            comment.setAuthor(new SimpleUser());
+        }
+
+        commentModel.setAuthor(simpleUserModelDataMapper.transform(comment.getAuthor()));
         commentModel.setContent(comment.getContent());
         commentModel.setDate(comment.getDate());
         commentModel.setLike(comment.isLike());
         commentModel.setLikeCount(comment.getLikeCount());
+
+        if (comment.getReplies() == null) {
+            comment.setReplies(new ArrayList<Reply>());
+        }
         commentModel.setReplies(replyModelDataMapper.transform(comment.getReplies()));
-        commentModel.setReplyModelCount(comment.getReplyCount());
+        commentModel.setReplyCount(comment.getReplyCount());
+        commentModel.setReply(comment.isReply());
 
         return commentModel;
     }

@@ -5,26 +5,37 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
+import cn.canlnac.onlinecourse.domain.CommentList;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.model.CommentListModel;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.mapper.CommentListModelDataMapper;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCommentFragment;
 
 @PerActivity
 public class GetCommentsInCoursePresenter implements Presenter {
 
-    RegisterActivity getCommentsInCourseActivity;
+    CourseCommentFragment getCommentsInCourseFragment;
 
     private final UseCase getCommentsInCourseUseCase;
+    private final CommentListModelDataMapper commentListModelDataMapper;
+
+    private int state;
 
     @Inject
-    public GetCommentsInCoursePresenter(UseCase getCommentsInCourseUseCase) {
+    public GetCommentsInCoursePresenter(UseCase getCommentsInCourseUseCase,CommentListModelDataMapper commentListModelDataMapper) {
         this.getCommentsInCourseUseCase = getCommentsInCourseUseCase;
+        this.commentListModelDataMapper = commentListModelDataMapper;
     }
 
-    public void setView(@NonNull RegisterActivity getCommentsInCourseActivity) {
-        this.getCommentsInCourseActivity = getCommentsInCourseActivity;
+    /**
+     * 设置View
+     * @param getCommentsInCourseFragment   view
+     * @param state                         0，刷新；1，加载更多
+     */
+    public void setView(@NonNull CourseCommentFragment getCommentsInCourseFragment, int state) {
+        this.getCommentsInCourseFragment = getCommentsInCourseFragment;
+        this.state = state;
     }
 
     public void initialize() {
@@ -46,7 +57,7 @@ public class GetCommentsInCoursePresenter implements Presenter {
         this.getCommentsInCourseUseCase.unsubscribe();
     }
 
-    private final class GetCommentsInCourseSubscriber extends DefaultSubscriber<CommentListModel> {
+    private final class GetCommentsInCourseSubscriber extends DefaultSubscriber<CommentList> {
         @Override
         public void onCompleted() {
         }
@@ -56,25 +67,37 @@ public class GetCommentsInCoursePresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        GetCommentsInCoursePresenter.this.getCommentsInCourseActivity.showToastMessage("参数错误！");
+                        if (state == 0) {
+                            GetCommentsInCoursePresenter.this.getCommentsInCourseFragment.showRefreshError("参数错误");
+                        }
                         break;
                     case 404:
-                        GetCommentsInCoursePresenter.this.getCommentsInCourseActivity.showToastMessage("资源不存在！");
-                        break;
-                    case 409:
-                        GetCommentsInCoursePresenter.this.getCommentsInCourseActivity.showToastMessage("用户名已被注册！");
+                        if (state == 0) {
+                            GetCommentsInCoursePresenter.this.getCommentsInCourseFragment.showRefreshError("没有评论");
+                        }
                         break;
                     default:
-                        GetCommentsInCoursePresenter.this.getCommentsInCourseActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
+                        if (state == 0) {
+                            GetCommentsInCoursePresenter.this.getCommentsInCourseFragment.showRefreshError("加载失败");
+                        }
+                        GetCommentsInCoursePresenter.this.getCommentsInCourseFragment.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                GetCommentsInCoursePresenter.this.getCommentsInCourseActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                if (state == 0) {
+                    GetCommentsInCoursePresenter.this.getCommentsInCourseFragment.showRefreshError("加载失败");
+                }
+                GetCommentsInCoursePresenter.this.getCommentsInCourseFragment.showToastMessage("网络连接错误");
             }
         }
 
         @Override
-        public void onNext(CommentListModel commentListModel) {
-            GetCommentsInCoursePresenter.this.getCommentsInCourseActivity.showToastMessage("创建成功");
+        public void onNext(CommentList commentList) {
+            if (state == 0) {
+                GetCommentsInCoursePresenter.this.getCommentsInCourseFragment.showRefreshComments(commentListModelDataMapper.transform(commentList));
+            } else if (state == 1) {
+                GetCommentsInCoursePresenter.this.getCommentsInCourseFragment.showLoadMoreComments(commentListModelDataMapper.transform(commentList));
+            }
         }
     }
 }

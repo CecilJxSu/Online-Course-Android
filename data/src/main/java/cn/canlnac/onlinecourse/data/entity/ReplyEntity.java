@@ -14,10 +14,10 @@ public class ReplyEntity {
     private long date;
 
     @SerializedName("toUser")
-    private LoginEntity toUser;
+    private SimpleUserEntity toUser;
 
     @SerializedName("author")
-    private LoginEntity author;
+    private SimpleUserEntity author;
 
     @SerializedName("content")
     private String content;
@@ -38,19 +38,19 @@ public class ReplyEntity {
         this.date = date;
     }
 
-    public LoginEntity getToUser() {
+    public SimpleUserEntity getToUser() {
         return toUser;
     }
 
-    public void setToUser(LoginEntity toUser) {
+    public void setToUser(SimpleUserEntity toUser) {
         this.toUser = toUser;
     }
 
-    public LoginEntity getAuthor() {
+    public SimpleUserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(LoginEntity author) {
+    public void setAuthor(SimpleUserEntity author) {
         this.author = author;
     }
 

@@ -9,9 +9,9 @@ public class Reply {
 
     private long date;
 
-    private Login toUser;
+    private SimpleUser toUser;
 
-    private Login author;
+    private SimpleUser author;
 
     private String content;
 
@@ -31,19 +31,19 @@ public class Reply {
         this.date = date;
     }
 
-    public Login getToUser() {
+    public SimpleUser getToUser() {
         return toUser;
     }
 
-    public void setToUser(Login toUser) {
+    public void setToUser(SimpleUser toUser) {
         this.toUser = toUser;
     }
 
-    public Login getAuthor() {
+    public SimpleUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(Login author) {
+    public void setAuthor(SimpleUser author) {
         this.author = author;
     }
 

@@ -3,7 +3,6 @@ package cn.canlnac.onlinecourse.presentation.ui.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +10,17 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCommentsInCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCommentsInCourseModule;
+import cn.canlnac.onlinecourse.presentation.model.CommentListModel;
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
-import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
+import cn.canlnac.onlinecourse.presentation.presenter.GetCommentsInCoursePresenter;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CommentAdapter;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleFooter;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleHeader;
@@ -25,20 +30,20 @@ import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.ZrcListView;
  * 课程评论.
  */
 
-public class CourseCommentFragment extends Fragment {
+public class CourseCommentFragment extends BaseFragment {
     @BindView(R.id.course_comments_list)
     ZrcListView zrcListView;
 
     private CommentAdapter adapter;
     private Handler handler;
 
-    private ArrayList<String> msgs;
-    private int pageId = -1;
+    @Inject
+    GetCommentsInCoursePresenter getCommentsInCoursePresenter;
 
-    private static final String[][] names = new String[][]{
-            {"加拿大"},
-            {"德国"}
-    };
+    int start = 0;
+    int count = 1;
+    int total = 1;
+    String sort = "date";
 
     List<CommentModel> comments = new ArrayList<>();
 
@@ -88,49 +93,6 @@ public class CourseCommentFragment extends Fragment {
             }
         });
 
-        CommentModel comment1 = new CommentModel();
-        //comment1.setUserIcon(R.drawable.header);
-        //comment1.setUserName("弗拉德丽嘉1");
-        comment1.setContent("啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦" +
-                "啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦" +
-                "啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦");
-        //comment1.setPostTime("昨天");
-        //comment1.setLikeCount("100");
-        comment1.setLike(false);
-        //comment1.setReply(true);
-
-        List<ReplyModel> replies = new ArrayList<>();
-        ReplyModel reply1 = new ReplyModel();
-        //reply1.setUserName("abdsfdsffsdf");
-        reply1.setContent("啦啦啦!!!");
-        //reply1.setPostTime("一小时前");
-        //reply1.setReply(true);
-
-        ReplyModel reply2 = new ReplyModel();
-        //reply2.setUserName("弗拉德丽嘉1");
-        //reply2.setToUserName("abdsfdsffsdf");
-        reply2.setContent("Bla bla blaBla bla blaBla bla blaBla bla blaBla bla blaBla bla bla!!!");
-        //reply2.setPostTime("一小时前");
-        //reply2.setReply(false);
-
-        replies.add(reply1);
-        replies.add(reply2);
-
-        comment1.setReplies(replies);
-        comments.add(comment1);
-
-        CommentModel comment2 = new CommentModel();
-        //comment2.setUserIcon(R.drawable.header);
-        //comment2.setUserName("弗拉德丽嘉2");
-        comment2.setContent("Blala...Blala...Blala...Blala..." +
-                "Blala...Blala...Blala...Blala..." +
-                "Blala...Blala...Blala...Blala...");
-        //comment2.setPostTime("1小时前");
-        //comment2.setLikeCount("212");
-        comment2.setLike(true);
-        //comment2.setReply(false);
-        comments.add(comment2);
-
         adapter = new CommentAdapter(getActivity(), comments);
         zrcListView.setAdapter(adapter);
         zrcListView.refresh(); // 主动下拉刷新
@@ -138,42 +100,87 @@ public class CourseCommentFragment extends Fragment {
         return view;
     }
 
+    /**
+     * 刷新
+     */
     private void refresh(){
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                int rand = (int) (Math.random() * 2); // 随机数模拟成功失败。这里从有数据开始。
-                if(rand == 0 || pageId == -1){
-                    pageId = 0;
-                    msgs = new ArrayList<>();
-                    for(String name:names[0]){
-                        msgs.add(name);
-                    }
-                    adapter.notifyDataSetChanged();
-                    zrcListView.setRefreshSuccess("加载成功"); // 通知加载成功
-                    zrcListView.startLoadMore(); // 开启LoadingMore功能
-                }else{
-                    zrcListView.setRefreshFail("加载失败");
+                if (((CourseActivity)getActivity()).getCourseId() <= 0) {
+                    zrcListView.setRefreshFail("课程不存在");
+                    return;
+                }
+
+                if (start == 0) {
+                    //获取评论
+                    DaggerGetCommentsInCourseComponent.builder()
+                            .applicationComponent(getApplicationComponent())
+                            .activityModule(getActivityModule())
+                            .getCommentsInCourseModule(new GetCommentsInCourseModule(((CourseActivity)getActivity()).getCourseId(), start, count, sort))
+                            .build().inject(CourseCommentFragment.this);
+
+                    getCommentsInCoursePresenter.setView(CourseCommentFragment.this, 0);
+                    getCommentsInCoursePresenter.initialize();
+                } else {
+                    showRefreshError("加载完成");
                 }
             }
         }, 2 * 1000);
     }
 
+    /**
+     * 加载更多
+     */
     private void loadMore(){
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                pageId++;
-                if(pageId<names.length){
-                    for(String name:names[pageId]){
-                        msgs.add(name);
-                    }
-                    adapter.notifyDataSetChanged();
-                    zrcListView.setLoadMoreSuccess();
+                start += count;
+                if(start < total){
+                    //获取评论
+                    DaggerGetCommentsInCourseComponent.builder()
+                            .applicationComponent(getApplicationComponent())
+                            .activityModule(getActivityModule())
+                            .getCommentsInCourseModule(new GetCommentsInCourseModule(((CourseActivity)getActivity()).getCourseId(), start, count, sort))
+                            .build().inject(CourseCommentFragment.this);
+
+                    getCommentsInCoursePresenter.setView(CourseCommentFragment.this, 1);
+                    getCommentsInCoursePresenter.initialize();
                 }else{
                     zrcListView.stopLoadMore();
                 }
             }
         }, 2 * 1000);
+    }
+
+    /**
+     * 刷新显示评论
+     * @param commentListModel
+     */
+    public void showRefreshComments(CommentListModel commentListModel) {
+        total = commentListModel.getTotal();
+        comments.addAll(commentListModel.getComments());
+        adapter.notifyDataSetChanged();
+        zrcListView.setRefreshSuccess("加载成功");  // 通知加载成功
+        zrcListView.startLoadMore();                // 开启LoadingMore功能
+    }
+
+    /**
+     * 更新显示评论
+     * @param commentListModel
+     */
+    public void showLoadMoreComments(CommentListModel commentListModel) {
+        total = commentListModel.getTotal();
+        comments.addAll(commentListModel.getComments());
+        adapter.notifyDataSetChanged();
+        zrcListView.setLoadMoreSuccess();
+    }
+
+    /**
+     * 刷新失败
+     */
+    public void showRefreshError(String message) {
+        zrcListView.setRefreshFail(message);
     }
 }
