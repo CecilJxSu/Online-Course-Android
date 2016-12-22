@@ -74,6 +74,7 @@ public class UnlikeCommentPresenter implements Presenter {
         @Override
         public void onNext(Void empty) {
             UnlikeCommentPresenter.this.unlikeCommentActivity.changeLike(false);
+            UnlikeCommentPresenter.this.unlikeCommentActivity.changeLikeCount(false);
         }
     }
 }

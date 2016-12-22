@@ -77,6 +77,7 @@ public class LikeCommentPresenter implements Presenter {
         @Override
         public void onNext(Void empty) {
             LikeCommentPresenter.this.likeCommentActivity.changeLike(true);
+            LikeCommentPresenter.this.likeCommentActivity.changeLikeCount(true);
         }
     }
 }

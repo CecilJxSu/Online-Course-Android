@@ -140,6 +140,19 @@ public class CommentViewHolder {
     }
 
     /**
+     * 修改点赞数
+     * @param isLike
+     */
+    public void changeLikeCount(boolean isLike) {
+        int count = Integer.parseInt(likeCount.getText().toString());
+        if (isLike) {
+            likeCount.setText(++count+"");
+        } else {
+            likeCount.setText(--count+"");
+        }
+    }
+
+    /**
      * 改变回复评论状态
      * @param isReply
      */

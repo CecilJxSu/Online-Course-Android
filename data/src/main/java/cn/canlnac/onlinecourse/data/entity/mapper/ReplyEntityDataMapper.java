@@ -45,6 +45,9 @@ public class ReplyEntityDataMapper {
      * @return
      */
     public List<Reply> transform(List<ReplyEntity> replyEntityList) {
+        if (replyEntityList == null) {
+            replyEntityList = new ArrayList<>();
+        }
         List<Reply> replyList = new ArrayList<>(replyEntityList.size());
         Reply reply;
         for (ReplyEntity replyEntity : replyEntityList) {

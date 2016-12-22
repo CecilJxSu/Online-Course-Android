@@ -29,6 +29,6 @@ public class CommentDataRepository implements CommentRepository {
 
     @Override
     public Observable<Void> unlikeComment(int commentId) {
-        return commentDataStore.likeComment(commentId);
+        return commentDataStore.unlikeComment(commentId);
     }
 }
