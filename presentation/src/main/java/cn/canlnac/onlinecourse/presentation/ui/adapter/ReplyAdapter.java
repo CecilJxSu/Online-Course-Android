@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+
+import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
 
@@ -21,10 +19,12 @@ import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
 public class ReplyAdapter extends BaseAdapter {
     private Activity activity;
     private List<ReplyModel> replies;
+    private PrettyTime prettyTime;
 
-    public ReplyAdapter(Activity activity, List<ReplyModel> replies) {
+    public ReplyAdapter(Activity activity, List<ReplyModel> replies, PrettyTime prettyTime) {
         this.activity = activity;
         this.replies = replies;
+        this.prettyTime = prettyTime;
     }
 
     @Override
@@ -43,62 +43,15 @@ public class ReplyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        ViewHolder holder;
+        ReplyViewHolder holder;
         if (view != null) {
-            holder = (ViewHolder) view.getTag();
+            holder = (ReplyViewHolder) view.getTag();
         } else {
             view = activity.getLayoutInflater().inflate(R.layout.reply_to_comment, null);
-            holder = new ViewHolder(activity,view, replies.get(position));
+            holder = new ReplyViewHolder(activity,view, replies.get(position), prettyTime);
             view.setTag(holder);
         }
 
         return view;
-    }
-
-    static class ViewHolder {
-        @BindView(R.id.reply_comment_username) TextView userName;
-        @BindView(R.id.reply_comment_content) TextView content;
-        @BindView(R.id.reply_comment_postTime) TextView postTime;
-        @BindView(R.id.reply_comment_reply) ImageView replyImageView;
-
-        private boolean isReply;
-
-        public ViewHolder(Activity activity,View view, ReplyModel reply) {
-            ButterKnife.bind(this, view);
-
-            /*userName.setText(reply.getUserName() + ":");
-
-            StringBuilder prefixContent = new StringBuilder();
-            if (reply.getUserName() != null && !reply.getUserName().isEmpty()) {
-                char[] chars = userName.getText().toString().toCharArray();
-                for (char _char:chars) {
-                    if (_char < 0x007F) {
-                        prefixContent.append("\u2002");
-                    } else if (_char < 0x07FF) {
-                        prefixContent.append("\u2002");
-                    } else {
-                        prefixContent.append("\u2003");
-                    }
-                }
-            }
-
-            if (reply.getToUserName() != null && !reply.getToUserName().isEmpty()) {
-                prefixContent.append("回复: @");
-                prefixContent.append(reply.getToUserName());
-                prefixContent.append('\u2002');
-                prefixContent.append(reply.getContent());
-            } else {
-                prefixContent.append(reply.getContent());
-            }
-            content.setText(prefixContent);
-            postTime.setText(reply.getPostTime());
-
-            isReply = reply.isReply();
-            if (isReply) {
-                replyImageView.setImageResource(R.drawable.comment_green_icon);
-            } else {
-                replyImageView.setImageResource(R.drawable.comment_icon);
-            }*/
-        }
     }
 }

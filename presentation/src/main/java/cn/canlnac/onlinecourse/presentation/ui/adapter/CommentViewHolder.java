@@ -80,7 +80,7 @@ public class CommentViewHolder {
 
         //回复评论
         if (comment.getReplies() != null && comment.getReplies().size() > 0) {
-            ReplyAdapter adapter = new ReplyAdapter(activity, comment.getReplies());
+            ReplyAdapter adapter = new ReplyAdapter(activity, comment.getReplies(), prettyTime);
             int totalHeight = 0;
             for (int i = 0; i < adapter.getCount(); i++) {
                 View item = adapter.getView(i, null, replyView);

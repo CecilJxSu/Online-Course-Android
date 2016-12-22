@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.Reply;
+import cn.canlnac.onlinecourse.domain.SimpleUser;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
 
@@ -25,8 +26,18 @@ public class ReplyModelDataMapper {
         ReplyModel replyModel = new ReplyModel();
         replyModel.setId(reply.getId());
         replyModel.setDate(reply.getDate());
+
+        if (reply.getAuthor() == null) {
+            reply.setAuthor(new SimpleUser());
+        }
+
         replyModel.setAuthor(simpleUserModelDataMapper.transform(reply.getAuthor()));
         replyModel.setContent(reply.getContent());
+
+        if (reply.getToUser() == null) {
+            reply.setToUser(new SimpleUser());
+        }
+
         replyModel.setToUser(simpleUserModelDataMapper.transform(reply.getToUser()));
 
         return replyModel;
