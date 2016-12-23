@@ -321,6 +321,10 @@ public class RestApiConnection {
         return APIConnection.create(METHOD.DELETE, API_COMMENT + "/" + commentId + "/like", null, getJwt()).request();
     }
 
+    public Response getCommentFromApi(int commentId) throws MalformedURLException {
+        return APIConnection.create(METHOD.GET, API_COMMENT + "/" + commentId, null, getJwt()).request();
+    }
+
     public Response getChatFromApi(int chatId) throws MalformedURLException {
         return APIConnection.create(METHOD.GET, API_CHAT + "/" + chatId, null, getJwt()).request();
     }

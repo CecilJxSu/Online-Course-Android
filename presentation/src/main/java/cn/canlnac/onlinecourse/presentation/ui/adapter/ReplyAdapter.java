@@ -44,13 +44,12 @@ public class ReplyAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         ReplyViewHolder holder;
-        if (view != null) {
-            holder = (ReplyViewHolder) view.getTag();
-        } else {
+        if (view == null) {
             view = activity.getLayoutInflater().inflate(R.layout.reply_to_comment, null);
-            holder = new ReplyViewHolder(activity,view, replies.get(position), prettyTime);
-            view.setTag(holder);
         }
+
+        holder = new ReplyViewHolder(activity,view, replies.get(position), prettyTime);
+        view.setTag(holder);
 
         return view;
     }

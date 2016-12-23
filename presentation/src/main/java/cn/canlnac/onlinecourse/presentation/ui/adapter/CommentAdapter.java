@@ -43,13 +43,12 @@ public class CommentAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         CommentViewHolder holder;
-        if (view != null) {
-            holder = (CommentViewHolder) view.getTag();
-        } else {
+        if (view == null) {
             view = activity.getLayoutInflater().inflate(R.layout.comment_content, null);
-            holder = new CommentViewHolder(activity,view, comments.get(position), prettyTime);
-            view.setTag(holder);
         }
+
+        holder = new CommentViewHolder(activity,view, comments.get(position), prettyTime);
+        view.setTag(holder);
 
         return view;
     }

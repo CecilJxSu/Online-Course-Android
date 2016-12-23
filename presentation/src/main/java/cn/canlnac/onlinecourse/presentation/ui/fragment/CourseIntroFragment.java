@@ -69,15 +69,17 @@ public class CourseIntroFragment extends BaseFragment implements HasComponent<Co
             content.setText("\u3000\u3000" + courseModel.getIntroduction().replace("\n","\n\u3000\u3000"));
         }
 
-        if (null != courseModel.getAuthor() || courseModel.getAuthor().getId() > 0) {
-            this.courseIntroComponent = DaggerCourseIntroComponent.builder()
-                    .applicationComponent(getApplicationComponent())
-                    .activityModule(getActivityModule())
-                    .courseIntroModule(new CourseIntroModule(courseModel.getAuthor().getId()))
-                    .build();
-            this.getComponent(CourseIntroComponent.class).inject(this);
-            this.courseIntroPresenter.setView(this);
-            this.courseIntroPresenter.initializeProfile();
+        if (this.getActivity() != null) {
+            if (null != courseModel.getAuthor() || courseModel.getAuthor().getId() > 0) {
+                this.courseIntroComponent = DaggerCourseIntroComponent.builder()
+                        .applicationComponent(getApplicationComponent())
+                        .activityModule(getActivityModule())
+                        .courseIntroModule(new CourseIntroModule(courseModel.getAuthor().getId()))
+                        .build();
+                this.getComponent(CourseIntroComponent.class).inject(this);
+                this.courseIntroPresenter.setView(this);
+                this.courseIntroPresenter.initializeProfile();
+            }
         }
     }
 

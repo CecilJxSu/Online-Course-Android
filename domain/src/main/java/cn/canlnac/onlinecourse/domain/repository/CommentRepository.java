@@ -1,5 +1,6 @@
 package cn.canlnac.onlinecourse.domain.repository;
 
+import cn.canlnac.onlinecourse.domain.Comment;
 import rx.Observable;
 
 /**
@@ -10,4 +11,6 @@ public interface CommentRepository {
     Observable<Void> likeComment(int commentId);
     /** 取消点赞评论 */
     Observable<Void> unlikeComment(int commentId);
+    /** 获取指定评论 */
+    Observable<Comment> getComment(int commentId);
 }

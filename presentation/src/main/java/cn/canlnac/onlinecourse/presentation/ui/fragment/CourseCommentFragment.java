@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.canlnac.onlinecourse.presentation.AndroidApplication;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCommentsInCourseComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCommentsInCourseModule;
@@ -100,6 +101,23 @@ public class CourseCommentFragment extends BaseFragment {
         return view;
     }
 
+    @Override
+    public void onDestroy() {
+        zrcListView.setOnLoadMoreStartListener(null);
+        zrcListView.setOnRefreshStartListener(null);
+
+        super.onDestroy();
+    }
+
+    /**
+     * 发表评论
+     * @param commentModel
+     */
+    public void postComment(CommentModel commentModel) {
+        comments.add(0,commentModel);
+        adapter.notifyDataSetChanged();
+    }
+
     /**
      * 刷新
      */
@@ -107,23 +125,28 @@ public class CourseCommentFragment extends BaseFragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (((CourseActivity)getActivity()).getCourseId() <= 0) {
-                    zrcListView.setRefreshFail("课程不存在");
-                    return;
-                }
+                CourseActivity activity = (CourseActivity)getActivity();
 
-                if (start == 0) {
-                    //获取评论
-                    DaggerGetCommentsInCourseComponent.builder()
-                            .applicationComponent(getApplicationComponent())
-                            .activityModule(getActivityModule())
-                            .getCommentsInCourseModule(new GetCommentsInCourseModule(((CourseActivity)getActivity()).getCourseId(), start, count, sort))
-                            .build().inject(CourseCommentFragment.this);
+                if (activity != null) {
+                    if (activity.getCourseId() <= 0) {
+                        zrcListView.setRefreshFail("课程不存在");
+                        return;
+                    }
 
-                    getCommentsInCoursePresenter.setView(CourseCommentFragment.this, 0);
-                    getCommentsInCoursePresenter.initialize();
-                } else {
-                    showRefreshError("加载完成");
+                    if (start == 0) {
+                        //获取评论
+                            DaggerGetCommentsInCourseComponent.builder()
+                                    .applicationComponent(getApplicationComponent())
+                                    .activityModule(getActivityModule())
+                                    .getCommentsInCourseModule(new GetCommentsInCourseModule(activity.getCourseId(), start, count, sort))
+                                    .build().inject(CourseCommentFragment.this);
+
+                            getCommentsInCoursePresenter.setView(CourseCommentFragment.this, 0);
+                            getCommentsInCoursePresenter.initialize();
+
+                    } else {
+                        showRefreshError("加载完成");
+                    }
                 }
             }
         }, 2 * 1000);
@@ -139,14 +162,17 @@ public class CourseCommentFragment extends BaseFragment {
                 start += count;
                 if(start < total){
                     //获取评论
-                    DaggerGetCommentsInCourseComponent.builder()
-                            .applicationComponent(getApplicationComponent())
-                            .activityModule(getActivityModule())
-                            .getCommentsInCourseModule(new GetCommentsInCourseModule(((CourseActivity)getActivity()).getCourseId(), start, count, sort))
-                            .build().inject(CourseCommentFragment.this);
+                    CourseActivity activity = (CourseActivity)getActivity();
+                    if (activity != null) {
+                        DaggerGetCommentsInCourseComponent.builder()
+                                .applicationComponent(((AndroidApplication)getActivity().getApplication()).getApplicationComponent())
+                                .activityModule(getActivityModule())
+                                .getCommentsInCourseModule(new GetCommentsInCourseModule(activity.getCourseId(), start, count, sort))
+                                .build().inject(CourseCommentFragment.this);
 
-                    getCommentsInCoursePresenter.setView(CourseCommentFragment.this, 1);
-                    getCommentsInCoursePresenter.initialize();
+                        getCommentsInCoursePresenter.setView(CourseCommentFragment.this, 1);
+                        getCommentsInCoursePresenter.initialize();
+                    }
                 }else{
                     zrcListView.stopLoadMore();
                 }

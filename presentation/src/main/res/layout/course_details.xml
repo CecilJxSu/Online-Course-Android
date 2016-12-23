@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0">
 
     <RelativeLayout
+        android:id="@+id/course_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF">
@@ -112,6 +113,26 @@
             android:layout_marginRight="10dp"
             android:layout_below="@+id/course_favorite"/>
 
+        <ImageView
+            android:id="@+id/course_comment"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/comment_icon"
+            android:layout_below="@+id/course_video_container"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/course_share"/>
+        <TextView
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:text="评论"
+            android:gravity="center"
+            android:textSize="11sp"
+            android:textColor="#707070"
+            android:layout_toLeftOf="@+id/course_share"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/course_share"/>
+
         <TextView
             android:id="@+id/course_title"
             android:layout_width="match_parent"
@@ -133,11 +154,20 @@
         app:tabGravity="fill"
         app:tabMode="fixed"
         app:tabSelectedTextColor="#7fc8c1"
+        android:layout_below="@+id/course_container"
         android:layout_marginTop="5dp"
         android:minHeight="50dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/course_pager"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/course_tab_layout"/>
+
+    <fragment
+        android:id="@+id/course_comment_fragment"
+        android:name="cn.canlnac.onlinecourse.presentation.ui.fragment.PostCommentInCourseFragment"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+
+</RelativeLayout>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -34,6 +35,7 @@ import cn.canlnac.onlinecourse.presentation.internal.di.modules.LikeCourseModule
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnfavoriteCourseModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnlikeCourseModule;
 import cn.canlnac.onlinecourse.presentation.model.CatalogModel;
+import cn.canlnac.onlinecourse.presentation.model.CommentModel;
 import cn.canlnac.onlinecourse.presentation.model.CourseModel;
 import cn.canlnac.onlinecourse.presentation.presenter.FavoriteCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCatalogsPresenter;
@@ -43,7 +45,9 @@ import cn.canlnac.onlinecourse.presentation.presenter.UnfavoriteCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.UnlikeCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CoursePagerAdapter;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCatalogFragment;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCommentFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseIntroFragment;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.PostCommentInCourseFragment;
 import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.model.Video;
 import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view.MediaController;
 import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view.SuperVideoPlayer;
@@ -65,6 +69,11 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
     @BindView(R.id.course_tab_layout) TabLayout courseTab;
 
     @BindView(R.id.course_pager) ViewPager coursePager;
+
+    @BindView(R.id.course_comment) ImageView courseComment;
+
+    private PostCommentInCourseFragment commentFragment;
+    private boolean isShowFragment = true;
 
     private Boolean isLike = false;
     private Boolean isFavorite = false;
@@ -97,6 +106,11 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         setContentView(R.layout.course_details);
 
         ButterKnife.bind(this);
+
+        //获取fragment
+        commentFragment = ((PostCommentInCourseFragment)getSupportFragmentManager().findFragmentById(R.id.course_comment_fragment));
+        //隐藏fragment
+        toggleCommentFragment();
 
         //获取意图和数据
         Intent intent = getIntent();
@@ -282,6 +296,44 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         } else {
             like.setImageResource(R.drawable.unlike_with_background);
         }
+    }
+
+    @OnClick(R.id.course_comment)
+    public void onClickComment(View v) {
+        toggleCommentFragment();
+        if (!isShowFragment) {
+            commentFragment.clearComment();
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (isShowFragment) {
+            toggleCommentFragment();
+        }
+        return super.onTouchEvent(event);
+    }
+
+    public void toggleCommentFragment() {
+        isShowFragment = !isShowFragment;
+        if (isShowFragment) {
+            getSupportFragmentManager().beginTransaction().show(commentFragment).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().hide(commentFragment).commit();
+        }
+    }
+
+    /**
+     * 发表评论
+     * @param commentModel
+     */
+    public void postComment(CommentModel commentModel) {
+        TabLayout.Tab commentTab = courseTab.getTabAt(2);
+        if (commentTab != null) {
+            commentTab.select();
+        }
+
+        ((CourseCommentFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(2)).postComment(commentModel);
     }
 
     /**

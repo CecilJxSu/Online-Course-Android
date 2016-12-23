@@ -3,8 +3,10 @@ package cn.canlnac.onlinecourse.data.repository;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import cn.canlnac.onlinecourse.data.entity.mapper.CommentEntityDataMapper;
 import cn.canlnac.onlinecourse.data.repository.datasource.CommentDataStore;
 import cn.canlnac.onlinecourse.data.repository.datasource.CommentDataStoreFactory;
+import cn.canlnac.onlinecourse.domain.Comment;
 import cn.canlnac.onlinecourse.domain.repository.CommentRepository;
 import rx.Observable;
 
@@ -14,12 +16,15 @@ import rx.Observable;
 @Singleton
 public class CommentDataRepository implements CommentRepository {
     private final CommentDataStore commentDataStore;
+    private final CommentEntityDataMapper commentEntityDataMapper;
 
     @Inject
     public CommentDataRepository(
-            CommentDataStoreFactory commentDataStoreFactory
+            CommentDataStoreFactory commentDataStoreFactory,
+            CommentEntityDataMapper commentEntityDataMapper
     ) {
         this.commentDataStore = commentDataStoreFactory.create();
+        this.commentEntityDataMapper = commentEntityDataMapper;
     }
 
     @Override
@@ -30,5 +35,10 @@ public class CommentDataRepository implements CommentRepository {
     @Override
     public Observable<Void> unlikeComment(int commentId) {
         return commentDataStore.unlikeComment(commentId);
+    }
+
+    @Override
+    public Observable<Comment> getComment(int commentId) {
+        return commentDataStore.getComment(commentId).map(commentEntityDataMapper::transform);
     }
 }

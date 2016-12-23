@@ -19,6 +19,7 @@ import cn.canlnac.onlinecourse.data.entity.CatalogIdEntity;
 import cn.canlnac.onlinecourse.data.entity.ChatEntity;
 import cn.canlnac.onlinecourse.data.entity.ChatIdEntity;
 import cn.canlnac.onlinecourse.data.entity.ChatListEntity;
+import cn.canlnac.onlinecourse.data.entity.CommentEntity;
 import cn.canlnac.onlinecourse.data.entity.CommentIdEntity;
 import cn.canlnac.onlinecourse.data.entity.CommentListEntity;
 import cn.canlnac.onlinecourse.data.entity.CourseEntity;
@@ -1037,6 +1038,35 @@ public class RestApiImpl implements RestApi {
                 if (response.code() == 200) {//状态码正确响应
                     //完成
                     subscriber.onNext(null);
+                    subscriber.onCompleted();
+                } else {//状态码错误
+                    subscriber.onError(setCommentStatusError(response.code()));
+                }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<CommentEntity> getComment(int commentId) {
+        return Observable.create(subscriber -> {
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
+
+            try {
+                Response response = restApiConnection.getCommentFromApi(commentId);
+                if (response == null) {//网络异常
+                    subscriber.onError(new NetworkConnectionException());
+                    return;
+                }
+
+                if (response.code() == 200) {//状态码正确响应
+                    //完成
+                    CommentEntity commentEntity = new Gson().fromJson(response.body().string(),CommentEntity.class);
+                    subscriber.onNext(commentEntity);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
