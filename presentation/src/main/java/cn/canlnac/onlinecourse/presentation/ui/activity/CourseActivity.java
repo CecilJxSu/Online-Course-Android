@@ -48,6 +48,7 @@ import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCatalogFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCommentFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseIntroFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.PostCommentInCourseFragment;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.PostReplyInCourseFragment;
 import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.model.Video;
 import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view.MediaController;
 import cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view.SuperVideoPlayer;
@@ -73,7 +74,9 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
     @BindView(R.id.course_comment) ImageView courseComment;
 
     private PostCommentInCourseFragment commentFragment;
+    private PostReplyInCourseFragment replyFragment;
     private boolean isShowFragment = true;
+    private boolean isShowReplyFragment = true;
 
     private Boolean isLike = false;
     private Boolean isFavorite = false;
@@ -109,8 +112,10 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
 
         //获取fragment
         commentFragment = ((PostCommentInCourseFragment)getSupportFragmentManager().findFragmentById(R.id.course_comment_fragment));
+        replyFragment = ((PostReplyInCourseFragment) getSupportFragmentManager().findFragmentById(R.id.course_comment_reply_fragment));
         //隐藏fragment
         toggleCommentFragment();
+        toggleReplyFragment();
 
         //获取意图和数据
         Intent intent = getIntent();
@@ -316,10 +321,24 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
 
     public void toggleCommentFragment() {
         isShowFragment = !isShowFragment;
-        if (isShowFragment) {
+        if (isShowFragment && !isShowReplyFragment) {
             getSupportFragmentManager().beginTransaction().show(commentFragment).commit();
         } else {
             getSupportFragmentManager().beginTransaction().hide(commentFragment).commit();
+        }
+    }
+
+    private void toggleReplyFragment() {
+        toggleReplyFragment(-1, -1, "");
+    }
+
+    public void toggleReplyFragment(int commentId, int toUserId, String toUserName) {
+        isShowReplyFragment = !isShowReplyFragment;
+        if (isShowReplyFragment && !isShowFragment) {
+            replyFragment.setReplyData(commentId, toUserId, toUserName);
+            getSupportFragmentManager().beginTransaction().show(replyFragment).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().hide(replyFragment).commit();
         }
     }
 

@@ -13,8 +13,10 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.LoginActivity;
 
 /**
@@ -27,14 +29,20 @@ public class ReplyViewHolder {
     @BindView(R.id.reply_comment_postTime) TextView postTime;
     @BindView(R.id.reply_comment_reply) ImageView replyImageView;
 
-    private boolean isReply;
+    private CourseActivity activity;
 
-    private Activity activity;
+    private int commentId;
+    private int toUserId;
+    private String toUserName;
 
-    public ReplyViewHolder(Activity activity, View view, ReplyModel reply, PrettyTime prettyTime) {
+    public ReplyViewHolder(Activity activity, View view, int commentId, ReplyModel reply, PrettyTime prettyTime) {
         ButterKnife.bind(this, view);
 
-        this.activity = activity;
+        this.activity = (CourseActivity)activity;
+
+        this.commentId = commentId;
+        toUserId = reply.getToUser().getId();
+        toUserName = reply.getToUser().getName();
 
         userName.setText(reply.getAuthor().getName() + ":");
 
@@ -62,13 +70,11 @@ public class ReplyViewHolder {
         }
         content.setText(prefixContent);
         postTime.setText(prettyTime.format(new Date(reply.getDate())));
+    }
 
-        isReply = false;
-        if (isReply) {
-            replyImageView.setImageResource(R.drawable.comment_green_icon);
-        } else {
-            replyImageView.setImageResource(R.drawable.comment_icon);
-        }
+    @OnClick(R.id.reply_comment_reply)
+    public void onClickReply(View view) {
+        activity.toggleReplyFragment(commentId,toUserId,toUserName);
     }
 
     /**

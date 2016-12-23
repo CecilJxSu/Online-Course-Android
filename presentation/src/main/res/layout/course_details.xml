@@ -170,4 +170,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <fragment
+        android:id="@+id/course_comment_reply_fragment"
+        android:name="cn.canlnac.onlinecourse.presentation.ui.fragment.PostReplyInCourseFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </RelativeLayout>

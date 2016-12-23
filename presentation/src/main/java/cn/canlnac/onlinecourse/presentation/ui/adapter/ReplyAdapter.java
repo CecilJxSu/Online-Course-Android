@@ -20,11 +20,13 @@ public class ReplyAdapter extends BaseAdapter {
     private Activity activity;
     private List<ReplyModel> replies;
     private PrettyTime prettyTime;
+    private int commentId;
 
-    public ReplyAdapter(Activity activity, List<ReplyModel> replies, PrettyTime prettyTime) {
+    public ReplyAdapter(Activity activity, List<ReplyModel> replies, int commentId, PrettyTime prettyTime) {
         this.activity = activity;
         this.replies = replies;
         this.prettyTime = prettyTime;
+        this.commentId = commentId;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class ReplyAdapter extends BaseAdapter {
             view = activity.getLayoutInflater().inflate(R.layout.reply_to_comment, null);
         }
 
-        holder = new ReplyViewHolder(activity,view, replies.get(position), prettyTime);
+        holder = new ReplyViewHolder(activity,view, commentId, replies.get(position), prettyTime);
         view.setTag(holder);
 
         return view;
