@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.PostReplyInCourseFragment;
 
 @PerActivity
 public class ReplyCommentInCoursePresenter implements Presenter {
 
-    RegisterActivity replyCommentInCourseActivity;
+    PostReplyInCourseFragment replyCommentInCourseActivity;
 
     private final UseCase replyCommentInCourseUseCase;
 
@@ -22,7 +22,7 @@ public class ReplyCommentInCoursePresenter implements Presenter {
         this.replyCommentInCourseUseCase = replyCommentInCourseUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity replyCommentInCourseActivity) {
+    public void setView(@NonNull PostReplyInCourseFragment replyCommentInCourseActivity) {
         this.replyCommentInCourseActivity = replyCommentInCourseActivity;
     }
 
@@ -55,25 +55,26 @@ public class ReplyCommentInCoursePresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("参数错误！");
+                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("参数错误");
                         break;
                     case 404:
-                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("资源不存在！");
+                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("评论或回复用户不存在");
                         break;
-                    case 409:
-                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.toLogin();
                         break;
                     default:
                         ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
-        public void onNext(Integer answerId) {
-            ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("创建成功");
+        public void onNext(Integer replyId) {
+            ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.postSuccess(replyId);
         }
     }
 }

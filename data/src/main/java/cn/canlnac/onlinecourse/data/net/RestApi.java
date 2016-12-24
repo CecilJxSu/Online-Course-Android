@@ -9,6 +9,7 @@ import cn.canlnac.onlinecourse.data.entity.AnswerEntity;
 import cn.canlnac.onlinecourse.data.entity.CatalogEntity;
 import cn.canlnac.onlinecourse.data.entity.ChatEntity;
 import cn.canlnac.onlinecourse.data.entity.ChatListEntity;
+import cn.canlnac.onlinecourse.data.entity.CommentEntity;
 import cn.canlnac.onlinecourse.data.entity.CommentListEntity;
 import cn.canlnac.onlinecourse.data.entity.CourseEntity;
 import cn.canlnac.onlinecourse.data.entity.CourseListEntity;
@@ -22,6 +23,7 @@ import cn.canlnac.onlinecourse.data.entity.MessageEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
+import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import rx.Observable;
 
 /**
@@ -102,6 +104,12 @@ public interface RestApi {
     Observable<Void> likeComment(int commentId);
     /** 取消点赞评论 */
     Observable<Void> unlikeComment(int commentId);
+    /** 获取指定评论 */
+    Observable<CommentEntity> getComment(int commentId);
+
+    /********************************** 回复 ***********************************/
+    /** 获取指定回复 */
+    Observable<ReplyEntity> getReply(int replyId);
 
     /********************************** 话题 ***********************************/
     /** 获取话题 */

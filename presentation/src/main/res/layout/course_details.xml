@@ -1,40 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0F0F0">
 
     <RelativeLayout
+        android:id="@+id/course_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF">
-        <VideoView
-            android:id="@+id/course_video"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="220dp" />
+            android:layout_height="wrap_content"
+            android:minHeight="220dp"
+            android:background="#000000"
+            android:id="@+id/course_video_container">
+
+            <ImageView
+                android:id="@+id/course_play_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/biz_video_list_play_icon_big"/>
+
+            <cn.canlnac.onlinecourse.presentation.ui.widget.VideoPlayer.view.SuperVideoPlayer
+                android:id="@+id/course_video"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:visibility="gone"/>
+
+        </FrameLayout>
         <ImageView
             android:id="@+id/course_close"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:layout_marginTop="25dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/left_arrow"/>
+            android:src="@drawable/close_with_background"/>
         <ImageView
             android:id="@+id/course_like"
             android:layout_width="22dp"
             android:layout_height="22dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="25dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/thump_up_icon" />
+            android:src="@drawable/unlike_with_background" />
 
         <ImageView
             android:id="@+id/course_watching_img"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/invisible"
-            android:layout_below="@+id/course_video"
+            android:layout_below="@+id/course_video_container"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"/>
         <TextView
@@ -57,13 +73,13 @@
             android:layout_toRightOf="@+id/course_watching_img"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
-            android:layout_below="@+id/course_video"/>
+            android:layout_below="@+id/course_video_container"/>
         <ImageView
             android:id="@+id/course_favorite"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/unfavorite"
-            android:layout_below="@+id/course_video"
+            android:layout_below="@+id/course_video_container"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_alignParentRight="true"/>
@@ -82,7 +98,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/share_icon"
-            android:layout_below="@+id/course_video"
+            android:layout_below="@+id/course_video_container"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_toLeftOf="@+id/course_favorite"/>
@@ -96,6 +112,26 @@
             android:layout_toLeftOf="@+id/course_favorite"
             android:layout_marginRight="10dp"
             android:layout_below="@+id/course_favorite"/>
+
+        <ImageView
+            android:id="@+id/course_comment"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/comment_icon"
+            android:layout_below="@+id/course_video_container"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/course_share"/>
+        <TextView
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:text="评论"
+            android:gravity="center"
+            android:textSize="11sp"
+            android:textColor="#707070"
+            android:layout_toLeftOf="@+id/course_share"
+            android:layout_marginRight="10dp"
+            android:layout_below="@+id/course_share"/>
 
         <TextView
             android:id="@+id/course_title"
@@ -118,11 +154,26 @@
         app:tabGravity="fill"
         app:tabMode="fixed"
         app:tabSelectedTextColor="#7fc8c1"
+        android:layout_below="@+id/course_container"
         android:layout_marginTop="5dp"
         android:minHeight="50dp" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/course_pager"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/course_tab_layout"/>
+
+    <fragment
+        android:id="@+id/course_comment_fragment"
+        android:name="cn.canlnac.onlinecourse.presentation.ui.fragment.PostCommentInCourseFragment"
+        android:layout_width="match_parent"
         android:layout_height="match_parent" />
-</LinearLayout>
+
+    <fragment
+        android:id="@+id/course_comment_reply_fragment"
+        android:name="cn.canlnac.onlinecourse.presentation.ui.fragment.PostReplyInCourseFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

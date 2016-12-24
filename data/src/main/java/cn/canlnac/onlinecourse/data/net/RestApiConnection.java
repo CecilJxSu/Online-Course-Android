@@ -22,7 +22,7 @@ import cn.canlnac.onlinecourse.data.cache.FileManager;
 
 public class RestApiConnection {
     /** api地址 */
-    String API_BASE_URL = "http://120.24.221.156:8080/";
+    String API_BASE_URL = "http://192.168.3.23:8080/";
 
     //登录
     String API_LOGIN = API_BASE_URL + "login";
@@ -35,6 +35,8 @@ public class RestApiConnection {
     String API_COURSES = API_BASE_URL + "courses";
     //评论
     String API_COMMENT = API_BASE_URL + "comment";
+    //回复
+    String API_REPLY = API_BASE_URL + "reply";
     //话题
     String API_CHAT = API_BASE_URL + "chat";
     String API_CHATS = API_BASE_URL + "chats";
@@ -319,6 +321,14 @@ public class RestApiConnection {
 
     public Response unlikeCommentFromApi(int commentId) throws MalformedURLException {
         return APIConnection.create(METHOD.DELETE, API_COMMENT + "/" + commentId + "/like", null, getJwt()).request();
+    }
+
+    public Response getCommentFromApi(int commentId) throws MalformedURLException {
+        return APIConnection.create(METHOD.GET, API_COMMENT + "/" + commentId, null, getJwt()).request();
+    }
+
+    public Response getReplyFromApi(int replyId) throws MalformedURLException {
+        return APIConnection.create(METHOD.GET, API_REPLY + "/" + replyId, null, getJwt()).request();
     }
 
     public Response getChatFromApi(int chatId) throws MalformedURLException {

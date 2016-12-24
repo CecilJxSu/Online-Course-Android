@@ -19,6 +19,7 @@ import cn.canlnac.onlinecourse.data.entity.CatalogIdEntity;
 import cn.canlnac.onlinecourse.data.entity.ChatEntity;
 import cn.canlnac.onlinecourse.data.entity.ChatIdEntity;
 import cn.canlnac.onlinecourse.data.entity.ChatListEntity;
+import cn.canlnac.onlinecourse.data.entity.CommentEntity;
 import cn.canlnac.onlinecourse.data.entity.CommentIdEntity;
 import cn.canlnac.onlinecourse.data.entity.CommentListEntity;
 import cn.canlnac.onlinecourse.data.entity.CourseEntity;
@@ -38,6 +39,7 @@ import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionIdEntity;
 import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
+import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import cn.canlnac.onlinecourse.data.entity.ReplyIdEntity;
 import cn.canlnac.onlinecourse.data.exception.NetworkConnectionException;
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
@@ -117,7 +119,8 @@ public class RestApiImpl implements RestApi {
                 if (response.code() == 200) {//状态码正确响应
                     LoginEntity loginEntity = new Gson().fromJson(response.body().string(), LoginEntity.class);
                     //设置jwt
-                    loginEntity.setJwt(response.header("Authorization"));
+                    loginEntity.setJwt(response.header("Authentication"));
+
                     restApiConnection.setJwt(loginEntity.getJwt());
                     //完成
                     subscriber.onNext(loginEntity);
@@ -126,6 +129,7 @@ public class RestApiImpl implements RestApi {
                     subscriber.onError(setCommentStatusError(response.code()));
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 subscriber.onError(new NetworkConnectionException(e.getCause()));
             }
         });
@@ -187,6 +191,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -289,6 +294,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -428,6 +434,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -460,6 +467,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -516,6 +524,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -572,6 +581,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -599,6 +609,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -655,6 +666,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -682,6 +694,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -709,6 +722,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -736,6 +750,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -995,6 +1010,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1022,6 +1038,65 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
+                    subscriber.onCompleted();
+                } else {//状态码错误
+                    subscriber.onError(setCommentStatusError(response.code()));
+                }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<CommentEntity> getComment(int commentId) {
+        return Observable.create(subscriber -> {
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
+
+            try {
+                Response response = restApiConnection.getCommentFromApi(commentId);
+                if (response == null) {//网络异常
+                    subscriber.onError(new NetworkConnectionException());
+                    return;
+                }
+
+                if (response.code() == 200) {//状态码正确响应
+                    //完成
+                    CommentEntity commentEntity = new Gson().fromJson(response.body().string(),CommentEntity.class);
+                    subscriber.onNext(commentEntity);
+                    subscriber.onCompleted();
+                } else {//状态码错误
+                    subscriber.onError(setCommentStatusError(response.code()));
+                }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<ReplyEntity> getReply(int replyId) {
+        return Observable.create(subscriber -> {
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
+
+            try {
+                Response response = restApiConnection.getReplyFromApi(replyId);
+                if (response == null) {//网络异常
+                    subscriber.onError(new NetworkConnectionException());
+                    return;
+                }
+
+                if (response.code() == 200) {//状态码正确响应
+                    //完成
+                    ReplyEntity replyEntity = new Gson().fromJson(response.body().string(),ReplyEntity.class);
+                    subscriber.onNext(replyEntity);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1078,6 +1153,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1134,6 +1210,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1161,6 +1238,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1188,6 +1266,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1215,6 +1294,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1387,6 +1467,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1414,6 +1495,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1470,6 +1552,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1497,6 +1580,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1611,6 +1695,7 @@ public class RestApiImpl implements RestApi {
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成
+                    subscriber.onNext(null);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
@@ -1749,7 +1834,6 @@ public class RestApiImpl implements RestApi {
                 (ConnectivityManager) this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
-
         return isConnected;
     }
 

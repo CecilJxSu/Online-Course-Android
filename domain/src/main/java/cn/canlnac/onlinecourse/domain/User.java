@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.domain;
 
-import java.util.Date;
-
 /**
  * 用户实体类.
  */
@@ -9,15 +7,15 @@ import java.util.Date;
 public class User {
     private int id;
 
-    private Date date;
+    private long date;
 
     private String status;
 
     private String userStatus;
 
-    private Date lockDate;
+    private long lockDate;
 
-    private Date lockEndDate;
+    private long lockEndDate;
 
     private String username;
 
@@ -31,11 +29,11 @@ public class User {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -55,19 +53,19 @@ public class User {
         this.userStatus = userStatus;
     }
 
-    public Date getLockDate() {
+    public long getLockDate() {
         return lockDate;
     }
 
-    public void setLockDate(Date lockDate) {
+    public void setLockDate(long lockDate) {
         this.lockDate = lockDate;
     }
 
-    public Date getLockEndDate() {
+    public long getLockEndDate() {
         return lockEndDate;
     }
 
-    public void setLockEndDate(Date lockEndDate) {
+    public void setLockEndDate(long lockEndDate) {
         this.lockEndDate = lockEndDate;
     }
 

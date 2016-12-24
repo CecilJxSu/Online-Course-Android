@@ -28,6 +28,7 @@ public class CatalogModelDataMapper {
         catalogModel.setName(catalog.getName());
         catalogModel.setPreviewImage(catalog.getPreviewImage());
         catalogModel.setUrl(catalog.getUrl());
+        catalogModel.setParentId(catalog.getParentId());
 
         return catalogModel;
     }

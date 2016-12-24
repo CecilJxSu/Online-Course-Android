@@ -1,6 +1,5 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,9 +9,9 @@ import java.util.List;
 public class CommentModel {
     private int id;
 
-    private Date date;
+    private long date;
 
-    private LoginModel author;
+    private SimpleUserModel author;
 
     private String content;
 
@@ -26,6 +25,8 @@ public class CommentModel {
 
     private boolean isLike;
 
+    private boolean isReply;
+
     public int getId() {
         return id;
     }
@@ -34,19 +35,19 @@ public class CommentModel {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
-    public LoginModel getAuthor() {
+    public SimpleUserModel getAuthor() {
         return author;
     }
 
-    public void setAuthor(LoginModel author) {
+    public void setAuthor(SimpleUserModel author) {
         this.author = author;
     }
 
@@ -74,14 +75,6 @@ public class CommentModel {
         this.likeCount = likeCount;
     }
 
-    public int getReplyModelCount() {
-        return replyCount;
-    }
-
-    public void setReplyModelCount(int replyCount) {
-        this.replyCount = replyCount;
-    }
-
     public List<ReplyModel> getReplies() {
         return replies;
     }
@@ -96,5 +89,21 @@ public class CommentModel {
 
     public void setLike(boolean like) {
         isLike = like;
+    }
+
+    public int getReplyCount() {
+        return replyCount;
+    }
+
+    public void setReplyCount(int replyCount) {
+        this.replyCount = replyCount;
+    }
+
+    public boolean isReply() {
+        return isReply;
+    }
+
+    public void setReply(boolean reply) {
+        isReply = reply;
     }
 }

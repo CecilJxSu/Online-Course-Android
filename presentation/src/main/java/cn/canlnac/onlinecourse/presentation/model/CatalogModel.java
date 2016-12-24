@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
-import java.util.Date;
-
 /**
  * 目录数据模型.
  */
@@ -9,11 +7,13 @@ import java.util.Date;
 public class CatalogModel {
     private int id;
 
-    private Date date;
+    private long date;
 
     private int courseId;
 
     private int index;
+
+    private int parentId;
 
     private String name;
 
@@ -41,11 +41,11 @@ public class CatalogModel {
         this.name = name;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -63,6 +63,14 @@ public class CatalogModel {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public String getIntroduction() {

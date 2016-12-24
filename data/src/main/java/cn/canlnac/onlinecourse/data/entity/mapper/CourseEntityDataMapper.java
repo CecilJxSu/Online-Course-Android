@@ -40,6 +40,7 @@ public class CourseEntityDataMapper {
             course.setLike(courseEntity.isLike());
             course.setLikeCount(courseEntity.getLikeCount());
             course.setName(courseEntity.getName());
+            course.setWatchCount(courseEntity.getWatchCount());
         }
         return course;
     }

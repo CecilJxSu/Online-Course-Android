@@ -2,8 +2,6 @@ package cn.canlnac.onlinecourse.data.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 /**
  * 目录.
  */
@@ -13,10 +11,13 @@ public class CatalogEntity {
     private int id;
 
     @SerializedName("date")
-    private Date date;
+    private long date;
 
     @SerializedName("courseId")
     private int courseId;
+
+    @SerializedName("parentId")
+    private int parentId;
 
     @SerializedName("index")
     private int index;
@@ -52,11 +53,11 @@ public class CatalogEntity {
         this.name = name;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -74,6 +75,14 @@ public class CatalogEntity {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 
     public String getIntroduction() {

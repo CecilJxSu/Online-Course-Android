@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.domain;
 
-import java.util.Date;
-
 /**
  * 文档.
  */
@@ -9,7 +7,7 @@ import java.util.Date;
 public class Document {
     private int id;
 
-    private Date date;
+    private long date;
 
     private String targetType;
 
@@ -31,11 +29,11 @@ public class Document {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

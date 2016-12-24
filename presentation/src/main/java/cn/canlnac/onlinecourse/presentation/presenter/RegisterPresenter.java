@@ -70,6 +70,7 @@ public class RegisterPresenter implements Presenter {
                         RegisterPresenter.this.registerActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
+                e.printStackTrace();
                 RegisterPresenter.this.registerActivity.showToastMessage("网络连接错误！");
             }
         }
@@ -77,6 +78,8 @@ public class RegisterPresenter implements Presenter {
         @Override
         public void onNext(Integer userId) {
             RegisterPresenter.this.registerActivity.showToastMessage("注册成功");
+            RegisterPresenter.this.registerActivity.toLogin();
+            RegisterPresenter.this.registerActivity.finish();
         }
     }
 }

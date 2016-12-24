@@ -2,8 +2,6 @@ package cn.canlnac.onlinecourse.data.entity;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.Date;
-
 /**
  * 回复评论.
  */
@@ -13,13 +11,13 @@ public class ReplyEntity {
     private int id;
 
     @SerializedName("date")
-    private Date date;
+    private long date;
 
     @SerializedName("toUser")
-    private LoginEntity toUser;
+    private SimpleUserEntity toUser;
 
     @SerializedName("author")
-    private LoginEntity author;
+    private SimpleUserEntity author;
 
     @SerializedName("content")
     private String content;
@@ -32,27 +30,27 @@ public class ReplyEntity {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
-    public LoginEntity getToUser() {
+    public SimpleUserEntity getToUser() {
         return toUser;
     }
 
-    public void setToUser(LoginEntity toUser) {
+    public void setToUser(SimpleUserEntity toUser) {
         this.toUser = toUser;
     }
 
-    public LoginEntity getAuthor() {
+    public SimpleUserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(LoginEntity author) {
+    public void setAuthor(SimpleUserEntity author) {
         this.author = author;
     }
 

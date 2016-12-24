@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -21,8 +20,22 @@ public class CatalogViewHolder extends TreeNode.BaseNodeViewHolder<CatalogViewHo
     @BindView(R.id.course_catalog_list_text) TextView text;
     @BindView(R.id.course_catalog_list_duration) TextView duration;
 
+    private IconTreeItem iconTreeItem;
+
     public CatalogViewHolder(Context context) {
         super(context);
+    }
+
+    public void setColor(boolean isSet) {
+        if (isSet) {
+            image.setImageResource(R.drawable.watching_video_green);
+            text.setTextColor(0xFF00FF00);
+            duration.setTextColor(0xFF00FF00);
+        } else {
+            image.setImageResource(R.drawable.watching_video);
+            text.setTextColor(0xFF999999);
+            duration.setTextColor(0xFF999999);
+        }
     }
 
     @Override
@@ -31,6 +44,8 @@ public class CatalogViewHolder extends TreeNode.BaseNodeViewHolder<CatalogViewHo
         final View view = inflater.inflate(R.layout.course_catalog_list, null, false);
 
         ButterKnife.bind(this, view);
+
+        this.iconTreeItem = value;
 
         if (value.icon > 0) {
             image.setImageResource(value.icon);
@@ -47,9 +62,14 @@ public class CatalogViewHolder extends TreeNode.BaseNodeViewHolder<CatalogViewHo
         return view;
     }
 
+    public IconTreeItem getIconTreeItem() {
+        return this.iconTreeItem;
+    }
+
     public static class IconTreeItem {
         public int icon;
         public String text;
         public String duration;
+        public String url;
     }
 }

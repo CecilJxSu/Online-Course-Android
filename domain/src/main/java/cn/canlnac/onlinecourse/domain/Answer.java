@@ -1,6 +1,5 @@
 package cn.canlnac.onlinecourse.domain;
 
-import java.util.Date;
 import java.util.Map;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Map;
 public class Answer {
     private int id;
 
-    private Date date;
+    private long date;
 
     private int questionId;
 
@@ -26,11 +25,11 @@ public class Answer {
         this.id = id;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

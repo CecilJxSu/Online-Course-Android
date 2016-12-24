@@ -7,25 +7,28 @@ import java.util.List;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
+import cn.canlnac.onlinecourse.domain.Catalog;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.model.CatalogModel;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.mapper.CatalogModelDataMapper;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 
 @PerActivity
 public class GetCatalogsPresenter implements Presenter {
 
-    RegisterActivity getCatalogsActivity;
+    CourseActivity getCatalogsActivity;
 
     private final UseCase getCatalogsUseCase;
+    private final CatalogModelDataMapper catalogModelDataMapper;
 
     @Inject
-    public GetCatalogsPresenter(UseCase getCatalogsUseCase) {
+    public GetCatalogsPresenter(UseCase getCatalogsUseCase,CatalogModelDataMapper catalogModelDataMapper) {
         this.getCatalogsUseCase = getCatalogsUseCase;
+        this.catalogModelDataMapper = catalogModelDataMapper;
     }
 
-    public void setView(@NonNull RegisterActivity getCatalogsActivity) {
+    public void setView(@NonNull CourseActivity getCatalogsActivity) {
         this.getCatalogsActivity = getCatalogsActivity;
     }
 
@@ -48,7 +51,7 @@ public class GetCatalogsPresenter implements Presenter {
         this.getCatalogsUseCase.unsubscribe();
     }
 
-    private final class GetCatalogsSubscriber extends DefaultSubscriber<List<CatalogModel>> {
+    private final class GetCatalogsSubscriber extends DefaultSubscriber<List<Catalog>> {
         @Override
         public void onCompleted() {
         }
@@ -58,25 +61,27 @@ public class GetCatalogsPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("参数错误！");
+                        GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("参数错误");
+                        break;
+                    case 401:
+                        GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("未登陆");
+                        GetCatalogsPresenter.this.getCatalogsActivity.toLogin();
                         break;
                     case 404:
-                        GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("资源不存在！");
-                        break;
-                    case 409:
-                        GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("用户名已被注册！");
+                        GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("章节不存在");
                         break;
                     default:
                         GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
-        public void onNext(List<CatalogModel> catalogModelList) {
-            GetCatalogsPresenter.this.getCatalogsActivity.showToastMessage("创建成功");
+        public void onNext(List<Catalog> catalogList) {
+            GetCatalogsPresenter.this.getCatalogsActivity.showCatalogs(catalogModelDataMapper.transform(catalogList));
         }
     }
 }

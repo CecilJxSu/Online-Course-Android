@@ -27,21 +27,21 @@ import cn.canlnac.onlinecourse.presentation.ui.adapter.CourseGallerryAdapter;
 
 public class TabFragment1 extends Fragment {
     //轮播视图
-    @BindView(R.id.carouselView)
-    CarouselView carouselView;
+    //@BindView(R.id.carouselView)
+    //CarouselView carouselView;
 
     //课程列表
     @BindView(R.id.course_gallery)
     GridView gridView;
 
     //轮播图片
-    int[] carousalImages = {
+    /*int[] carousalImages = {
             R.drawable.carousel_image_1,
             R.drawable.carousel_image_2,
             R.drawable.carousel_image_3,
             R.drawable.carousel_image_4,
             R.drawable.carousel_image_5
-    };
+    };*/
 
     //课程列表，图片列表显示
     int[] listImages = {
@@ -61,10 +61,10 @@ public class TabFragment1 extends Fragment {
         ButterKnife.bind(this, view);
 
         //设置轮播
-        carouselView.setPageCount(carousalImages.length);
+        //carouselView.setPageCount(carousalImages.length);
 
         //设置轮播的监听器
-        carouselView.setImageListener(imageListener);
+        //carouselView.setImageListener(imageListener);
 
         //设置适配器
         gridView.setAdapter(new CourseGallerryAdapter(this.getContext(), listImages));
@@ -75,7 +75,7 @@ public class TabFragment1 extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //打开课程详情页
                 Intent intent = new Intent(TabFragment1.this.getActivity(), CourseActivity.class);
-                intent.putExtra("courseId", position);      //课程ID
+                intent.putExtra("courseId", 1);      //课程ID
                 TabFragment1.this.startActivity(intent);
             }
         });
@@ -86,7 +86,7 @@ public class TabFragment1 extends Fragment {
     }
 
     //设置轮播图片监听器
-    ImageListener imageListener = new ImageListener() {
+    /*ImageListener imageListener = new ImageListener() {
         @Override
         public void setImageForPosition(int position, ImageView imageView) {
             //设置图片点击事件
@@ -102,5 +102,5 @@ public class TabFragment1 extends Fragment {
             //设置轮播图片
             imageView.setImageResource(carousalImages[position]);
         }
-    };
+    };*/
 }
