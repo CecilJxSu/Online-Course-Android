@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -18,9 +20,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import cn.canlnac.onlinecourse.presentation.R;
-import cn.canlnac.onlinecourse.presentation.model.CommentModel;
-import cn.canlnac.onlinecourse.presentation.presenter.CreateCommentInCoursePresenter;
-import cn.canlnac.onlinecourse.presentation.presenter.GetCommentInCoursePresenter;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetReplyInCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerReplyCommentInCourseComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetReplyModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.ReplyCommentInCourseModule;
+import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
+import cn.canlnac.onlinecourse.presentation.presenter.GetReplyInCoursePresenter;
+import cn.canlnac.onlinecourse.presentation.presenter.ReplyCommentInCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 
 /**
@@ -38,9 +44,9 @@ public class PostReplyInCourseFragment extends BaseFragment {
     private boolean canSubmit = false;
 
     @Inject
-    CreateCommentInCoursePresenter createCommentInCoursePresenter;
+    ReplyCommentInCoursePresenter replyCommentInCoursePresenter;
     @Inject
-    GetCommentInCoursePresenter getCommentInCoursePresenter;
+    GetReplyInCoursePresenter getReplyInCoursePresenter;
 
     @Nullable
     @Override
@@ -71,20 +77,34 @@ public class PostReplyInCourseFragment extends BaseFragment {
      * @param toUserName
      */
     public void setReplyData(int commentId, int toUserId, String toUserName) {
-        this.commentId = commentId;
-        this.toUserId = toUserId;
-        this.toUserName = toUserName;
+        if (commentId > 0) {
+            this.commentId = commentId;
+            this.toUserId = toUserId;
+            this.toUserName = toUserName;
+            clearComment();
+            comment.setHint("回复：@"+toUserName);
+        }
     }
 
     @OnClick(R.id.comment_send)
     public void onClickSend(View v) {
-        Toast.makeText(this.getActivity(),"---------",Toast.LENGTH_SHORT).show();
         if (canSubmit) {
-            //评论课程
+            //回复评论
             CourseActivity courseActivity = (CourseActivity)getActivity();
             if (courseActivity != null) {
                 //评论内容
+                Map<String,Object> reply = new HashMap<>();
+                reply.put("toUserId", toUserId);
+                reply.put("content", comment.getText().toString());
 
+                DaggerReplyCommentInCourseComponent.builder()
+                        .applicationComponent(getApplicationComponent())
+                        .activityModule(getActivityModule())
+                        .replyCommentInCourseModule(new ReplyCommentInCourseModule(courseActivity.getCourseId(), commentId, reply))
+                        .build().inject(this);
+
+                replyCommentInCoursePresenter.setView(this);
+                replyCommentInCoursePresenter.initialize();
             }
         }
     }
@@ -103,24 +123,34 @@ public class PostReplyInCourseFragment extends BaseFragment {
     }
 
     /**
-     * 创建评论成功
-     * @param commentId
+     * 创建回复成功
+     * @param replyId
      */
-    public void postSuccess(Integer commentId) {
+    public void postSuccess(Integer replyId) {
         CourseActivity courseActivity = (CourseActivity)getActivity();
         if (courseActivity != null) {
-            courseActivity.onClickComment(null);
+            courseActivity.toggleReplyFragment(0,0,"");
+            clearComment();
+
+            DaggerGetReplyInCourseComponent.builder()
+                    .applicationComponent(getApplicationComponent())
+                    .activityModule(getActivityModule())
+                    .getReplyModule(new GetReplyModule(replyId))
+                    .build().inject(this);
+
+            getReplyInCoursePresenter.setView(this);
+            getReplyInCoursePresenter.initialize();
         }
     }
 
     /**
-     * 获取新的评论
-     * @param commentModel
+     * 获取新的回复
+     * @param replyModel
      */
-    public void getComment(CommentModel commentModel) {
+    public void getReply(ReplyModel replyModel) {
         CourseActivity courseActivity = (CourseActivity)getActivity();
         if (courseActivity != null) {
-            courseActivity.postComment(commentModel);
+            courseActivity.postReply(commentId, replyModel);
         }
     }
 }

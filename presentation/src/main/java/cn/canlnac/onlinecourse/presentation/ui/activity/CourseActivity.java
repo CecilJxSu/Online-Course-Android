@@ -37,6 +37,7 @@ import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnlikeCourseModu
 import cn.canlnac.onlinecourse.presentation.model.CatalogModel;
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
 import cn.canlnac.onlinecourse.presentation.model.CourseModel;
+import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
 import cn.canlnac.onlinecourse.presentation.presenter.FavoriteCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCatalogsPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCoursePresenter;
@@ -316,6 +317,9 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         if (isShowFragment) {
             toggleCommentFragment();
         }
+        if (isShowReplyFragment) {
+            toggleReplyFragment();
+        }
         return super.onTouchEvent(event);
     }
 
@@ -353,6 +357,19 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         }
 
         ((CourseCommentFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(2)).postComment(commentModel);
+    }
+
+    /**
+     * 发表回复
+     * @param replyModel
+     */
+    public void postReply(int commentId, ReplyModel replyModel) {
+        TabLayout.Tab commentTab = courseTab.getTabAt(2);
+        if (commentTab != null) {
+            commentTab.select();
+        }
+
+        ((CourseCommentFragment)((CoursePagerAdapter)coursePager.getAdapter()).getItem(2)).postReply(commentId, replyModel);
     }
 
     /**

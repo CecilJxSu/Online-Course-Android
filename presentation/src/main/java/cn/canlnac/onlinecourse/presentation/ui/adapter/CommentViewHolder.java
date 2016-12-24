@@ -31,6 +31,7 @@ import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnlikeCommentMod
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
 import cn.canlnac.onlinecourse.presentation.presenter.LikeCommentPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.UnlikeCommentPresenter;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.LoginActivity;
 
 /**
@@ -59,6 +60,8 @@ public class CommentViewHolder {
     private boolean isLike;
     private boolean isReply;
     private int commentId;
+    private int toUserId;
+    private String toUserName;
 
     public CommentViewHolder(Activity activity, View view, CommentModel comment, PrettyTime prettyTime) {
         ButterKnife.bind(this, view);
@@ -73,6 +76,8 @@ public class CommentViewHolder {
         likeCount.setText(comment.getLikeCount()+"");
 
         this.commentId = comment.getId();
+        this.toUserId = comment.getAuthor().getId();
+        this.toUserName = comment.getAuthor().getName();
 
         changeLike(comment.isLike());
 
@@ -80,7 +85,7 @@ public class CommentViewHolder {
 
         //回复评论
         if (comment.getReplies() != null && comment.getReplies().size() > 0) {
-            ReplyAdapter adapter = new ReplyAdapter(activity, comment.getReplies(), prettyTime);
+            ReplyAdapter adapter = new ReplyAdapter(activity, comment.getReplies(), commentId, prettyTime);
             int totalHeight = 0;
             for (int i = 0; i < adapter.getCount(); i++) {
                 View item = adapter.getView(i, null, replyView);
@@ -163,6 +168,11 @@ public class CommentViewHolder {
         } else {
             reply.setImageResource(R.drawable.comment_icon);
         }
+    }
+
+    @OnClick(R.id.comment_reply)
+    public void onClickReply() {
+        ((CourseActivity)activity).toggleReplyFragment(commentId,toUserId,toUserName);
     }
 
     /**

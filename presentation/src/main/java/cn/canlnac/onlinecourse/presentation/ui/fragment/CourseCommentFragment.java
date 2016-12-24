@@ -20,6 +20,7 @@ import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetComm
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCommentsInCourseModule;
 import cn.canlnac.onlinecourse.presentation.model.CommentListModel;
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
+import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCommentsInCoursePresenter;
 import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.CommentAdapter;
@@ -116,6 +117,20 @@ public class CourseCommentFragment extends BaseFragment {
     public void postComment(CommentModel commentModel) {
         comments.add(0,commentModel);
         adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * 发表回复
+     * @param replyModel
+     */
+    public void postReply(int commentId, ReplyModel replyModel) {
+        for (CommentModel commentModel:comments) {
+            if (commentModel.getId() == commentId) {
+                commentModel.getReplies().add(0,replyModel);
+                adapter.notifyDataSetChanged();
+                break;
+            }
+        }
     }
 
     /**

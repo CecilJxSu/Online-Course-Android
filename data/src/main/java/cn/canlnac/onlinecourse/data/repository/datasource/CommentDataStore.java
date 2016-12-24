@@ -1,6 +1,7 @@
 package cn.canlnac.onlinecourse.data.repository.datasource;
 
 import cn.canlnac.onlinecourse.data.entity.CommentEntity;
+import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import rx.Observable;
 
 /**
@@ -14,4 +15,6 @@ public interface CommentDataStore {
     Observable<Void> unlikeComment(int commentId);
     /** 获取指定评论 */
     Observable<CommentEntity> getComment(int commentId);
+    /** 获取指定回复 */
+    Observable<ReplyEntity> getReply(int replyId);
 }

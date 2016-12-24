@@ -1,6 +1,7 @@
 package cn.canlnac.onlinecourse.data.repository.datasource;
 
 import cn.canlnac.onlinecourse.data.entity.CommentEntity;
+import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import cn.canlnac.onlinecourse.data.net.RestApi;
 import rx.Observable;
 
@@ -28,5 +29,10 @@ public class CloudCommentDataStore implements CommentDataStore {
     @Override
     public Observable<CommentEntity> getComment(int commentId) {
         return this.restApi.getComment(commentId);
+    }
+
+    @Override
+    public Observable<ReplyEntity> getReply(int replyId) {
+        return this.restApi.getReply(replyId);
     }
 }

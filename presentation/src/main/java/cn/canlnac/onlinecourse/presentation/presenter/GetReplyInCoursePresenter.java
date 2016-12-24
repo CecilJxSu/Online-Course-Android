@@ -5,21 +5,25 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
+import cn.canlnac.onlinecourse.domain.Reply;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
+import cn.canlnac.onlinecourse.presentation.mapper.ReplyModelDataMapper;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.PostReplyInCourseFragment;
 
 @PerActivity
-public class ReplyCommentInCoursePresenter implements Presenter {
+public class GetReplyInCoursePresenter implements Presenter {
 
     PostReplyInCourseFragment replyCommentInCourseActivity;
 
     private final UseCase replyCommentInCourseUseCase;
+    private final ReplyModelDataMapper replyModelDataMapper;
 
     @Inject
-    public ReplyCommentInCoursePresenter(UseCase replyCommentInCourseUseCase) {
+    public GetReplyInCoursePresenter(UseCase replyCommentInCourseUseCase, ReplyModelDataMapper replyModelDataMapper) {
         this.replyCommentInCourseUseCase = replyCommentInCourseUseCase;
+        this.replyModelDataMapper = replyModelDataMapper;
     }
 
     public void setView(@NonNull PostReplyInCourseFragment replyCommentInCourseActivity) {
@@ -27,7 +31,7 @@ public class ReplyCommentInCoursePresenter implements Presenter {
     }
 
     public void initialize() {
-        this.replyCommentInCourseUseCase.execute(new ReplyCommentInCoursePresenter.ReplyCommentInCourseSubscriber());
+        this.replyCommentInCourseUseCase.execute(new GetReplyInCoursePresenter.ReplyCommentInCourseSubscriber());
     }
 
     @Override
@@ -45,7 +49,7 @@ public class ReplyCommentInCoursePresenter implements Presenter {
         this.replyCommentInCourseUseCase.unsubscribe();
     }
 
-    private final class ReplyCommentInCourseSubscriber extends DefaultSubscriber<Integer> {
+    private final class ReplyCommentInCourseSubscriber extends DefaultSubscriber<Reply> {
         @Override
         public void onCompleted() {
         }
@@ -55,26 +59,26 @@ public class ReplyCommentInCoursePresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("参数错误");
+                        GetReplyInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("参数错误");
                         break;
                     case 404:
-                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("评论或回复用户不存在");
+                        GetReplyInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("回复不存在");
                         break;
                     case 401:
-                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.toLogin();
+                        GetReplyInCoursePresenter.this.replyCommentInCourseActivity.toLogin();
                         break;
                     default:
-                        ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
+                        GetReplyInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
                 e.printStackTrace();
-                ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("网络连接错误");
+                GetReplyInCoursePresenter.this.replyCommentInCourseActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
-        public void onNext(Integer replyId) {
-            ReplyCommentInCoursePresenter.this.replyCommentInCourseActivity.postSuccess(replyId);
+        public void onNext(Reply reply) {
+            GetReplyInCoursePresenter.this.replyCommentInCourseActivity.getReply(replyModelDataMapper.transform(reply));
         }
     }
 }

@@ -4,9 +4,11 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.mapper.CommentEntityDataMapper;
+import cn.canlnac.onlinecourse.data.entity.mapper.ReplyEntityDataMapper;
 import cn.canlnac.onlinecourse.data.repository.datasource.CommentDataStore;
 import cn.canlnac.onlinecourse.data.repository.datasource.CommentDataStoreFactory;
 import cn.canlnac.onlinecourse.domain.Comment;
+import cn.canlnac.onlinecourse.domain.Reply;
 import cn.canlnac.onlinecourse.domain.repository.CommentRepository;
 import rx.Observable;
 
@@ -17,14 +19,17 @@ import rx.Observable;
 public class CommentDataRepository implements CommentRepository {
     private final CommentDataStore commentDataStore;
     private final CommentEntityDataMapper commentEntityDataMapper;
+    private final ReplyEntityDataMapper replyEntityDataMapper;
 
     @Inject
     public CommentDataRepository(
             CommentDataStoreFactory commentDataStoreFactory,
-            CommentEntityDataMapper commentEntityDataMapper
+            CommentEntityDataMapper commentEntityDataMapper,
+            ReplyEntityDataMapper replyEntityDataMapper
     ) {
         this.commentDataStore = commentDataStoreFactory.create();
         this.commentEntityDataMapper = commentEntityDataMapper;
+        this.replyEntityDataMapper = replyEntityDataMapper;
     }
 
     @Override
@@ -40,5 +45,10 @@ public class CommentDataRepository implements CommentRepository {
     @Override
     public Observable<Comment> getComment(int commentId) {
         return commentDataStore.getComment(commentId).map(commentEntityDataMapper::transform);
+    }
+
+    @Override
+    public Observable<Reply> getReply(int replyId) {
+        return commentDataStore.getReply(replyId).map(replyEntityDataMapper::transform);
     }
 }

@@ -23,6 +23,7 @@ import cn.canlnac.onlinecourse.data.entity.MessageEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
+import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import rx.Observable;
 
 /**
@@ -105,6 +106,10 @@ public interface RestApi {
     Observable<Void> unlikeComment(int commentId);
     /** 获取指定评论 */
     Observable<CommentEntity> getComment(int commentId);
+
+    /********************************** 回复 ***********************************/
+    /** 获取指定回复 */
+    Observable<ReplyEntity> getReply(int replyId);
 
     /********************************** 话题 ***********************************/
     /** 获取话题 */

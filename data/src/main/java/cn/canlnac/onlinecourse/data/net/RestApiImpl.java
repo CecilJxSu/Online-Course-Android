@@ -39,6 +39,7 @@ import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionIdEntity;
 import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
+import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import cn.canlnac.onlinecourse.data.entity.ReplyIdEntity;
 import cn.canlnac.onlinecourse.data.exception.NetworkConnectionException;
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
@@ -1067,6 +1068,35 @@ public class RestApiImpl implements RestApi {
                     //完成
                     CommentEntity commentEntity = new Gson().fromJson(response.body().string(),CommentEntity.class);
                     subscriber.onNext(commentEntity);
+                    subscriber.onCompleted();
+                } else {//状态码错误
+                    subscriber.onError(setCommentStatusError(response.code()));
+                }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<ReplyEntity> getReply(int replyId) {
+        return Observable.create(subscriber -> {
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
+
+            try {
+                Response response = restApiConnection.getReplyFromApi(replyId);
+                if (response == null) {//网络异常
+                    subscriber.onError(new NetworkConnectionException());
+                    return;
+                }
+
+                if (response.code() == 200) {//状态码正确响应
+                    //完成
+                    ReplyEntity replyEntity = new Gson().fromJson(response.body().string(),ReplyEntity.class);
+                    subscriber.onNext(replyEntity);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
