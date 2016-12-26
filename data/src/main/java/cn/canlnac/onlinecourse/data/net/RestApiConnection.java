@@ -387,10 +387,10 @@ public class RestApiConnection {
             API_CHATS_LIST += "start=" + start + "&";
         }
         if (null != count) {
-            API_CHATS_LIST += "count=" + start + "&";
+            API_CHATS_LIST += "count=" + count + "&";
         }
         if (null != sort) {
-            API_CHATS_LIST += "sort=" + start + "&";
+            API_CHATS_LIST += "sort=" + sort + "&";
         }
         return APIConnection.create(METHOD.GET, API_CHATS_LIST, null, getJwt()).request();
     }

@@ -22,7 +22,7 @@ public class ChatEntity {
     private String content;
 
     @SerializedName("author")
-    private LoginEntity author;
+    private SimpleUserEntity author;
 
     @SerializedName("pictureUrls")
     private List<String> pictureUrls;
@@ -77,11 +77,11 @@ public class ChatEntity {
         this.content = content;
     }
 
-    public LoginEntity getAuthor() {
+    public SimpleUserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(LoginEntity author) {
+    public void setAuthor(SimpleUserEntity author) {
         this.author = author;
     }
 

@@ -6,15 +6,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.Chat;
+import cn.canlnac.onlinecourse.domain.SimpleUser;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import cn.canlnac.onlinecourse.presentation.model.ChatModel;
 
 @PerActivity
 public class ChatModelDataMapper {
-    private final LoginModelDataMapper loginModelDataMapper;
+    private final SimpleUserModelDataMapper simpleUserModelDataMapper;
     @Inject
-    public ChatModelDataMapper(LoginModelDataMapper loginModelDataMapper) {
-        this.loginModelDataMapper = loginModelDataMapper;
+    public ChatModelDataMapper(SimpleUserModelDataMapper simpleUserModelDataMapper) {
+        this.simpleUserModelDataMapper = simpleUserModelDataMapper;
     }
 
     public ChatModel transform(Chat chat) {
@@ -23,7 +24,10 @@ public class ChatModelDataMapper {
         }
         ChatModel chatModel = new ChatModel();
         chatModel.setId(chat.getId());
-        chatModel.setAuthor(loginModelDataMapper.transform(chat.getAuthor()));
+        if (chat.getAuthor() == null) {
+            chat.setAuthor(new SimpleUser());
+        }
+        chatModel.setAuthor(simpleUserModelDataMapper.transform(chat.getAuthor()));
         chatModel.setCommentCount(chat.getCommentCount());
         chatModel.setContent(chat.getContent());
         chatModel.setDate(chat.getDate());

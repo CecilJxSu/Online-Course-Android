@@ -14,11 +14,11 @@ import cn.canlnac.onlinecourse.domain.Chat;
  */
 @Singleton
 public class ChatEntityDataMapper {
-    private LoginEntityDataMapper loginEntityDataMapper;
+    private SimpleUserEntityDataMapper simpleUserEntityDataMapper;
 
     @Inject
-    public ChatEntityDataMapper(LoginEntityDataMapper loginEntityDataMapper) {
-        this.loginEntityDataMapper = loginEntityDataMapper;
+    public ChatEntityDataMapper(SimpleUserEntityDataMapper simpleUserEntityDataMapper) {
+        this.simpleUserEntityDataMapper = simpleUserEntityDataMapper;
     }
 
     /**
@@ -31,7 +31,7 @@ public class ChatEntityDataMapper {
         if (chatEntity != null) {
             chat = new Chat();
             chat.setDate(chatEntity.getDate());
-            chat.setAuthor(loginEntityDataMapper.transform(chatEntity.getAuthor()));
+            chat.setAuthor(simpleUserEntityDataMapper.transform(chatEntity.getAuthor()));
             chat.setCommentCount(chatEntity.getCommentCount());
             chat.setContent(chatEntity.getContent());
             chat.setFavorite(chatEntity.isFavorite());

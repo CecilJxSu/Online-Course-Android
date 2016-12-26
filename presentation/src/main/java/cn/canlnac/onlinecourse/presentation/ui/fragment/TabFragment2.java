@@ -1,38 +1,30 @@
 package cn.canlnac.onlinecourse.presentation.ui.fragment;
 
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
-import cn.canlnac.onlinecourse.presentation.model.Post;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetChatsChatComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetChatsChatModule;
+import cn.canlnac.onlinecourse.presentation.model.ChatListModel;
+import cn.canlnac.onlinecourse.presentation.model.ChatModel;
+import cn.canlnac.onlinecourse.presentation.presenter.GetChatsPresenter;
 import cn.canlnac.onlinecourse.presentation.ui.activity.PostChatActivity;
-import cn.canlnac.onlinecourse.presentation.ui.adapter.PostAdapter;
-import cn.canlnac.onlinecourse.presentation.ui.view.DrawableCenterTextView;
-import cn.canlnac.onlinecourse.presentation.ui.view.NineGridImageView;
+import cn.canlnac.onlinecourse.presentation.ui.adapter.ChatAdapter;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleFooter;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleHeader;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.ZrcListView;
@@ -42,7 +34,7 @@ import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.ZrcListView.On
  * 话题.
  */
 
-public class TabFragment2 extends Fragment {
+public class TabFragment2 extends BaseFragment {
     @BindView(R.id.menu_red)
     FloatingActionMenu menu;
 
@@ -52,15 +44,17 @@ public class TabFragment2 extends Fragment {
     @BindView(R.id.zListView)
     ZrcListView listView;
 
+    private ChatAdapter adapter;
     private Handler handler;
-    private ArrayList<String> msgs;
-    private int pageId = -1;
-    private MyAdapter adapter;
+    private ArrayList<ChatModel> chats = new ArrayList<>();
 
-    private static final String[][] names = new String[][]{
-            {"加拿大"},
-            {"德国"}
-    };
+    int start = 0;
+    int count = 10;
+    int total = 10;
+    String sort = "date";
+
+    @Inject
+    GetChatsPresenter getChatsPresenter;
 
     @Nullable
     @Override
@@ -116,29 +110,46 @@ public class TabFragment2 extends Fragment {
             }
         });
 
-        adapter = new MyAdapter();
+        adapter = new ChatAdapter(this.getActivity(),chats);
         listView.setAdapter(adapter);
         listView.refresh(); // 主动下拉刷新
 
         return view;
     }
 
+    /**
+     * 刷新失败
+     */
+    public void showRefreshError(String message) {
+        listView.setRefreshFail(message);
+    }
+
+    @Override
+    public void onDestroy() {
+        listView.setOnLoadMoreStartListener(null);
+        listView.setOnRefreshStartListener(null);
+
+        super.onDestroy();
+    }
+
     private void refresh(){
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                int rand = (int) (Math.random() * 2); // 随机数模拟成功失败。这里从有数据开始。
-                if(rand == 0 || pageId == -1){
-                    pageId = 0;
-                    msgs = new ArrayList<>();
-                    for(String name:names[0]){
-                        msgs.add(name);
+                if (start == 0) {
+                    //获取话题列表
+                    if (getActivity() != null) {
+                        DaggerGetChatsChatComponent.builder()
+                                .applicationComponent(getApplicationComponent())
+                                .activityModule(getActivityModule())
+                                .getChatsChatModule(new GetChatsChatModule(start, count, sort))
+                                .build().inject(TabFragment2.this);
+
+                        getChatsPresenter.setView(TabFragment2.this, 0);
+                        getChatsPresenter.initialize();
+                    } else {
+                        showRefreshError("加载完成");
                     }
-                    adapter.notifyDataSetChanged();
-                    listView.setRefreshSuccess("加载成功"); // 通知加载成功
-                    listView.startLoadMore(); // 开启LoadingMore功能
-                }else{
-                    listView.setRefreshFail("加载失败");
                 }
             }
         }, 2 * 1000);
@@ -148,13 +159,19 @@ public class TabFragment2 extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                pageId++;
-                if(pageId<names.length){
-                    for(String name:names[pageId]){
-                        msgs.add(name);
+                start += count;
+                if(start < total){
+                    if (getActivity() != null) {
+                        //获取课程列表
+                        DaggerGetChatsChatComponent.builder()
+                                .applicationComponent(getApplicationComponent())
+                                .activityModule(getActivityModule())
+                                .getChatsChatModule(new GetChatsChatModule(start, count, sort))
+                                .build().inject(TabFragment2.this);
+
+                        getChatsPresenter.setView(TabFragment2.this, 1);
+                        getChatsPresenter.initialize();
                     }
-                    adapter.notifyDataSetChanged();
-                    listView.setLoadMoreSuccess();
                 }else{
                     listView.stopLoadMore();
                 }
@@ -162,90 +179,26 @@ public class TabFragment2 extends Fragment {
         }, 2 * 1000);
     }
 
-    class MyAdapter extends BaseAdapter {
-        @BindView(R.id.chat_list_view_head)
-        ImageView headImage;
-        @BindView(R.id.chat_list_view_username)
-        TextView username;
-        @BindView(R.id.chat_list_view_time_and_reviews)
-        TextView timeAndReviews;
-        @BindView(R.id.chat_list_view_title)
-        TextView title;
-        /*@BindView(R.id.chat_list_share)
-        TextView share;
-        @BindView(R.id.chat_list_comment)
-        TextView comment;
-        @BindView(R.id.chat_list_thump_up)
-        TextView thumpUp;*/
+    /**
+     * 刷新显示话题
+     * @param chatListModel
+     */
+    public void showRefreshChats(ChatListModel chatListModel) {
+        total = chatListModel.getTotal();
+        chats.addAll(chatListModel.getChats());
+        adapter.notifyDataSetChanged();
+        listView.setRefreshSuccess("加载成功");  // 通知加载成功
+        listView.startLoadMore();                // 开启LoadingMore功能
+    }
 
-        @BindView(R.id.rv_post_list)
-        RecyclerView mRvPostLister;
-        PostAdapter mNineImageAdapter;
-
-        private List<Post> mPostList;
-        private String[] IMG_URL_LIST = {
-                "http://ac-QYgvX1CC.clouddn.com/36f0523ee1888a57.jpg",
-                "http://ac-QYgvX1CC.clouddn.com/07915a0154ac4a64.jpg",
-                "http://ac-QYgvX1CC.clouddn.com/9ec4bc44bfaf07ed.jpg",
-                "http://ac-QYgvX1CC.clouddn.com/fa85037f97e8191f.jpg",
-                "http://ac-QYgvX1CC.clouddn.com/de13315600ba1cff.jpg",
-                "http://ac-QYgvX1CC.clouddn.com/15c5c50e941ba6b0.jpg",
-                "http://ac-QYgvX1CC.clouddn.com/10762c593798466a.jpg",
-                "http://ac-QYgvX1CC.clouddn.com/eaf1c9d55c5f9afd.jpg",
-                "http://ac-QYgvX1CC.clouddn.com/ad99de83e1e3f7d4.jpg",
-                "http://ac-QYgvX1CC.clouddn.com/233a5f70512befcc.jpg",
-        };
-
-        @Override
-        public int getCount() {
-            return msgs==null ? 0 : msgs.size();
-        }
-        @Override
-        public Object getItem(int position) {
-            return msgs.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view;/*
-            if(convertView==null) {*/
-            view = TabFragment2.this.getActivity().getLayoutInflater().inflate(R.layout.chat_list_view, null);
-            /*}else{
-                view =  convertView;
-            }*/
-
-            //绑定视图
-            ButterKnife.bind(MyAdapter.this, view);
-
-            headImage.setImageResource(R.drawable.header);
-
-            username.setText("弗拉德丽嘉");
-
-            timeAndReviews.setText("昨天21:43\t 4282阅读量");
-
-            title.setText("标题标题标题标题标题标题标题");
-
-            /*Drawable shareDrawable = ContextCompat.getDrawable(TabFragment2.this.getActivity(),R.drawable.share_icon);
-            shareDrawable.setBounds(0, 0, 40, 40);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
-            share.setCompoundDrawables(shareDrawable, null, null, null);//只放左边*/
-
-            mPostList = new ArrayList<>();
-
-            List<String> imgUrls = new ArrayList<>();
-            imgUrls.addAll(Arrays.asList(IMG_URL_LIST).subList(0, 8));
-            Post post = new Post("Am I handsome? Am I handsome? Am I handsome?Am I handsome? Am I handsome? Am I handsome?Am I handsome? Am I handsome? Am I handsome?Am I handsome? Am I handsome? Am I handsome?", imgUrls);
-            mPostList.add(post);
-
-            mRvPostLister.setLayoutManager(new LinearLayoutManager(TabFragment2.this.getActivity()));
-
-            mNineImageAdapter = new PostAdapter(TabFragment2.this.getActivity(), mPostList, NineGridImageView.STYLE_GRID);
-            mRvPostLister.setAdapter(mNineImageAdapter);
-            return view;
-        }
+    /**
+     * 更新显示话题
+     * @param chatListModel
+     */
+    public void showLoadMoreChats(ChatListModel chatListModel) {
+        total = chatListModel.getTotal();
+        chats.addAll(chatListModel.getChats());
+        adapter.notifyDataSetChanged();
+        listView.setLoadMoreSuccess();
     }
 }

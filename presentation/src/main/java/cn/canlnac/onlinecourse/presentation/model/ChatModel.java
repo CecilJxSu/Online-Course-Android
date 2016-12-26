@@ -15,7 +15,7 @@ public class ChatModel {
 
     private String content;
 
-    private LoginModel author;
+    private SimpleUserModel author;
 
     private List<String> pictureUrls;
 
@@ -63,11 +63,11 @@ public class ChatModel {
         this.content = content;
     }
 
-    public LoginModel getAuthor() {
+    public SimpleUserModel getAuthor() {
         return author;
     }
 
-    public void setAuthor(LoginModel author) {
+    public void setAuthor(SimpleUserModel author) {
         this.author = author;
     }
 

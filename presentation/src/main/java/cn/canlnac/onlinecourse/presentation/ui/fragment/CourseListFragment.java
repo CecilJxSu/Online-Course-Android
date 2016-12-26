@@ -140,21 +140,21 @@ public class CourseListFragment extends BaseFragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (start == 0) {
-                    //获取课程列表
-                    if (getActivity() != null) {
-                        DaggerGetCoursesComponent.builder()
-                                .applicationComponent(getApplicationComponent())
-                                .activityModule(getActivityModule())
-                                .getCoursesModule(new GetCoursesModule(start, count, sort, Arrays.asList(courseTypes)))
-                                .build().inject(CourseListFragment.this);
+            if (start == 0) {
+                //获取课程列表
+                if (getActivity() != null) {
+                    DaggerGetCoursesComponent.builder()
+                            .applicationComponent(getApplicationComponent())
+                            .activityModule(getActivityModule())
+                            .getCoursesModule(new GetCoursesModule(start, count, sort, Arrays.asList(courseTypes)))
+                            .build().inject(CourseListFragment.this);
 
-                        getCoursesPresenter.setView(CourseListFragment.this, 0);
-                        getCoursesPresenter.initialize();
-                    } else {
-                        showRefreshError("加载完成");
-                    }
+                    getCoursesPresenter.setView(CourseListFragment.this, 0);
+                    getCoursesPresenter.initialize();
+                } else {
+                    showRefreshError("加载完成");
                 }
+            }
             }
         }, 2 * 1000);
     }
@@ -166,22 +166,22 @@ public class CourseListFragment extends BaseFragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                start += count;
-                if(start < total){
-                    if (getActivity() != null) {
-                        //获取课程列表
-                        DaggerGetCoursesComponent.builder()
-                                .applicationComponent(getApplicationComponent())
-                                .activityModule(getActivityModule())
-                                .getCoursesModule(new GetCoursesModule(start, count, sort, Arrays.asList(courseTypes)))
-                                .build().inject(CourseListFragment.this);
+            start += count;
+            if(start < total){
+                if (getActivity() != null) {
+                    //获取课程列表
+                    DaggerGetCoursesComponent.builder()
+                            .applicationComponent(getApplicationComponent())
+                            .activityModule(getActivityModule())
+                            .getCoursesModule(new GetCoursesModule(start, count, sort, Arrays.asList(courseTypes)))
+                            .build().inject(CourseListFragment.this);
 
-                        getCoursesPresenter.setView(CourseListFragment.this, 1);
-                        getCoursesPresenter.initialize();
-                    }
-                }else{
-                    zrcListView.stopLoadMore();
+                    getCoursesPresenter.setView(CourseListFragment.this, 1);
+                    getCoursesPresenter.initialize();
                 }
+            }else{
+                zrcListView.stopLoadMore();
+            }
             }
         }, 2 * 1000);
     }
