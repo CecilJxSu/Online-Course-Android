@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.adapter.ChatViewHolder;
 
 @PerActivity
 public class UnlikeChatPresenter implements Presenter {
 
-    RegisterActivity unlikeChatActivity;
+    ChatViewHolder unlikeChatActivity;
 
     private final UseCase unlikeChatUseCase;
 
@@ -22,7 +22,7 @@ public class UnlikeChatPresenter implements Presenter {
         this.unlikeChatUseCase = unlikeChatUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity unlikeChatActivity) {
+    public void setView(@NonNull ChatViewHolder unlikeChatActivity) {
         this.unlikeChatActivity = unlikeChatActivity;
     }
 
@@ -55,25 +55,26 @@ public class UnlikeChatPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("参数错误！");
-                        break;
                     case 404:
-                        UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("资源不存在！");
+                        UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("评论不存在");
                         break;
-                    case 409:
-                        UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("未登陆");
+                        UnlikeChatPresenter.this.unlikeChatActivity.toLogin();
                         break;
                     default:
                         UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
+                e.printStackTrace();
                 UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("网络连接错误！");
             }
         }
 
         @Override
         public void onNext(Void empty) {
-            UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("创建成功");
+            UnlikeChatPresenter.this.unlikeChatActivity.changeLike(false);
+            UnlikeChatPresenter.this.unlikeChatActivity.changeLikeCount(false);
         }
     }
 }

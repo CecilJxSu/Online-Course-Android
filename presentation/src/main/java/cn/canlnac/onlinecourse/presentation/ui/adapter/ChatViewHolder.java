@@ -22,7 +22,13 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.canlnac.onlinecourse.presentation.AndroidApplication;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerLikeChatComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerUnlikeChatComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.ActivityModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.LikeChatModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnlikeChatModule;
 import cn.canlnac.onlinecourse.presentation.model.ChatModel;
 import cn.canlnac.onlinecourse.presentation.model.Post;
 import cn.canlnac.onlinecourse.presentation.presenter.FavoriteChatPresenter;
@@ -54,6 +60,7 @@ public class ChatViewHolder {
     TextView thumpUp;
 
     private Activity activity;
+    private int chatId;
 
     @BindView(R.id.rv_post_list)
     RecyclerView mRvPostLister;
@@ -75,6 +82,8 @@ public class ChatViewHolder {
         ButterKnife.bind(this, view);
 
         this.activity = activity;
+
+        this.chatId = chat.getId();
 
         userIcon.setImageURI(chat.getAuthor().getIconUrl());
         username.setText(chat.getAuthor().getName());
@@ -111,8 +120,24 @@ public class ChatViewHolder {
     public void onClickLike(View v) {
         if (isLike) {
             //取消点赞
+            DaggerUnlikeChatComponent.builder()
+                    .applicationComponent(((AndroidApplication) activity.getApplication()).getApplicationComponent())
+                    .activityModule(new ActivityModule(activity))
+                    .unlikeChatModule(new UnlikeChatModule(chatId))
+                    .build().inject(ChatViewHolder.this);
+
+            unlikeChatPresenter.setView(ChatViewHolder.this);
+            unlikeChatPresenter.initialize();
         } else {
             //点赞
+            DaggerLikeChatComponent.builder()
+                    .applicationComponent(((AndroidApplication) activity.getApplication()).getApplicationComponent())
+                    .activityModule(new ActivityModule(activity))
+                    .likeChatModule(new LikeChatModule(chatId))
+                    .build().inject(ChatViewHolder.this);
+
+            likeChatPresenter.setView(ChatViewHolder.this);
+            likeChatPresenter.initialize();
         }
     }
 
