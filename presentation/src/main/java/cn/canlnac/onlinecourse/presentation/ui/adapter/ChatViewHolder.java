@@ -24,10 +24,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.AndroidApplication;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerFavoriteChatComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerLikeChatComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerUnfavoriteChatComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerUnlikeChatComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.ActivityModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.FavoriteChatModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.LikeChatModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnfavoriteChatModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnlikeChatModule;
 import cn.canlnac.onlinecourse.presentation.model.ChatModel;
 import cn.canlnac.onlinecourse.presentation.model.Post;
@@ -175,8 +179,24 @@ public class ChatViewHolder {
     public void onClickFavorite(View v) {
         if (isFavorite) {
             //取消收藏
+            DaggerUnfavoriteChatComponent.builder()
+                    .applicationComponent(((AndroidApplication) activity.getApplication()).getApplicationComponent())
+                    .activityModule(new ActivityModule(activity))
+                    .unfavoriteChatModule(new UnfavoriteChatModule(chatId))
+                    .build().inject(ChatViewHolder.this);
+
+            unfavoriteChatPresenter.setView(ChatViewHolder.this);
+            unfavoriteChatPresenter.initialize();
         } else {
             //收藏
+            DaggerFavoriteChatComponent.builder()
+                    .applicationComponent(((AndroidApplication) activity.getApplication()).getApplicationComponent())
+                    .activityModule(new ActivityModule(activity))
+                    .favoriteChatModule(new FavoriteChatModule(chatId))
+                    .build().inject(ChatViewHolder.this);
+
+            favoriteChatPresenter.setView(ChatViewHolder.this);
+            favoriteChatPresenter.initialize();
         }
     }
 
@@ -199,7 +219,7 @@ public class ChatViewHolder {
      */
     public void changeFavoriteCount(boolean isFavorite) {
         int count = Integer.parseInt(favorite.getText().toString());
-        if (isLike) {
+        if (isFavorite) {
             favorite.setText(++count+"");
         } else {
             favorite.setText(--count+"");

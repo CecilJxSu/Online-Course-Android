@@ -56,7 +56,7 @@ public class UnlikeChatPresenter implements Presenter {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
                     case 404:
-                        UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("评论不存在");
+                        UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("话题不存在");
                         break;
                     case 401:
                         UnlikeChatPresenter.this.unlikeChatActivity.showToastMessage("未登陆");
