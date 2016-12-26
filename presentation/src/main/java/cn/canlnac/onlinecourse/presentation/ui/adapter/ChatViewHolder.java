@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -82,7 +83,7 @@ public class ChatViewHolder {
     private boolean isLike;
     private boolean isFavorite;
 
-    public ChatViewHolder(Activity activity, View view, ChatModel chat, PrettyTime prettyTime) {
+    public ChatViewHolder(final Activity activity, View view, ChatModel chat, PrettyTime prettyTime) {
         ButterKnife.bind(this, view);
 
         this.activity = activity;

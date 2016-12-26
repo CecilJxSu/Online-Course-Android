@@ -9,12 +9,12 @@ import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import cn.canlnac.onlinecourse.presentation.model.ChatModel;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.ChatActivity;
 
 @PerActivity
 public class GetChatPresenter implements Presenter {
 
-    RegisterActivity createAnswerActivity;
+    ChatActivity createAnswerActivity;
 
     private final UseCase createAnswerUseCase;
 
@@ -23,7 +23,7 @@ public class GetChatPresenter implements Presenter {
         this.createAnswerUseCase = createAnswerUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity createAnswerActivity) {
+    public void setView(@NonNull ChatActivity createAnswerActivity) {
         this.createAnswerActivity = createAnswerActivity;
     }
 
