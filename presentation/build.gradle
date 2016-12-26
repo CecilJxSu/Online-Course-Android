@@ -78,6 +78,7 @@ dependencies {
     compile presentationDependencies.picasso
     compile presentationDependencies.fresco
     compile presentationDependencies.prettytime
+    compile presentationDependencies.VerticalTabLayout
 
     apt presentationDependencies.daggerCompiler
     compile presentationDependencies.dagger

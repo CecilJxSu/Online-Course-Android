@@ -13,9 +13,11 @@ public class Course {
 
     private String introduction;
 
-    private Login author;
+    private SimpleUser author;
 
     private String department;
+
+    private String previewUrl;
 
     private int watchCount;
 
@@ -61,11 +63,11 @@ public class Course {
         this.introduction = introduction;
     }
 
-    public Login getAuthor() {
+    public SimpleUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(Login author) {
+    public void setAuthor(SimpleUser author) {
         this.author = author;
     }
 
@@ -123,5 +125,13 @@ public class Course {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public String getPreviewUrl() {
+        return previewUrl;
+    }
+
+    public void setPreviewUrl(String previewUrl) {
+        this.previewUrl = previewUrl;
     }
 }

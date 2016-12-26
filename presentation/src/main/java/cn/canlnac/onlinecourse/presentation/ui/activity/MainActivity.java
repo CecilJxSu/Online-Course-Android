@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
                 (getSupportFragmentManager(), mTabLayout.getTabCount());
         //设置适配器
         mViewPager.setAdapter(adapter);
+        //缓存3个页面，如果不设置，第一页会重建
+        mViewPager.setOffscreenPageLimit(3);
         //添加换页事件
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         //设置选项卡选择事件

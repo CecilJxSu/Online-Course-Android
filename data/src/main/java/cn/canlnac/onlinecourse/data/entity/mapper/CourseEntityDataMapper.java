@@ -14,10 +14,10 @@ import cn.canlnac.onlinecourse.domain.Course;
  */
 @Singleton
 public class CourseEntityDataMapper {
-    private LoginEntityDataMapper loginEntityDataMapper;
+    private SimpleUserEntityDataMapper simpleUserEntityDataMapper;
     @Inject
-    public CourseEntityDataMapper(LoginEntityDataMapper loginEntityDataMapper) {
-        this.loginEntityDataMapper = loginEntityDataMapper;
+    public CourseEntityDataMapper(SimpleUserEntityDataMapper simpleUserEntityDataMapper) {
+        this.simpleUserEntityDataMapper = simpleUserEntityDataMapper;
     }
 
     /**
@@ -30,7 +30,7 @@ public class CourseEntityDataMapper {
         if (courseEntity != null) {
             course = new Course();
             course.setId(courseEntity.getId());
-            course.setAuthor(loginEntityDataMapper.transform(courseEntity.getAuthor()));
+            course.setAuthor(simpleUserEntityDataMapper.transform(courseEntity.getAuthor()));
             course.setDate(courseEntity.getDate());
             course.setCommentCount(courseEntity.getCommentCount());
             course.setDepartment(courseEntity.getDepartment());
@@ -41,6 +41,7 @@ public class CourseEntityDataMapper {
             course.setLikeCount(courseEntity.getLikeCount());
             course.setName(courseEntity.getName());
             course.setWatchCount(courseEntity.getWatchCount());
+            course.setPreviewUrl(courseEntity.getPreviewUrl());
         }
         return course;
     }

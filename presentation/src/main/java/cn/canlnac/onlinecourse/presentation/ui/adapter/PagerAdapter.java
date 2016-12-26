@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment1;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment1_1;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment2;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment3;
 
@@ -23,7 +23,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                TabFragment1 tab1 = new TabFragment1();
+                TabFragment1_1 tab1 = new TabFragment1_1();
                 return tab1;
             case 1:
                 TabFragment2 tab2 = new TabFragment2();

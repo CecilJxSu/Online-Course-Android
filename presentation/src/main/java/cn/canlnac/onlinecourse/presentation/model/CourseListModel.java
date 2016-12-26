@@ -19,11 +19,11 @@ public class CourseListModel {
         this.total = total;
     }
 
-    public List<CourseModel> getCourseModels() {
+    public List<CourseModel> getCourses() {
         return courses;
     }
 
-    public void setCourseModels(List<CourseModel> courses) {
+    public void setCourses(List<CourseModel> courses) {
         this.courses = courses;
     }
 }
