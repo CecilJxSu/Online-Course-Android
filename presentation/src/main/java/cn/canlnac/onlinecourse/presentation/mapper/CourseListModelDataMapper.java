@@ -20,6 +20,7 @@ public class CourseListModelDataMapper {
         }
         CourseListModel courseListModel = new CourseListModel();
         courseListModel.setTotal(courseList.getTotal());
+        courseListModel.setCourses(courseModelDataMapper.transform(courseList.getCourses()));
 
         return courseListModel;
     }

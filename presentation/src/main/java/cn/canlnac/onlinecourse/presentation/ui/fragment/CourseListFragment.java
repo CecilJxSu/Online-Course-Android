@@ -2,69 +2,210 @@ package cn.canlnac.onlinecourse.presentation.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetCoursesComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetCoursesModule;
+import cn.canlnac.onlinecourse.presentation.model.CourseListModel;
+import cn.canlnac.onlinecourse.presentation.model.CourseModel;
+import cn.canlnac.onlinecourse.presentation.presenter.GetCoursesPresenter;
 import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
-import cn.canlnac.onlinecourse.presentation.ui.adapter.CourseGallerryAdapter;
+import cn.canlnac.onlinecourse.presentation.ui.adapter.CourseListAdapter;
+import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleFooter;
+import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleHeader;
+import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.ZrcListView;
 
 /**
  * 第一页，主要关于课程.
  */
 
-public class CourseListFragment extends Fragment {
+public class CourseListFragment extends BaseFragment {
 
-    private String courseType;
+    @BindView(R.id.course_list)
+    ZrcListView zrcListView;
 
-    //课程列表
-    @BindView(R.id.course_gallery)
-    GridView gridView;
+    private CourseListAdapter adapter;
+    private Handler handler;
 
-    //课程列表，图片列表显示
-    int[] listImages = {
-            R.drawable.list_image_1,
-            R.drawable.list_image_2,
-            R.drawable.list_image_1,
-            R.drawable.list_image_2
-    };
+    int start = 0;
+    int count = 10;
+    int total = 10;
+    String sort = "date";
+
+    private String[] courseTypes = new String[1];
+
+    List<CourseModel> courses = new ArrayList<>();
+
+    @Inject
+    GetCoursesPresenter getCoursesPresenter;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         //获取布局
-        View view = inflater.inflate(R.layout.tab_fragment_1, container, false);
+        View view = inflater.inflate(R.layout.course_list, container, false);
 
-        if (savedInstanceState != null && savedInstanceState.getString("courseType") != null) {
-            this.courseType = savedInstanceState.getString("courseType");
+        if (getArguments() != null && getArguments().getString("courseType") != null) {
+            this.courseTypes[0] = getArguments().getString("courseType");
         }
 
         //绑定视图
         ButterKnife.bind(this, view);
 
-        //设置适配器
-        gridView.setAdapter(new CourseGallerryAdapter(this.getContext(), listImages));
+        handler = new Handler();
 
-        //设置item点击事件
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // 设置默认偏移量，主要用于实现透明标题栏功能。（可选）
+        float density = getResources().getDisplayMetrics().density;
+        zrcListView.setFirstTopOffset((int) (0 * density));
+
+        // 设置下拉刷新的样式（可选，但如果没有Header则无法下拉刷新）
+        SimpleHeader header = new SimpleHeader(this.getActivity());
+        header.setTextColor(0xff0066aa);
+        header.setCircleColor(0xff33bbee);
+        zrcListView.setHeadable(header);
+
+        // 设置加载更多的样式（可选）
+        SimpleFooter footer = new SimpleFooter(this.getActivity());
+        footer.setCircleColor(0xff33bbee);
+        zrcListView.setFootable(footer);
+
+        // 设置列表项出现动画（可选）
+        zrcListView.setItemAnimForTopIn(R.anim.topitem_in);
+        zrcListView.setItemAnimForBottomIn(R.anim.bottomitem_in);
+
+        // 下拉刷新事件回调（可选）
+        zrcListView.setOnRefreshStartListener(new ZrcListView.OnStartListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //打开课程详情页
+            public void onStart() {
+                refresh();
+            }
+        });
+
+        // 加载更多事件回调（可选）
+        zrcListView.setOnLoadMoreStartListener(new ZrcListView.OnStartListener() {
+            @Override
+            public void onStart() {
+                loadMore();
+            }
+        });
+
+        zrcListView.setOnItemClickListener(new ZrcListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(ZrcListView parent, View view, int position, long id) {
                 Intent intent = new Intent(CourseListFragment.this.getActivity(), CourseActivity.class);
-                intent.putExtra("courseId", 1);      //课程ID
+                intent.putExtra("courseId", courses.get(position).getId());      //课程ID
                 CourseListFragment.this.startActivity(intent);
             }
         });
 
-        //设置不滚动
-        gridView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        adapter = new CourseListAdapter(getActivity(), courses);
+        zrcListView.setAdapter(adapter);
+        zrcListView.refresh(); // 主动下拉刷新
+
         return view;
+    }
+
+    /**
+     * 刷新失败
+     */
+    public void showRefreshError(String message) {
+        zrcListView.setRefreshFail(message);
+    }
+
+    @Override
+    public void onDestroy() {
+        zrcListView.setOnLoadMoreStartListener(null);
+        zrcListView.setOnRefreshStartListener(null);
+
+        super.onDestroy();
+    }
+
+    /**
+     * 刷新
+     */
+    private void refresh(){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (start == 0) {
+                    //获取课程列表
+                    if (getActivity() != null) {
+                        DaggerGetCoursesComponent.builder()
+                                .applicationComponent(getApplicationComponent())
+                                .activityModule(getActivityModule())
+                                .getCoursesModule(new GetCoursesModule(start, count, sort, Arrays.asList(courseTypes)))
+                                .build().inject(CourseListFragment.this);
+
+                        getCoursesPresenter.setView(CourseListFragment.this, 0);
+                        getCoursesPresenter.initialize();
+                    } else {
+                        showRefreshError("加载完成");
+                    }
+                }
+            }
+        }, 2 * 1000);
+    }
+
+    /**
+     * 加载更多
+     */
+    private void loadMore(){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                start += count;
+                if(start < total){
+                    if (getActivity() != null) {
+                        //获取课程列表
+                        DaggerGetCoursesComponent.builder()
+                                .applicationComponent(getApplicationComponent())
+                                .activityModule(getActivityModule())
+                                .getCoursesModule(new GetCoursesModule(start, count, sort, Arrays.asList(courseTypes)))
+                                .build().inject(CourseListFragment.this);
+
+                        getCoursesPresenter.setView(CourseListFragment.this, 1);
+                        getCoursesPresenter.initialize();
+                    }
+                }else{
+                    zrcListView.stopLoadMore();
+                }
+            }
+        }, 2 * 1000);
+    }
+
+    /**
+     * 刷新显示课程
+     * @param courseListModel
+     */
+    public void showRefreshCourses(CourseListModel courseListModel) {
+        total = courseListModel.getTotal();
+        courses.addAll(courseListModel.getCourses());
+        adapter.notifyDataSetChanged();
+        zrcListView.setRefreshSuccess("加载成功");  // 通知加载成功
+        zrcListView.startLoadMore();                // 开启LoadingMore功能
+    }
+
+    /**
+     * 更新显示课程
+     * @param courseListModel
+     */
+    public void showLoadMoreCourses(CourseListModel courseListModel) {
+        total = courseListModel.getTotal();
+        courses.addAll(courseListModel.getCourses());
+        adapter.notifyDataSetChanged();
+        zrcListView.setLoadMoreSuccess();
     }
 }

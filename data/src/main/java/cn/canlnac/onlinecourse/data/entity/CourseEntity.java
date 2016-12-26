@@ -20,10 +20,13 @@ public class CourseEntity {
     private String introduction;
 
     @SerializedName("author")
-    private LoginEntity author;
+    private SimpleUserEntity author;
 
     @SerializedName("department")
     private String department;
+
+    @SerializedName("previewUrl")
+    private String previewUrl;
 
     @SerializedName("watchCount")
     private int watchCount;
@@ -75,11 +78,11 @@ public class CourseEntity {
         this.introduction = introduction;
     }
 
-    public LoginEntity getAuthor() {
+    public SimpleUserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(LoginEntity author) {
+    public void setAuthor(SimpleUserEntity author) {
         this.author = author;
     }
 
@@ -137,5 +140,13 @@ public class CourseEntity {
 
     public void setFavorite(boolean favorite) {
         isFavorite = favorite;
+    }
+
+    public String getPreviewUrl() {
+        return previewUrl;
+    }
+
+    public void setPreviewUrl(String previewUrl) {
+        this.previewUrl = previewUrl;
     }
 }

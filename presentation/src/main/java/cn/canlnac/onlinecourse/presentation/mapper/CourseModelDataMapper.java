@@ -6,16 +6,16 @@ import java.util.List;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.Course;
-import cn.canlnac.onlinecourse.domain.Login;
+import cn.canlnac.onlinecourse.domain.SimpleUser;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import cn.canlnac.onlinecourse.presentation.model.CourseModel;
 
 @PerActivity
 public class CourseModelDataMapper {
-    private final LoginModelDataMapper loginModelDataMapper;
+    private final SimpleUserModelDataMapper simpleUserModelDataMapper;
     @Inject
-    public CourseModelDataMapper(LoginModelDataMapper loginModelDataMapper) {
-        this.loginModelDataMapper = loginModelDataMapper;
+    public CourseModelDataMapper(SimpleUserModelDataMapper simpleUserModelDataMapper) {
+        this.simpleUserModelDataMapper = simpleUserModelDataMapper;
     }
 
     public CourseModel transform(Course course) {
@@ -27,10 +27,10 @@ public class CourseModelDataMapper {
         courseModel.setLike(course.isLike());
 
         if (course.getAuthor() == null) {
-            course.setAuthor(new Login());
+            course.setAuthor(new SimpleUser());
         }
 
-        courseModel.setAuthor(loginModelDataMapper.transform(course.getAuthor()));
+        courseModel.setAuthor(simpleUserModelDataMapper.transform(course.getAuthor()));
         courseModel.setId(course.getId());
         courseModel.setFavoriteCount(course.getFavoriteCount());
         courseModel.setCommentCount(course.getCommentCount());
@@ -40,6 +40,7 @@ public class CourseModelDataMapper {
         courseModel.setName(course.getName());
         courseModel.setLikeCount(course.getLikeCount());
         courseModel.setWatchCount(course.getWatchCount());
+        courseModel.setPreviewUrl(course.getPreviewUrl());
 
         return courseModel;
     }
