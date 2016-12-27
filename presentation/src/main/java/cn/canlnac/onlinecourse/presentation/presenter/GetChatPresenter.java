@@ -5,30 +5,33 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
+import cn.canlnac.onlinecourse.domain.Chat;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.model.ChatModel;
+import cn.canlnac.onlinecourse.presentation.mapper.ChatModelDataMapper;
 import cn.canlnac.onlinecourse.presentation.ui.activity.ChatActivity;
 
 @PerActivity
 public class GetChatPresenter implements Presenter {
 
-    ChatActivity createAnswerActivity;
+    ChatActivity getChatActivity;
 
-    private final UseCase createAnswerUseCase;
+    private final UseCase getChatUseCase;
+    private final ChatModelDataMapper chatModelDataMapper;
 
     @Inject
-    public GetChatPresenter(UseCase createAnswerUseCase) {
-        this.createAnswerUseCase = createAnswerUseCase;
+    public GetChatPresenter(UseCase getChatUseCase, ChatModelDataMapper chatModelDataMapper) {
+        this.getChatUseCase = getChatUseCase;
+        this.chatModelDataMapper = chatModelDataMapper;
     }
 
-    public void setView(@NonNull ChatActivity createAnswerActivity) {
-        this.createAnswerActivity = createAnswerActivity;
+    public void setView(@NonNull ChatActivity getChatActivity) {
+        this.getChatActivity = getChatActivity;
     }
 
     public void initialize() {
-        this.createAnswerUseCase.execute(new GetChatPresenter.GetChatSubscriber());
+        this.getChatUseCase.execute(new GetChatPresenter.GetChatSubscriber());
     }
 
     @Override
@@ -43,10 +46,10 @@ public class GetChatPresenter implements Presenter {
 
     @Override
     public void destroy() {
-        this.createAnswerUseCase.unsubscribe();
+        this.getChatUseCase.unsubscribe();
     }
 
-    private final class GetChatSubscriber extends DefaultSubscriber<ChatModel> {
+    private final class GetChatSubscriber extends DefaultSubscriber<Chat> {
         @Override
         public void onCompleted() {
         }
@@ -56,25 +59,28 @@ public class GetChatPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        GetChatPresenter.this.createAnswerActivity.showToastMessage("参数错误！");
+                        GetChatPresenter.this.getChatActivity.showToastMessage("参数错误");
                         break;
                     case 404:
-                        GetChatPresenter.this.createAnswerActivity.showToastMessage("资源不存在！");
+                        GetChatPresenter.this.getChatActivity.showToastMessage("话题已删除");
+                        GetChatPresenter.this.getChatActivity.onClickClose(null);
                         break;
-                    case 409:
-                        GetChatPresenter.this.createAnswerActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        GetChatPresenter.this.getChatActivity.showToastMessage("未登陆");
+                        GetChatPresenter.this.getChatActivity.toLogin();
                         break;
                     default:
-                        GetChatPresenter.this.createAnswerActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
+                        GetChatPresenter.this.getChatActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                GetChatPresenter.this.createAnswerActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                GetChatPresenter.this.getChatActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
-        public void onNext(ChatModel chatModel) {
-            GetChatPresenter.this.createAnswerActivity.showToastMessage("创建成功");
+        public void onNext(Chat chat) {
+            GetChatPresenter.this.getChatActivity.showChat(chatModelDataMapper.transform(chat));
         }
     }
 }

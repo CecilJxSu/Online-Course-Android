@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -108,20 +107,6 @@ public class TabFragment2 extends BaseFragment {
             @Override
             public void onStart() {
                 loadMore();
-            }
-        });
-
-        menu.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                listView.onTouchEvent(event);
-                return true;
-            }
-        });
-        listView.setOnItemClickListener(new ZrcListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(ZrcListView parent, View view, int position, long id) {
-                System.out.println("123213213");
             }
         });
 

@@ -40,6 +40,7 @@ import cn.canlnac.onlinecourse.presentation.presenter.FavoriteChatPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.LikeChatPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.UnfavoriteChatPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.UnlikeChatPresenter;
+import cn.canlnac.onlinecourse.presentation.ui.activity.ChatActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.LoginActivity;
 import cn.canlnac.onlinecourse.presentation.ui.view.NineGridImageView;
 
@@ -83,8 +84,20 @@ public class ChatViewHolder {
     private boolean isLike;
     private boolean isFavorite;
 
-    public ChatViewHolder(final Activity activity, View view, ChatModel chat, PrettyTime prettyTime) {
+    private int clickFlag = 0;
+
+    public ChatViewHolder(final Activity activity, View view, final ChatModel chat, PrettyTime prettyTime) {
         ButterKnife.bind(this, view);
+
+        //点击事件
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, ChatActivity.class);
+                intent.putExtra("chatId", chat.getId());
+                activity.startActivity(intent);
+            }
+        });
 
         this.activity = activity;
 
@@ -115,6 +128,30 @@ public class ChatViewHolder {
 
         mNineImageAdapter = new PostAdapter(activity, mPostList, NineGridImageView.STYLE_GRID);
         mRvPostLister.setAdapter(mNineImageAdapter);
+
+        mRvPostLister.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        clickFlag = 1;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (clickFlag == 1) {
+                            clickFlag = 0;
+                            //点击事件，打开话题activity
+                            Intent intent = new Intent(activity, ChatActivity.class);
+                            intent.putExtra("chatId", chat.getId());
+                            activity.startActivity(intent);
+                        }
+                        break;
+                    default:
+                        clickFlag = 0;
+
+                }
+                return false;
+            }
+        });
     }
 
     /**
