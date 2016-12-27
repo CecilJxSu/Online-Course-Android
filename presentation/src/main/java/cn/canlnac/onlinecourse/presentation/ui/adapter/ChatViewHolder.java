@@ -85,6 +85,8 @@ public class ChatViewHolder {
     private boolean isFavorite;
 
     private int clickFlag = 0;
+    private float moveX = -1;
+    private float moveY = -1;
 
     public ChatViewHolder(final Activity activity, View view, final ChatModel chat, PrettyTime prettyTime) {
         ButterKnife.bind(this, view);
@@ -135,14 +137,32 @@ public class ChatViewHolder {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         clickFlag = 1;
+                        moveX = -1;
+                        moveY= -1;
                         break;
                     case MotionEvent.ACTION_UP:
+                        moveX = -1;
+                        moveY= -1;
                         if (clickFlag == 1) {
                             clickFlag = 0;
                             //点击事件，打开话题activity
                             Intent intent = new Intent(activity, ChatActivity.class);
                             intent.putExtra("chatId", chat.getId());
                             activity.startActivity(intent);
+                        }
+                        break;
+
+                    case MotionEvent.ACTION_MOVE:
+                        if (moveY == -1 || moveX == -1) {
+                            moveX = event.getX();
+                            moveY = event.getY();
+                        } else {
+                            if (clickFlag == 0) {
+                                break;
+                            }
+                            if (event.getY() != moveY || event.getX() != moveX) {
+                                clickFlag = 0;
+                            }
                         }
                         break;
                     default:

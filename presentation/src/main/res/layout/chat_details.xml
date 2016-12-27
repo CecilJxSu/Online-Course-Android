@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/chat_detail_view_title"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="#2196F3"
@@ -28,4 +30,120 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    <RelativeLayout
+        android:id="@+id/chat_detail_view_info"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/chat_detail_view_title"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/chat_detail_header"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/header"/>
+
+        <TextView
+            android:id="@+id/chat_detail_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="苏金兴 · 学生"
+            android:textSize="14sp"
+            android:layout_toRightOf="@+id/chat_detail_header"/>
+
+        <TextView
+            android:id="@+id/chat_detail_department"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:text="计算机系 - web应用软件开发班"
+            android:layout_toRightOf="@+id/chat_detail_header"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/chat_detail_body"
+        android:layout_below="@+id/chat_detail_view_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/chat_detail_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="标题标题标题标题标题标题"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#333333"/>
+
+            <View
+                android:id="@+id/chat_detail_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_marginBottom="10dp" >
+            </View>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/chat_detail_footer"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:elevation="4dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_alignParentBottom="true"
+        android:background="#EEEEEE"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/chat_detail_watch_count_img"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/invisible"/>
+
+        <TextView
+            android:id="@+id/chat_detail_watch_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1203"
+            android:layout_below="@+id/chat_detail_watch_count_img"
+            android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/chat_detail_comment_img"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/comment_icon"/>
+
+        <TextView
+            android:id="@+id/chat_detail_comment_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1203"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/chat_detail_comment_img"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
