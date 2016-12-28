@@ -34,6 +34,7 @@ public class ChatEntityDataMapper {
             chat.setAuthor(simpleUserEntityDataMapper.transform(chatEntity.getAuthor()));
             chat.setCommentCount(chatEntity.getCommentCount());
             chat.setContent(chatEntity.getContent());
+            chat.setHtml(chatEntity.getHtml());
             chat.setFavorite(chatEntity.isFavorite());
             chat.setId(chatEntity.getId());
             chat.setLike(chatEntity.isLike());

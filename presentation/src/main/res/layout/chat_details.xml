@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <LinearLayout
@@ -42,18 +43,18 @@
         android:elevation="2dp"
         android:padding="5dp">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/chat_detail_header"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/header"/>
+            fresco:placeholderImage="@drawable/header"
+            fresco:roundedCornerRadius="25dp"/>
 
         <TextView
             android:id="@+id/chat_detail_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="苏金兴 · 学生"
             android:textSize="14sp"
             android:layout_toRightOf="@+id/chat_detail_header"/>
 
@@ -63,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:textSize="14sp"
-            android:text="计算机系 - web应用软件开发班"
             android:layout_toRightOf="@+id/chat_detail_header"
             android:layout_alignParentBottom="true" />
 
@@ -76,6 +76,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -83,7 +84,6 @@
                 android:id="@+id/chat_detail_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="标题标题标题标题标题标题"
                 android:textSize="16sp"
                 android:layout_marginTop="10dp"
                 android:paddingLeft="15dp"
@@ -91,14 +91,14 @@
                 android:layout_marginBottom="10dp"
                 android:textColor="#333333"/>
 
-            <View
+            <TextView
                 android:id="@+id/chat_detail_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:layout_marginBottom="10dp" >
-            </View>
+            </TextView>
         </LinearLayout>
     </ScrollView>
 
@@ -123,9 +123,10 @@
 
         <TextView
             android:id="@+id/chat_detail_watch_count"
-            android:layout_width="wrap_content"
+            android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:text="1203"
+            android:text="0"
+            android:gravity="center"
             android:layout_below="@+id/chat_detail_watch_count_img"
             android:textSize="12sp" />
 
@@ -133,14 +134,16 @@
             android:id="@+id/chat_detail_comment_img"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:layout_marginTop="5dp"
             android:layout_alignParentRight="true"
             android:src="@drawable/comment_icon"/>
 
         <TextView
             android:id="@+id/chat_detail_comment_count"
-            android:layout_width="wrap_content"
+            android:layout_width="25dp"
             android:layout_height="wrap_content"
-            android:text="1203"
+            android:gravity="center"
+            android:text="0"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/chat_detail_comment_img"
             android:textSize="12sp" />

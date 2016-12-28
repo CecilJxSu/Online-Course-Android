@@ -1,5 +1,6 @@
 package cn.canlnac.onlinecourse.presentation.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -9,6 +10,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.zzhoujay.richtext.RichText;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -16,9 +20,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetChatComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetUserProfileInChatComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetChatModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetUserProfileModule;
 import cn.canlnac.onlinecourse.presentation.model.ChatModel;
+import cn.canlnac.onlinecourse.presentation.model.ProfileModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetChatPresenter;
+import cn.canlnac.onlinecourse.presentation.presenter.GetUserProfileInChatPresenter;
 
 /**
  * 话题.
@@ -27,8 +35,14 @@ import cn.canlnac.onlinecourse.presentation.presenter.GetChatPresenter;
 public class ChatActivity extends BaseActivity {
 
     @BindView(R.id.chat_close_button) Button close;
-
     @BindView(R.id.chat_detail_body) ScrollView body;
+
+    @BindView(R.id.chat_detail_header) SimpleDraweeView header;
+    @BindView(R.id.chat_detail_name) TextView name;
+    @BindView(R.id.chat_detail_department) TextView department;
+
+    @BindView(R.id.chat_detail_title) TextView title;
+    @BindView(R.id.chat_detail_content) TextView content;
 
     @BindView(R.id.chat_detail_watch_count) TextView watchCount;
     @BindView(R.id.chat_detail_comment_img) ImageView commentImg;
@@ -45,6 +59,8 @@ public class ChatActivity extends BaseActivity {
 
     @Inject
     GetChatPresenter getChatPresenter;
+    @Inject
+    GetUserProfileInChatPresenter getUserProfileInChatPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +75,24 @@ public class ChatActivity extends BaseActivity {
             this.finish();
         }
 
+        footer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+        content.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleFooter();
+            }
+        });
+
         body.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(!isShowFooter || event.getY() < body.getHeight() - footer.getHeight() - 2) {
+                if(event.getY() < body.getHeight() - body.getScrollY() - footer.getHeight() - 2) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             clickFlag = 1;
@@ -75,12 +105,7 @@ public class ChatActivity extends BaseActivity {
                             if (clickFlag == 1) {
                                 clickFlag = 0;
                                 //点击事件
-                                isShowFooter = !isShowFooter;
-                                if (isShowFooter) {
-                                    footer.setVisibility(View.VISIBLE);
-                                } else {
-                                    footer.setVisibility(View.INVISIBLE);
-                                }
+                                toggleFooter();
                             }
                             break;
                         case MotionEvent.ACTION_MOVE:
@@ -108,6 +133,15 @@ public class ChatActivity extends BaseActivity {
         this.initialize();
     }
 
+    public void toggleFooter() {
+        isShowFooter = !isShowFooter;
+        if (isShowFooter) {
+            footer.setVisibility(View.VISIBLE);
+        } else {
+            footer.setVisibility(View.INVISIBLE);
+        }
+    }
+
     /**
      * 关闭
      * @param v
@@ -119,6 +153,12 @@ public class ChatActivity extends BaseActivity {
         }
 
         this.finish();
+    }
+
+    @OnClick(R.id.chat_detail_comment_img)
+    public void onClickComment(View v) {
+        Intent intent = new Intent(this, CommentActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -141,6 +181,36 @@ public class ChatActivity extends BaseActivity {
      * @param chatModel
      */
     public void showChat(ChatModel chatModel) {
-        
+        header.setImageURI(chatModel.getAuthor().getIconUrl());
+        watchCount.setText(chatModel.getWatchCount()+"");
+        commentCount.setText(chatModel.getCommentCount()+"");
+        title.setText(chatModel.getTitle());
+
+        RichText.fromHtml(chatModel.getHtml()).into(content);
+
+        //获取用户资料
+        DaggerGetUserProfileInChatComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .activityModule(getActivityModule())
+                .getUserProfileModule(new GetUserProfileModule(chatModel.getAuthor().getId()))
+                .build().inject(this);
+
+        getUserProfileInChatPresenter.setView(ChatActivity.this);
+        getUserProfileInChatPresenter.initialize();
+    }
+
+    /**
+     * 显示用户资料
+     * @param profileModel
+     */
+    public void showProfile(ProfileModel profileModel) {
+        String userType = "学生";
+        if (profileModel.getUserStatus().equals("teacher")) {
+            userType = "老师";
+        } else if (profileModel.getUserStatus().equals("admin")) {
+            userType = "管理员";
+        }
+        name.setText(profileModel.getRealname() + " · " + userType);
+        department.setText(profileModel.getDepartment() + " - " + profileModel.getMajor());
     }
 }

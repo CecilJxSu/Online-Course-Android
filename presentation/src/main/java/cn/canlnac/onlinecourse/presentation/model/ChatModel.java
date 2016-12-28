@@ -15,6 +15,8 @@ public class ChatModel {
 
     private String content;
 
+    private String html;
+
     private SimpleUserModel author;
 
     private List<String> pictureUrls;
@@ -61,6 +63,14 @@ public class ChatModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
     }
 
     public SimpleUserModel getAuthor() {

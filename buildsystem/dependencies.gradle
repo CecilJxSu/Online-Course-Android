@@ -25,6 +25,7 @@ ext {
     picasso = '2.5.2'
     fresco = '0.12.0'
     prettytime = '3.2.7.Final'
+    richtext = '2.3.7'
 
     //Libraries for UI
     appcompat = '23.2.1'
@@ -60,6 +61,7 @@ ext {
             picasso:                "com.squareup.picasso:picasso:${picasso}",
             fresco:                 "com.facebook.fresco:fresco:${fresco}",
             prettytime:             "org.ocpsoft.prettytime:prettytime:${prettytime}",
+            richtext:               "com.zzhoujay.richtext:richtext:${richtext}",
 
             carouselview:           "com.synnapps:carouselview:${carouselview}",
             fab:                    "com.github.clans:fab:${fab}",

@@ -30,6 +30,7 @@ public class ChatModelDataMapper {
         chatModel.setAuthor(simpleUserModelDataMapper.transform(chat.getAuthor()));
         chatModel.setCommentCount(chat.getCommentCount());
         chatModel.setContent(chat.getContent());
+        chatModel.setHtml(chat.getHtml());
         chatModel.setDate(chat.getDate());
         chatModel.setFavorite(chat.isFavorite());
         chatModel.setFavoriteCount(chat.getFavoriteCount());

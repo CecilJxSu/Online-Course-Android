@@ -21,6 +21,9 @@ public class ChatEntity {
     @SerializedName("content")
     private String content;
 
+    @SerializedName("html")
+    private String html;
+
     @SerializedName("author")
     private SimpleUserEntity author;
 
@@ -75,6 +78,14 @@ public class ChatEntity {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
     }
 
     public SimpleUserEntity getAuthor() {
