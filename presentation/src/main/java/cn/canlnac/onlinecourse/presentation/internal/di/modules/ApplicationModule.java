@@ -10,6 +10,7 @@ import cn.canlnac.onlinecourse.data.repository.ChatDataRepository;
 import cn.canlnac.onlinecourse.data.repository.CommentDataRepository;
 import cn.canlnac.onlinecourse.data.repository.CourseDataRepository;
 import cn.canlnac.onlinecourse.data.repository.DocumentDataRepository;
+import cn.canlnac.onlinecourse.data.repository.UploadDataRepository;
 import cn.canlnac.onlinecourse.data.repository.UserDataRepository;
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
@@ -18,6 +19,7 @@ import cn.canlnac.onlinecourse.domain.repository.ChatRepository;
 import cn.canlnac.onlinecourse.domain.repository.CommentRepository;
 import cn.canlnac.onlinecourse.domain.repository.CourseRepository;
 import cn.canlnac.onlinecourse.domain.repository.DocumentRepository;
+import cn.canlnac.onlinecourse.domain.repository.UploadRepository;
 import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import cn.canlnac.onlinecourse.presentation.AndroidApplication;
 import cn.canlnac.onlinecourse.presentation.UIThread;
@@ -88,5 +90,11 @@ public class ApplicationModule {
     @Singleton
     CatalogRepository provideCatalogRepository(CatalogDataRepository catalogDataRepository) {
         return catalogDataRepository;
+    }
+
+    @Provides
+    @Singleton
+    UploadRepository provideUploadRepository(UploadDataRepository uploadDataRepository) {
+        return uploadDataRepository;
     }
 }

@@ -27,7 +27,7 @@ public class APIConnection implements Callable<Response> {
     private static final String JWT_LABEL = "Authentication";
     private static final String CONTENT_TYPE_VALUE_JSON = "application/json; charset=utf-8";
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public static final MediaType FILE_TYPE = MediaType.parse("application/octet-stream");
+    public static final MediaType FILE_TYPE = MediaType.parse("image/jpg");
 
     private METHOD method;
     private URL url;
@@ -123,7 +123,7 @@ public class APIConnection implements Callable<Response> {
         MultipartBuilder bodyBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
         //创建文件请求数据
         for (File file: files) {
-            bodyBuilder.addFormDataPart("file", null, RequestBody.create(FILE_TYPE, file));
+            bodyBuilder.addFormDataPart("file", file.getName(), RequestBody.create(FILE_TYPE, file));
         }
         //创建body
         RequestBody requestBody = bodyBuilder.build();
