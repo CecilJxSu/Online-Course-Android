@@ -1,37 +1,38 @@
 package cn.canlnac.onlinecourse.presentation.ui.activity;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import cn.canlnac.onlinecourse.presentation.ui.view.RichTextEditor.EditData;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.ui.view.RichTextEditor;
+import cn.canlnac.onlinecourse.presentation.ui.view.RichTextEditor.EditData;
 
 /**
  * 发表话题.
  */
-
-public class PostChatActivity extends Activity {
+public class PostChatActivity extends BaseActivity {
     private static final int REQUEST_CODE_PICK_IMAGE = 1023;
-    private static final int REQUEST_CODE_CAPTURE_CAMEIA = 1022;
+    private static final int REQUEST_CODE_CAPTURE_CAMERA = 1022;
 
     @BindView(R.id.post_chat_send_button)
     Button sendButton;
@@ -43,6 +44,7 @@ public class PostChatActivity extends Activity {
     Button photoButton;
     @BindView(R.id.richEditor)
     RichTextEditor editor;
+    @BindView(R.id.post_chat_topic) EditText chatTitle;
 
     private static final File PHOTO_DIR = new File(
             Environment.getExternalStorageDirectory() + "/DCIM/Camera");
@@ -91,16 +93,41 @@ public class PostChatActivity extends Activity {
     }
 
     /**
-     * 负责处理编辑数据提交等事宜，请自行实现
+     * 负责处理编辑数据提交
      */
     protected void dealEditData(List<EditData> editList) {
+        if (chatTitle.getText() == null ||
+            chatTitle.getText().toString().isEmpty() ||
+            editList == null || editList.size() <= 0
+        ) {
+            showToastMessage("未填写完成");
+            return;
+        }
+
+        List<String> pictureUrls = new ArrayList<>();
+
+        StringBuilder html = new StringBuilder();
         for (EditData itemData : editList) {
             if (itemData.inputStr != null) {
-                System.out.println("RichEditor" + "commit inputStr=" + itemData.inputStr);
+                html.append("<p>");
+                itemData.inputStr = itemData.inputStr.replace("\r\n","</p><p>");
+                html.append(itemData.inputStr.replace("\n","</p><p>"));
+                html.append("</p>");
             } else if (itemData.imagePath != null) {
-                System.out.println("RichEditor" + "commit imgePath=" + itemData.imagePath);
+                html.append("<img src = \"");
+                html.append(itemData.imagePath);
+                html.append("\" />");
+                pictureUrls.add(itemData.imagePath);
             }
+        }
 
+    }
+
+    @OnClick(R.id.post_chat_bottom)
+    public void onClickBottom(View v) {
+        if (v != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
     }
 
@@ -110,8 +137,9 @@ public class PostChatActivity extends Activity {
             PHOTO_DIR.mkdirs();// 创建照片的存储目录
             mCurrentPhotoFile = new File(PHOTO_DIR, getPhotoFileName());// 给新照的照片文件命名
             final Intent intent = getTakePickIntent(mCurrentPhotoFile);
-            startActivityForResult(intent, REQUEST_CODE_CAPTURE_CAMEIA);
+            startActivityForResult(intent, REQUEST_CODE_CAPTURE_CAMERA);
         } catch (ActivityNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -140,7 +168,7 @@ public class PostChatActivity extends Activity {
         if (requestCode == REQUEST_CODE_PICK_IMAGE) {
             Uri uri = data.getData();
             insertBitmap(getRealFilePath(uri));
-        } else if (requestCode == REQUEST_CODE_CAPTURE_CAMEIA) {
+        } else if (requestCode == REQUEST_CODE_CAPTURE_CAMERA) {
             insertBitmap(mCurrentPhotoFile.getAbsolutePath());
         }
     }

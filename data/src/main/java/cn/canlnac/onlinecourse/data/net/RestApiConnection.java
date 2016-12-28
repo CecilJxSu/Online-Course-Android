@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
@@ -22,26 +23,29 @@ import cn.canlnac.onlinecourse.data.cache.FileManager;
 
 public class RestApiConnection {
     /** api地址 */
-    String API_BASE_URL = "http://192.168.3.23:8080/";
+    public static final String API_BASE_URL = "http://192.168.3.23:8080/";
 
     //登录
-    String API_LOGIN = API_BASE_URL + "login";
+    public static final String API_LOGIN = API_BASE_URL + "login";
     //用户
-    String API_USER = API_BASE_URL + "user";
+    public static final String API_USER = API_BASE_URL + "user";
     //文档
-    String API_DOCUMENT = API_BASE_URL + "document";
+    public static final String API_DOCUMENT = API_BASE_URL + "document";
     //课程
-    String API_COURSE = API_BASE_URL + "course";
-    String API_COURSES = API_BASE_URL + "courses";
+    public static final String API_COURSE = API_BASE_URL + "course";
+    public static final String API_COURSES = API_BASE_URL + "courses";
     //评论
-    String API_COMMENT = API_BASE_URL + "comment";
+    public static final String API_COMMENT = API_BASE_URL + "comment";
     //回复
-    String API_REPLY = API_BASE_URL + "reply";
+    public static final String API_REPLY = API_BASE_URL + "reply";
     //话题
-    String API_CHAT = API_BASE_URL + "chat";
-    String API_CHATS = API_BASE_URL + "chats";
+    public static final String API_CHAT = API_BASE_URL + "chat";
+    public static final String API_CHATS = API_BASE_URL + "chats";
     //目录
-    String API_CATALOG = API_BASE_URL + "catalog";
+    public static final String API_CATALOG = API_BASE_URL + "catalog";
+
+    //文件
+    public static final String API_FILE = API_BASE_URL + "file";
 
     private final Context context;
     private final FileManager fileManager;
@@ -459,5 +463,9 @@ public class RestApiConnection {
 
     public Response createAnserFromApi(int catalogId, Map<String, Object> answer) throws MalformedURLException {
         return APIConnection.create(METHOD.POST, API_CATALOG + "/" + catalogId + "/answer", new Gson().toJson(answer), getJwt()).request();
+    }
+
+    public Response uploadFilesFromApi(List<File> files) throws MalformedURLException {
+        return APIConnection.create(METHOD.POST, API_FILE, null, getJwt()).upload(files);
     }
 }

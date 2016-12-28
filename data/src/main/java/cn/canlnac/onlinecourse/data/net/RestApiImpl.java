@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,7 @@ import cn.canlnac.onlinecourse.data.entity.QuestionIdEntity;
 import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
 import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import cn.canlnac.onlinecourse.data.entity.ReplyIdEntity;
+import cn.canlnac.onlinecourse.data.entity.UploadEntity;
 import cn.canlnac.onlinecourse.data.exception.NetworkConnectionException;
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import rx.Observable;
@@ -1812,6 +1814,35 @@ public class RestApiImpl implements RestApi {
                     AnswerIdEntity answerIdEntity = new Gson().fromJson(response.body().string(),AnswerIdEntity.class);
                     //完成
                     subscriber.onNext(answerIdEntity.getAnswerId());
+                    subscriber.onCompleted();
+                } else {//状态码错误
+                    subscriber.onError(setCommentStatusError(response.code()));
+                }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<UploadEntity>> uploadFiles(List<File> files) {
+        return Observable.create(subscriber -> {
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
+
+            try {
+                Response response = restApiConnection.uploadFilesFromApi(files);
+                if (response == null) {//网络异常
+                    subscriber.onError(new NetworkConnectionException());
+                    return;
+                }
+
+                if (response.code() == 200) {//状态码正确响应
+                    UploadEntity[] uploadEntities = new Gson().fromJson(response.body().string(),UploadEntity[].class);
+                    //完成
+                    subscriber.onNext(Arrays.asList(uploadEntities));
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));

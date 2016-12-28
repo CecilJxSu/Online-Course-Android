@@ -2,6 +2,7 @@ package cn.canlnac.onlinecourse.data.net;
 
 import android.support.annotation.Nullable;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
 import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
+import cn.canlnac.onlinecourse.data.entity.UploadEntity;
 import rx.Observable;
 
 /**
@@ -165,5 +167,8 @@ public interface RestApi {
     Observable<AnswerEntity> getAnswer(int catalogId);
     /** 创建回答 */
     Observable<Integer> createAnser(int catalogId, Map<String,Object> answer);
+
+    /********************************** 文件 ***********************************/
+    Observable<List<UploadEntity>> uploadFiles(List<File> files);
 }
 
