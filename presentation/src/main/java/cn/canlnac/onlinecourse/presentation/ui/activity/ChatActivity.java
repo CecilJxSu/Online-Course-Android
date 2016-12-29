@@ -159,7 +159,15 @@ public class ChatActivity extends BaseActivity {
     public void onClickComment(View v) {
         Intent intent = new Intent(this, CommentActivity.class);
         intent.putExtra("chatId", chatId);
-        startActivity(intent);
+        startActivityForResult(intent, 200);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == 200 && data != null) {
+            int newCommentCount = Integer.parseInt(commentCount.getText().toString()) + data.getIntExtra("newCommentCount",0);
+            commentCount.setText(newCommentCount+"");
+        }
     }
 
     /**

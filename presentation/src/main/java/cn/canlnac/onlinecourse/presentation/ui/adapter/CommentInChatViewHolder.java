@@ -29,16 +29,16 @@ import cn.canlnac.onlinecourse.presentation.internal.di.modules.ActivityModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.LikeCommentModule;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.UnlikeCommentModule;
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
-import cn.canlnac.onlinecourse.presentation.presenter.LikeCommentPresenter;
-import cn.canlnac.onlinecourse.presentation.presenter.UnlikeCommentPresenter;
-import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
+import cn.canlnac.onlinecourse.presentation.presenter.LikeCommentInChatPresenter;
+import cn.canlnac.onlinecourse.presentation.presenter.UnlikeCommentInChatPresenter;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CommentActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.LoginActivity;
 
 /**
  * 评论 view holder.
  */
 
-public class CommentViewHolder {
+public class CommentInChatViewHolder {
     @BindView(R.id.comment_head_icon) SimpleDraweeView userIcon;
     @BindView(R.id.comment_user_name) TextView userName;
     @BindView(R.id.comment_content) TextView content;
@@ -54,8 +54,10 @@ public class CommentViewHolder {
     private Activity activity;
     private PrettyTime prettyTime;
 
-    @Inject LikeCommentPresenter likeCommentPresenter;
-    @Inject UnlikeCommentPresenter unlikeCommentPresenter;
+    @Inject
+    LikeCommentInChatPresenter likeCommentPresenter;
+    @Inject
+    UnlikeCommentInChatPresenter unlikeCommentPresenter;
 
     private boolean isLike;
     private boolean isReply;
@@ -63,7 +65,7 @@ public class CommentViewHolder {
     private int toUserId;
     private String toUserName;
 
-    public CommentViewHolder(Activity activity, View view, CommentModel comment, PrettyTime prettyTime) {
+    public CommentInChatViewHolder(Activity activity, View view, CommentModel comment, PrettyTime prettyTime) {
         ButterKnife.bind(this, view);
 
         this.activity = activity;
@@ -84,7 +86,7 @@ public class CommentViewHolder {
         changeReply(comment.isReply());
 
         //回复评论
-        ReplyAdapter adapter = new ReplyAdapter(activity, comment.getReplies(), commentId, prettyTime);
+        ReplyInChatAdapter adapter = new ReplyInChatAdapter(activity, comment.getReplies(), commentId, prettyTime);
         int totalHeight = 0;
         for (int i = 0; i < adapter.getCount(); i++) {
             View item = adapter.getView(i, null, replyView);
@@ -170,7 +172,7 @@ public class CommentViewHolder {
 
     @OnClick(R.id.comment_reply)
     public void onClickReply() {
-        ((CourseActivity)activity).toggleReplyFragment(commentId,toUserId,toUserName);
+        ((CommentActivity)activity).toggleReplyFragment(commentId,toUserId,toUserName);
     }
 
     /**

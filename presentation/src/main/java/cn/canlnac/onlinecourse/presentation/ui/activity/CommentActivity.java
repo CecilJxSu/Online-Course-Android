@@ -1,7 +1,9 @@
 package cn.canlnac.onlinecourse.presentation.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -19,7 +21,9 @@ import cn.canlnac.onlinecourse.presentation.model.CommentListModel;
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
 import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetCommentsInChatPresenter;
-import cn.canlnac.onlinecourse.presentation.ui.adapter.CommentAdapter;
+import cn.canlnac.onlinecourse.presentation.ui.adapter.CommentInChatAdapter;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.PostCommentInChatFragment;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.PostReplyInChatFragment;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleFooter;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.SimpleHeader;
 import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.ZrcListView;
@@ -28,14 +32,19 @@ import cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.ZrcListView;
  * 话题评论.
  */
 
-public class CommentActivity extends BaseActivity {
+public class CommentActivity extends BaseFragmentActivity {
     @BindView(R.id.chat_comments_list) ZrcListView zrcListView;
 
-    private CommentAdapter adapter;
+    private CommentInChatAdapter adapter;
     private Handler handler;
 
     @Inject
     GetCommentsInChatPresenter getCommentsInChatPresenter;
+
+    private PostCommentInChatFragment commentFragment;
+    private PostReplyInChatFragment replyFragment;
+    private boolean isShowFragment = true;
+    private boolean isShowReplyFragment = true;
 
     int start = 0;
     int count = 1;
@@ -46,11 +55,20 @@ public class CommentActivity extends BaseActivity {
 
     List<CommentModel> comments = new ArrayList<>();
 
+    private int newCommentCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_comments);
         ButterKnife.bind(this);
+
+        //获取fragment
+        commentFragment = ((PostCommentInChatFragment)getSupportFragmentManager().findFragmentById(R.id.chat_comment_fragment));
+        replyFragment = ((PostReplyInChatFragment) getSupportFragmentManager().findFragmentById(R.id.chat_comment_reply_fragment));
+        //隐藏fragment
+        toggleCommentFragment();
+        toggleReplyFragment();
 
         chatId = getIntent().getIntExtra("chatId", -1);
 
@@ -91,9 +109,26 @@ public class CommentActivity extends BaseActivity {
             }
         });
 
-        adapter = new CommentAdapter(this, comments);
+        zrcListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (isShowFragment) {
+                    toggleCommentFragment();
+                }
+                if (isShowReplyFragment) {
+                    toggleReplyFragment();
+                }
+                return false;
+            }
+        });
+
+        adapter = new CommentInChatAdapter(this, comments);
         zrcListView.setAdapter(adapter);
         zrcListView.refresh(); // 主动下拉刷新
+    }
+
+    public int getChatId (){
+        return this.chatId;
     }
 
     @Override
@@ -106,7 +141,53 @@ public class CommentActivity extends BaseActivity {
 
     @OnClick(R.id.chat_comment_close)
     public void onClickClose(View v) {
+        Intent intent = new Intent();
+        intent.putExtra("newCommentCount", newCommentCount);
+        setResult(200, intent);
+
         this.finish();
+    }
+
+    @OnClick(R.id.chat_comment_btn)
+    public void onClickComment(View v) {
+        toggleCommentFragment();
+        if (!isShowFragment) {
+            commentFragment.clearComment();
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (isShowFragment) {
+            toggleCommentFragment();
+        }
+        if (isShowReplyFragment) {
+            toggleReplyFragment();
+        }
+        return super.onTouchEvent(event);
+    }
+
+    public void toggleCommentFragment() {
+        isShowFragment = !isShowFragment;
+        if (isShowFragment && !isShowReplyFragment) {
+            getSupportFragmentManager().beginTransaction().show(commentFragment).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().hide(commentFragment).commit();
+        }
+    }
+
+    private void toggleReplyFragment() {
+        toggleReplyFragment(-1, -1, "");
+    }
+
+    public void toggleReplyFragment(int commentId, int toUserId, String toUserName) {
+        isShowReplyFragment = !isShowReplyFragment;
+        if (isShowReplyFragment && !isShowFragment) {
+            replyFragment.setReplyData(commentId, toUserId, toUserName);
+            getSupportFragmentManager().beginTransaction().show(replyFragment).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().hide(replyFragment).commit();
+        }
     }
 
     /**
@@ -116,6 +197,8 @@ public class CommentActivity extends BaseActivity {
     public void postComment(CommentModel commentModel) {
         comments.add(0,commentModel);
         adapter.notifyDataSetChanged();
+
+        newCommentCount += 1;
     }
 
     /**
@@ -154,7 +237,7 @@ public class CommentActivity extends BaseActivity {
                     showRefreshError("加载完成");
                 }
             }
-        }, 2 * 1000);
+        }, 200);
     }
 
     /**
@@ -180,7 +263,7 @@ public class CommentActivity extends BaseActivity {
                     zrcListView.stopLoadMore();
                 }
             }
-        }, 2 * 1000);
+        }, 1000);
     }
 
     /**

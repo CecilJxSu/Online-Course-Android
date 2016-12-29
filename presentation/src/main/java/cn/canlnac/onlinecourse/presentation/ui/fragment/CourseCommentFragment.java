@@ -164,7 +164,7 @@ public class CourseCommentFragment extends BaseFragment {
                     }
                 }
             }
-        }, 2 * 1000);
+        }, 200);
     }
 
     /**
@@ -192,7 +192,7 @@ public class CourseCommentFragment extends BaseFragment {
                     zrcListView.stopLoadMore();
                 }
             }
-        }, 2 * 1000);
+        }, 1000);
     }
 
     /**
