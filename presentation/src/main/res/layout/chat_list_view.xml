@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -14,10 +15,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <cn.canlnac.onlinecourse.presentation.ui.view.CircleImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/chat_list_view_head"
                 android:layout_width="40dp"
-                android:layout_height="40dp"/>
+                android:layout_height="40dp"
+                fresco:placeholderImage="@drawable/header"
+                fresco:roundedCornerRadius="25dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,10 +85,11 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/chat_share"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/share_green_icon" />
+                android:src="@drawable/share_icon" />
 
             <TextView
                 android:id="@+id/chat_list_share"
@@ -106,13 +110,14 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/chat_favorite"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/comment_green_icon" />
+                android:src="@drawable/unfavorite" />
 
             <TextView
-                android:id="@+id/chat_list_comment"
+                android:id="@+id/chat_list_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="100"
@@ -130,10 +135,11 @@
             android:layout_weight="1">
 
             <ImageView
+                android:id="@+id/chat_like"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginRight="5dp"
-                android:src="@drawable/thump_up_green_icon" />
+                android:src="@drawable/thump_up_icon" />
 
             <TextView
                 android:id="@+id/chat_list_thump_up"

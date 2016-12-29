@@ -15,7 +15,9 @@ public class Chat {
 
     private String content;
 
-    private Login author;
+    private String html;
+
+    private SimpleUser author;
 
     private List<String> pictureUrls;
 
@@ -63,11 +65,19 @@ public class Chat {
         this.content = content;
     }
 
-    public Login getAuthor() {
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
+    }
+
+    public SimpleUser getAuthor() {
         return author;
     }
 
-    public void setAuthor(Login author) {
+    public void setAuthor(SimpleUser author) {
         this.author = author;
     }
 

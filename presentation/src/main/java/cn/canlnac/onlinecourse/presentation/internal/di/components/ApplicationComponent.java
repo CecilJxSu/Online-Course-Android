@@ -11,6 +11,7 @@ import cn.canlnac.onlinecourse.domain.repository.ChatRepository;
 import cn.canlnac.onlinecourse.domain.repository.CommentRepository;
 import cn.canlnac.onlinecourse.domain.repository.CourseRepository;
 import cn.canlnac.onlinecourse.domain.repository.DocumentRepository;
+import cn.canlnac.onlinecourse.domain.repository.UploadRepository;
 import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.ApplicationModule;
 import cn.canlnac.onlinecourse.presentation.ui.activity.BaseActivity;
@@ -37,4 +38,5 @@ public interface ApplicationComponent {
     CommentRepository commentRepository();
     ChatRepository chatRepository();
     CatalogRepository catalogRepository();
+    UploadRepository uploadRepository();
 }

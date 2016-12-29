@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.adapter.ChatViewHolder;
 
 @PerActivity
 public class FavoriteChatPresenter implements Presenter {
 
-    RegisterActivity favoriteChatActivity;
+    ChatViewHolder favoriteChatActivity;
 
     private final UseCase favoriteChatUseCase;
 
@@ -22,7 +22,7 @@ public class FavoriteChatPresenter implements Presenter {
         this.favoriteChatUseCase = favoriteChatUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity favoriteChatActivity) {
+    public void setView(@NonNull ChatViewHolder favoriteChatActivity) {
         this.favoriteChatActivity = favoriteChatActivity;
     }
 
@@ -54,17 +54,19 @@ public class FavoriteChatPresenter implements Presenter {
         public void onError(Throwable e) {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
+                    case 304:
+                        FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("不能重复点赞");
+                        break;
                     case 400:
-                        FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("参数错误！");
-                        break;
                     case 404:
-                        FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("资源不存在！");
+                        FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("话题不存在");
                         break;
-                    case 409:
-                        FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("未登陆");
+                        FavoriteChatPresenter.this.favoriteChatActivity.toLogin();
                         break;
                     default:
-                        FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
+                        FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("服务器错误:" + ((ResponseStatusException) e).code);
                 }
             } else {
                 FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("网络连接错误！");
@@ -73,7 +75,8 @@ public class FavoriteChatPresenter implements Presenter {
 
         @Override
         public void onNext(Void empty) {
-            FavoriteChatPresenter.this.favoriteChatActivity.showToastMessage("创建成功");
+            FavoriteChatPresenter.this.favoriteChatActivity.changeFavorite(true);
+            FavoriteChatPresenter.this.favoriteChatActivity.changeFavoriteCount(true);
         }
     }
 }

@@ -5,26 +5,32 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
+import cn.canlnac.onlinecourse.domain.ChatList;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.model.ChatListModel;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.mapper.ChatListModelDataMapper;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment2;
 
 @PerActivity
 public class GetChatsPresenter implements Presenter {
 
-    RegisterActivity getChatsActivity;
+    TabFragment2 getChatsActivity;
 
     private final UseCase getChatsUseCase;
+    private final ChatListModelDataMapper chatListModelDataMapper;
+
+    private int state;
 
     @Inject
-    public GetChatsPresenter(UseCase getChatsUseCase) {
+    public GetChatsPresenter(UseCase getChatsUseCase,ChatListModelDataMapper chatListModelDataMapper) {
         this.getChatsUseCase = getChatsUseCase;
+        this.chatListModelDataMapper = chatListModelDataMapper;
     }
 
-    public void setView(@NonNull RegisterActivity getChatsActivity) {
+    public void setView(@NonNull TabFragment2 getChatsActivity, int state) {
         this.getChatsActivity = getChatsActivity;
+        this.state = state;
     }
 
     public void initialize() {
@@ -46,7 +52,7 @@ public class GetChatsPresenter implements Presenter {
         this.getChatsUseCase.unsubscribe();
     }
 
-    private final class GetChatsSubscriber extends DefaultSubscriber<ChatListModel> {
+    private final class GetChatsSubscriber extends DefaultSubscriber<ChatList> {
         @Override
         public void onCompleted() {
         }
@@ -56,25 +62,37 @@ public class GetChatsPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        GetChatsPresenter.this.getChatsActivity.showToastMessage("参数错误！");
+                        if (state == 0) {
+                            GetChatsPresenter.this.getChatsActivity.showRefreshError("参数错误");
+                        }
                         break;
                     case 404:
-                        GetChatsPresenter.this.getChatsActivity.showToastMessage("资源不存在！");
-                        break;
-                    case 409:
-                        GetChatsPresenter.this.getChatsActivity.showToastMessage("用户名已被注册！");
+                        if (state == 0) {
+                            GetChatsPresenter.this.getChatsActivity.showRefreshError("没有话题");
+                        }
                         break;
                     default:
+                        if (state == 0) {
+                            GetChatsPresenter.this.getChatsActivity.showRefreshError("加载失败");
+                        }
                         GetChatsPresenter.this.getChatsActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                GetChatsPresenter.this.getChatsActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                if (state == 0) {
+                    GetChatsPresenter.this.getChatsActivity.showRefreshError("加载失败");
+                }
+                GetChatsPresenter.this.getChatsActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
-        public void onNext(ChatListModel chatListModel) {
-            GetChatsPresenter.this.getChatsActivity.showToastMessage("创建成功");
+        public void onNext(ChatList chatList) {
+            if (state == 0) {
+                GetChatsPresenter.this.getChatsActivity.showRefreshChats(chatListModelDataMapper.transform(chatList));
+            } else if (state == 1) {
+                GetChatsPresenter.this.getChatsActivity.showLoadMoreChats(chatListModelDataMapper.transform(chatList));
+            }
         }
     }
 }

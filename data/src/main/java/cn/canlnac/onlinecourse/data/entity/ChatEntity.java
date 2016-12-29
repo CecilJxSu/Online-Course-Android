@@ -21,8 +21,11 @@ public class ChatEntity {
     @SerializedName("content")
     private String content;
 
+    @SerializedName("html")
+    private String html;
+
     @SerializedName("author")
-    private LoginEntity author;
+    private SimpleUserEntity author;
 
     @SerializedName("pictureUrls")
     private List<String> pictureUrls;
@@ -77,11 +80,19 @@ public class ChatEntity {
         this.content = content;
     }
 
-    public LoginEntity getAuthor() {
+    public String getHtml() {
+        return html;
+    }
+
+    public void setHtml(String html) {
+        this.html = html;
+    }
+
+    public SimpleUserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(LoginEntity author) {
+    public void setAuthor(SimpleUserEntity author) {
         this.author = author;
     }
 

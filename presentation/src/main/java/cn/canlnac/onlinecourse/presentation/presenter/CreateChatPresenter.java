@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.PostChatActivity;
 
 @PerActivity
 public class CreateChatPresenter implements Presenter {
 
-    RegisterActivity createChatActivity;
+    PostChatActivity createChatActivity;
 
     private final UseCase createChatUseCase;
 
@@ -22,7 +22,7 @@ public class CreateChatPresenter implements Presenter {
         this.createChatUseCase = createChatUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity createChatActivity) {
+    public void setView(@NonNull PostChatActivity createChatActivity) {
         this.createChatActivity = createChatActivity;
     }
 
@@ -55,25 +55,26 @@ public class CreateChatPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        CreateChatPresenter.this.createChatActivity.showToastMessage("参数错误！");
+                        CreateChatPresenter.this.createChatActivity.showToastMessage("参数错误");
                         break;
-                    case 404:
-                        CreateChatPresenter.this.createChatActivity.showToastMessage("资源不存在！");
-                        break;
-                    case 409:
-                        CreateChatPresenter.this.createChatActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        CreateChatPresenter.this.createChatActivity.showToastMessage("未登陆");
+                        CreateChatPresenter.this.createChatActivity.toLogin();
                         break;
                     default:
                         CreateChatPresenter.this.createChatActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                CreateChatPresenter.this.createChatActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                CreateChatPresenter.this.createChatActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
         public void onNext(Integer chatId) {
-            CreateChatPresenter.this.createChatActivity.showToastMessage("注册成功");
+            CreateChatPresenter.this.createChatActivity.showToastMessage("创建成功");
+            CreateChatPresenter.this.createChatActivity.setResult(200);
+            CreateChatPresenter.this.createChatActivity.finish();
         }
     }
 }

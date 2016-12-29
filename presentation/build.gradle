@@ -79,6 +79,7 @@ dependencies {
     compile presentationDependencies.fresco
     compile presentationDependencies.prettytime
     compile presentationDependencies.VerticalTabLayout
+    compile presentationDependencies.richtext
 
     apt presentationDependencies.daggerCompiler
     compile presentationDependencies.dagger

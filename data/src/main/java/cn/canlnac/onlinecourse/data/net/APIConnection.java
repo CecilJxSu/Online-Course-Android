@@ -3,14 +3,17 @@ package cn.canlnac.onlinecourse.data.net;
 import android.support.annotation.Nullable;
 
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -24,6 +27,7 @@ public class APIConnection implements Callable<Response> {
     private static final String JWT_LABEL = "Authentication";
     private static final String CONTENT_TYPE_VALUE_JSON = "application/json; charset=utf-8";
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public static final MediaType FILE_TYPE = MediaType.parse("image/jpg");
 
     private METHOD method;
     private URL url;
@@ -86,6 +90,50 @@ public class APIConnection implements Callable<Response> {
                 builder.delete(requestBody);
                 break;
         }
+        //build
+        final Request request = builder.build();
+
+        try {
+            //直接返回数据
+            return okHttpClient.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * 上传文件
+     * @param files
+     * @return
+     */
+    public Response upload(List<File> files) {
+        if (method != METHOD.POST) {
+            throw new IllegalArgumentException("Upload file method must be POST");
+        }
+        //创建请求客户端
+        OkHttpClient okHttpClient = this.createClient();
+        //Builder
+        Request.Builder builder = new Request.Builder()
+                .url(this.url)
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_VALUE_JSON);
+
+        //创建表单
+        MultipartBuilder bodyBuilder = new MultipartBuilder().type(MultipartBuilder.FORM);
+        //创建文件请求数据
+        for (File file: files) {
+            bodyBuilder.addFormDataPart("file", file.getName(), RequestBody.create(FILE_TYPE, file));
+        }
+        //创建body
+        RequestBody requestBody = bodyBuilder.build();
+        //添加验证信息
+        if (jwt != null) {
+            builder.addHeader(JWT_LABEL, jwt);
+        }
+
+        //添加body到请求体
+        builder.post(requestBody);
         //build
         final Request request = builder.build();
 
