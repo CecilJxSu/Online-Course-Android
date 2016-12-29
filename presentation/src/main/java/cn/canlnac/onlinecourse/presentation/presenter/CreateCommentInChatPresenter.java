@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.PostCommentInChatFragment;
 
 @PerActivity
 public class CreateCommentInChatPresenter implements Presenter {
 
-    RegisterActivity createCommentInChatActivity;
+    PostCommentInChatFragment createCommentInChatActivity;
 
     private final UseCase createCommentInChatUseCase;
 
@@ -22,7 +22,7 @@ public class CreateCommentInChatPresenter implements Presenter {
         this.createCommentInChatUseCase = createCommentInChatUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity createCommentInChatActivity) {
+    public void setView(@NonNull PostCommentInChatFragment createCommentInChatActivity) {
         this.createCommentInChatActivity = createCommentInChatActivity;
     }
 
@@ -55,25 +55,28 @@ public class CreateCommentInChatPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("参数错误！");
+                        CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("参数错误");
                         break;
                     case 404:
-                        CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("资源不存在！");
+                        CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("课程不存在");
                         break;
-                    case 409:
-                        CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("未登陆");
+                        CreateCommentInChatPresenter.this.createCommentInChatActivity.toLogin();
                         break;
                     default:
                         CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
         public void onNext(Integer commentId) {
-            CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("注册成功");
+            CreateCommentInChatPresenter.this.createCommentInChatActivity.showToastMessage("创建成功");
+            CreateCommentInChatPresenter.this.createCommentInChatActivity.postSuccess(commentId);
         }
     }
 }
