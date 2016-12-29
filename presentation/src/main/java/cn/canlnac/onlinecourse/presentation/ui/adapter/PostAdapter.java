@@ -78,7 +78,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
             @Override
             public void onItemImageClick(Context context, int index, List<String> list) {
-                Toast.makeText(context, "image position is " + index, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "image position is " + index, Toast.LENGTH_SHORT).show();
             }
         };
 

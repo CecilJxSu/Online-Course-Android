@@ -140,6 +140,10 @@ public class CourseListFragment extends BaseFragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+            start = 0;
+            courses.clear();
+            adapter.notifyDataSetChanged();
+
             if (start == 0) {
                 //获取课程列表
                 if (getActivity() != null) {
@@ -156,7 +160,7 @@ public class CourseListFragment extends BaseFragment {
                 }
             }
             }
-        }, 2 * 1000);
+        }, 200);
     }
 
     /**
@@ -183,7 +187,7 @@ public class CourseListFragment extends BaseFragment {
                 zrcListView.stopLoadMore();
             }
             }
-        }, 2 * 1000);
+        }, 1000);
     }
 
     /**

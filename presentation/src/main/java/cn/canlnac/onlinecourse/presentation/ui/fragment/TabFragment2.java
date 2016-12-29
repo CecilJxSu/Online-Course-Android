@@ -67,8 +67,8 @@ public class TabFragment2 extends BaseFragment {
         createChatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TabFragment2.this.getActivity(), PostChatActivity.class);
-                TabFragment2.this.startActivity(intent);
+                Intent intent = new Intent(TabFragment2.this.getContext(), PostChatActivity.class);
+                TabFragment2.this.startActivityForResult(intent, 200);
                 menu.toggle(true);
             }
         });
@@ -136,6 +136,10 @@ public class TabFragment2 extends BaseFragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                start = 0;
+                chats.clear();
+                adapter.notifyDataSetChanged();
+
                 if (start == 0) {
                     //获取话题列表
                     if (getActivity() != null) {
@@ -152,7 +156,7 @@ public class TabFragment2 extends BaseFragment {
                     }
                 }
             }
-        }, 2 * 1000);
+        }, 200);
     }
 
     private void loadMore(){
@@ -176,7 +180,7 @@ public class TabFragment2 extends BaseFragment {
                     listView.stopLoadMore();
                 }
             }
-        }, 2 * 1000);
+        }, 1000);
     }
 
     /**
@@ -200,5 +204,19 @@ public class TabFragment2 extends BaseFragment {
         chats.addAll(chatListModel.getChats());
         adapter.notifyDataSetChanged();
         listView.setLoadMoreSuccess();
+    }
+
+    /**
+     * 创建话题情况
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //成功创建
+        if (resultCode == 200) {
+            refresh();
+        }
     }
 }

@@ -73,6 +73,7 @@ public class CreateChatPresenter implements Presenter {
         @Override
         public void onNext(Integer chatId) {
             CreateChatPresenter.this.createChatActivity.showToastMessage("创建成功");
+            CreateChatPresenter.this.createChatActivity.setResult(200);
             CreateChatPresenter.this.createChatActivity.finish();
         }
     }
