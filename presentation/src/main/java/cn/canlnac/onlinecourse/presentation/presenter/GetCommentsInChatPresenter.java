@@ -5,26 +5,32 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
+import cn.canlnac.onlinecourse.domain.CommentList;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.model.CommentListModel;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.mapper.CommentListModelDataMapper;
+import cn.canlnac.onlinecourse.presentation.ui.activity.CommentActivity;
 
 @PerActivity
 public class GetCommentsInChatPresenter implements Presenter {
 
-    RegisterActivity getCommentsInChatActivity;
+    CommentActivity getCommentsInChatActivity;
 
     private final UseCase getCommentsInChatUseCase;
+    private final CommentListModelDataMapper commentListModelDataMapper;
+
+    private int state;
 
     @Inject
-    public GetCommentsInChatPresenter(UseCase getCommentsInChatUseCase) {
+    public GetCommentsInChatPresenter(UseCase getCommentsInChatUseCase, CommentListModelDataMapper commentListModelDataMapper) {
         this.getCommentsInChatUseCase = getCommentsInChatUseCase;
+        this.commentListModelDataMapper = commentListModelDataMapper;
     }
 
-    public void setView(@NonNull RegisterActivity getCommentsInChatActivity) {
+    public void setView(@NonNull CommentActivity getCommentsInChatActivity, int state) {
         this.getCommentsInChatActivity = getCommentsInChatActivity;
+        this.state = state;
     }
 
     public void initialize() {
@@ -46,7 +52,7 @@ public class GetCommentsInChatPresenter implements Presenter {
         this.getCommentsInChatUseCase.unsubscribe();
     }
 
-    private final class GetCommentsInChatSubscriber extends DefaultSubscriber<CommentListModel> {
+    private final class GetCommentsInChatSubscriber extends DefaultSubscriber<CommentList> {
         @Override
         public void onCompleted() {
         }
@@ -56,25 +62,37 @@ public class GetCommentsInChatPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        GetCommentsInChatPresenter.this.getCommentsInChatActivity.showToastMessage("参数错误！");
+                        if (state == 0) {
+                            GetCommentsInChatPresenter.this.getCommentsInChatActivity.showRefreshError("参数错误");
+                        }
                         break;
                     case 404:
-                        GetCommentsInChatPresenter.this.getCommentsInChatActivity.showToastMessage("资源不存在！");
-                        break;
-                    case 409:
-                        GetCommentsInChatPresenter.this.getCommentsInChatActivity.showToastMessage("用户名已被注册！");
+                        if (state == 0) {
+                            GetCommentsInChatPresenter.this.getCommentsInChatActivity.showRefreshError("没有评论");
+                        }
                         break;
                     default:
+                        if (state == 0) {
+                            GetCommentsInChatPresenter.this.getCommentsInChatActivity.showRefreshError("加载失败");
+                        }
                         GetCommentsInChatPresenter.this.getCommentsInChatActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                GetCommentsInChatPresenter.this.getCommentsInChatActivity.showToastMessage("网络连接错误！");
+                e.printStackTrace();
+                if (state == 0) {
+                    GetCommentsInChatPresenter.this.getCommentsInChatActivity.showRefreshError("加载失败");
+                }
+                GetCommentsInChatPresenter.this.getCommentsInChatActivity.showToastMessage("网络连接错误");
             }
         }
 
         @Override
-        public void onNext(CommentListModel commentListModel) {
-            GetCommentsInChatPresenter.this.getCommentsInChatActivity.showToastMessage("创建成功");
+        public void onNext(CommentList commentList) {
+            if (state == 0) {
+                GetCommentsInChatPresenter.this.getCommentsInChatActivity.showRefreshComments(commentListModelDataMapper.transform(commentList));
+            } else if (state == 1) {
+                GetCommentsInChatPresenter.this.getCommentsInChatActivity.showLoadMoreComments(commentListModelDataMapper.transform(commentList));
+            }
         }
     }
 }

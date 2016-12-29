@@ -158,6 +158,7 @@ public class ChatActivity extends BaseActivity {
     @OnClick(R.id.chat_detail_comment_img)
     public void onClickComment(View v) {
         Intent intent = new Intent(this, CommentActivity.class);
+        intent.putExtra("chatId", chatId);
         startActivity(intent);
     }
 
