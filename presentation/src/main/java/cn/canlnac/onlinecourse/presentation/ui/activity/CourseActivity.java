@@ -133,6 +133,7 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         courseTab.addTab(courseTab.newTab().setText("简介"));
         courseTab.addTab(courseTab.newTab().setText("目录"));
         courseTab.addTab(courseTab.newTab().setText("评论"));
+        courseTab.addTab(courseTab.newTab().setText("文档"));
 
         //创建适配器
         final CoursePagerAdapter adapter = new CoursePagerAdapter
@@ -140,7 +141,7 @@ public class CourseActivity extends BaseFragmentActivity implements View.OnClick
         //设置适配器
         coursePager.setAdapter(adapter);
         //缓存3个页面，如果不设置，第一页会重建
-        coursePager.setOffscreenPageLimit(3);
+        coursePager.setOffscreenPageLimit(4);
         //添加换页事件
         coursePager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(courseTab));
         //设置选项卡选择事件

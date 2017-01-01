@@ -26,6 +26,7 @@ ext {
     fresco = '0.12.0'
     prettytime = '3.2.7.Final'
     richtext = '2.3.7'
+    pdfview = '1.0.4@aar'
 
     //Libraries for UI
     appcompat = '23.2.1'
@@ -62,6 +63,7 @@ ext {
             fresco:                 "com.facebook.fresco:fresco:${fresco}",
             prettytime:             "org.ocpsoft.prettytime:prettytime:${prettytime}",
             richtext:               "com.zzhoujay.richtext:richtext:${richtext}",
+            pdfview:                "com.joanzapata.pdfview:android-pdfview:${pdfview}",
 
             carouselview:           "com.synnapps:carouselview:${carouselview}",
             fab:                    "com.github.clans:fab:${fab}",

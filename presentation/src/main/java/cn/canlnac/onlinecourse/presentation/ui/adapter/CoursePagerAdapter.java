@@ -10,6 +10,7 @@ import java.util.List;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCatalogFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseCommentFragment;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.CourseIntroFragment;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.DocumentFragment;
 
 /**
  * 课程详情中的页面适配器.
@@ -26,6 +27,7 @@ public class CoursePagerAdapter extends FragmentStatePagerAdapter {
         fragmentList.add(new CourseIntroFragment());
         fragmentList.add(new CourseCatalogFragment());
         fragmentList.add(new CourseCommentFragment());
+        fragmentList.add(new DocumentFragment());
     }
 
     @Override
