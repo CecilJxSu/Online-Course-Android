@@ -4,6 +4,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.Profile;
 
 /**
@@ -29,7 +30,7 @@ public class ProfileEntityDataMapper {
             profile.setEmail(profileEntity.getEmail());
             profile.setFollowing(profileEntity.isFollowing());
             profile.setGender(profileEntity.getGender());
-            profile.setIconUrl(profileEntity.getIconUrl());
+            profile.setIconUrl(RestApiConnection.API_FILE + "/" + profileEntity.getIconUrl());
             profile.setMajor(profileEntity.getMajor());
             profile.setNickname(profileEntity.getNickname());
             profile.setPhone(profileEntity.getPhone());

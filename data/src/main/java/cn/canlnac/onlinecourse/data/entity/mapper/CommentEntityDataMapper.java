@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.CommentEntity;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.Comment;
 
 /**
@@ -33,7 +34,11 @@ public class CommentEntityDataMapper {
         Comment comment = null;
         if (commentEntity != null) {
             comment = new Comment();
-            comment.setPictureUrls(commentEntity.getPictureUrls());
+            List<String> newPicUrls = new ArrayList<>();
+            for(String url:commentEntity.getPictureUrls()) {
+                newPicUrls.add(RestApiConnection.API_FILE + "/" + url);
+            }
+            comment.setPictureUrls(newPicUrls);
             comment.setAuthor(simpleUserEntityDataMapper.transform(commentEntity.getAuthor()));
             comment.setContent(commentEntity.getContent());
             comment.setDate(commentEntity.getDate());

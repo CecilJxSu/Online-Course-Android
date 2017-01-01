@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.CatalogEntity;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.Catalog;
 
 /**
@@ -35,8 +36,8 @@ public class CatalogEntityDataMapper {
             catalog.setParentId(catalogEntity.getParentId());
             catalog.setIntroduction(catalogEntity.getIntroduction());
             catalog.setName(catalogEntity.getName());
-            catalog.setPreviewImage(catalogEntity.getPreviewImage());
-            catalog.setUrl(catalogEntity.getUrl());
+            catalog.setPreviewImage(RestApiConnection.API_FILE + "/" + catalogEntity.getPreviewImage());
+            catalog.setUrl(RestApiConnection.API_FILE + "/" + catalogEntity.getUrl());
         }
         return catalog;
     }

@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerCreateChatComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerUploadInChatComponent;
@@ -197,7 +198,7 @@ public class PostChatActivity extends BaseActivity {
         String html = postChatData.get("html").toString();
         List<String> pictureUrls = (List<String>)postChatData.get("pictureUrls");
         for (int i = 0; i < uploadModels.size(); i++) {
-            html = html.replace(pictureUrls.get(i),uploadModels.get(i).getFileUrl());
+            html = html.replace(pictureUrls.get(i), RestApiConnection.API_FILE + "/" + uploadModels.get(i).getFileUrl());
             pictureUrls.set(i, uploadModels.get(i).getFileUrl());
         }
         //update post

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.ChatEntity;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.Chat;
 
 /**
@@ -39,7 +40,13 @@ public class ChatEntityDataMapper {
             chat.setId(chatEntity.getId());
             chat.setLike(chatEntity.isLike());
             chat.setLikeCount(chatEntity.getLikeCount());
-            chat.setPictureUrls(chatEntity.getPictureUrls());
+
+            List<String> newPicUrls = new ArrayList<>();
+            for (String url: chatEntity.getPictureUrls()) {
+                newPicUrls.add(RestApiConnection.API_FILE + "/" + url);
+            }
+
+            chat.setPictureUrls(newPicUrls);
             chat.setTitle(chatEntity.getTitle());
             chat.setWatchCount(chatEntity.getWatchCount());
             chat.setFavoriteCount(chatEntity.getFavoriteCount());

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.Question;
 
 /**
@@ -34,7 +35,7 @@ public class QuestionEntityDataMapper {
             question.setQuestion(questionEntity.getQuestion());
             question.setScore(questionEntity.getScore());
             question.setType(questionEntity.getType());
-            question.setUrl(questionEntity.getUrl());
+            question.setUrl(RestApiConnection.API_FILE + "/" + questionEntity.getUrl());
         }
         return question;
     }

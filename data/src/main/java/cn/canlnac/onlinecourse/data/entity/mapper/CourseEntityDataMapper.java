@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.CourseEntity;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.Course;
 
 /**
@@ -41,7 +42,7 @@ public class CourseEntityDataMapper {
             course.setLikeCount(courseEntity.getLikeCount());
             course.setName(courseEntity.getName());
             course.setWatchCount(courseEntity.getWatchCount());
-            course.setPreviewUrl(courseEntity.getPreviewUrl());
+            course.setPreviewUrl(RestApiConnection.API_FILE + "/" + courseEntity.getPreviewUrl());
         }
         return course;
     }
