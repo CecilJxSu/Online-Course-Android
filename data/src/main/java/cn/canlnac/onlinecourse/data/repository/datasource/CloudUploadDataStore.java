@@ -22,4 +22,9 @@ public class CloudUploadDataStore implements UploadDataStore {
     public Observable<List<UploadEntity>> uploadFiles(List<File> files) {
         return this.restApi.uploadFiles(files);
     }
+
+    @Override
+    public Observable<File> download(String fileUrl, File targetFile) {
+        return this.restApi.download(fileUrl, targetFile);
+    }
 }

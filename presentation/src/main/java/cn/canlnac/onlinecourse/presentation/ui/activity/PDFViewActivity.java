@@ -8,6 +8,8 @@ import com.joanzapata.pdfview.listener.OnDrawListener;
 import com.joanzapata.pdfview.listener.OnLoadCompleteListener;
 import com.joanzapata.pdfview.listener.OnPageChangeListener;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
@@ -27,9 +29,15 @@ public class PDFViewActivity extends BaseActivity {
 
         ButterKnife.bind(this);
 
-        String filename = getIntent().getStringExtra("pdfFile");
+        Bundle bundle = getIntent().getExtras();
+        File file = (File) bundle.get("pdfFile");
 
-        pdfView.fromAsset(filename)
+        if (file == null || !file.exists()) {
+            showToastMessage("文件不存在");
+            this.finish();
+        }
+
+        pdfView.fromFile(file)
                 .defaultPage(1)
                 .showMinimap(false)
                 .enableSwipe(true)

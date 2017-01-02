@@ -12,4 +12,7 @@ import rx.Observable;
 public interface UploadRepository {
     /** 上传文件 */
     Observable<List<Upload>> uploadFiles(List<File> files);
+
+    /** 下载文件 */
+    Observable<File> download(String fileUrl, File targetFile);
 }

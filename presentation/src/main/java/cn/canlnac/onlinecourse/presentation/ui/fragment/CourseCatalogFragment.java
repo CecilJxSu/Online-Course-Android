@@ -61,7 +61,7 @@ public class CourseCatalogFragment extends Fragment {
                 parentItem.text = "第 "+ catalogModel.getIndex() +" 章: " + catalogModel.getName();
                 TreeNode parent = new TreeNode(parentItem).setViewHolder(catalogViewHolder1);
 
-                parents.put(catalogModel.getIndex(), parent);
+                parents.put(catalogModel.getId(), parent);
 
                 parent.setExpanded(true);
                 root.addChild(parent);

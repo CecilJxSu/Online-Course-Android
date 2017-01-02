@@ -8,7 +8,12 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -815,6 +820,44 @@ public class RestApiImpl implements RestApi {
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
                 }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<File> download(String fileUrl, File targetFile) {
+        return Observable.create(subscriber -> {
+            if (targetFile.exists()) {
+                subscriber.onNext(targetFile);
+                subscriber.onCompleted();
+                return;
+            }
+
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
+
+            try {
+                URL url = new URL(fileUrl);
+                URLConnection conn = url.openConnection();
+
+                InputStream bin = new BufferedInputStream(conn.getInputStream());
+                FileOutputStream fout = new FileOutputStream(targetFile);
+
+                byte[] bytes = new byte[512];
+                int dataSize;
+                while ((dataSize = bin.read(bytes)) != -1) {
+                    fout.write(bytes, 0, dataSize);
+                }
+
+                bin.close();
+                fout.close();
+
+                subscriber.onNext(targetFile);
+                subscriber.onCompleted();
             } catch (Exception e) {
                 subscriber.onError(new NetworkConnectionException(e.getCause()));
             }
