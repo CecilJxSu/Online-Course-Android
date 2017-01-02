@@ -28,6 +28,8 @@ ext {
     richtext = '2.3.7'
     pdfview = '1.0.4@aar'
 
+    compressor = '1.0.4'
+
     //Libraries for UI
     appcompat = '23.2.1'
     design = '23.2.1'
@@ -64,6 +66,7 @@ ext {
             prettytime:             "org.ocpsoft.prettytime:prettytime:${prettytime}",
             richtext:               "com.zzhoujay.richtext:richtext:${richtext}",
             pdfview:                "com.joanzapata.pdfview:android-pdfview:${pdfview}",
+            compressor:             "id.zelory:compressor:${compressor}",
 
             carouselview:           "com.synnapps:carouselview:${carouselview}",
             fab:                    "com.github.clans:fab:${fab}",

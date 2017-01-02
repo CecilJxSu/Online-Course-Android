@@ -38,6 +38,7 @@ import cn.canlnac.onlinecourse.presentation.presenter.CreateChatPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.UploadInChatPresenter;
 import cn.canlnac.onlinecourse.presentation.ui.view.RichTextEditor;
 import cn.canlnac.onlinecourse.presentation.ui.view.RichTextEditor.EditData;
+import id.zelory.compressor.Compressor;
 
 /**
  * 发表话题.
@@ -168,12 +169,13 @@ public class PostChatActivity extends BaseActivity {
             File file;
             for (String path: pictureUrls) {
                 file = new File(path);
+                File compress = Compressor.getDefault(this).compressToFile(file);
                 //图片不存在
                 if (!file.exists() || file.isDirectory()) {
                     showToastMessage("图片不存在");
                     return;
                 }
-                files.add(file);
+                files.add(compress);
             }
             //上传图片
             DaggerUploadInChatComponent.builder()
