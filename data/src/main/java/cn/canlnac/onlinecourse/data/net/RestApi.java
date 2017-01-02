@@ -170,5 +170,7 @@ public interface RestApi {
 
     /********************************** 文件 ***********************************/
     Observable<List<UploadEntity>> uploadFiles(List<File> files);
+
+    Observable<File> download(String fileUrl, File targetFile);
 }
 

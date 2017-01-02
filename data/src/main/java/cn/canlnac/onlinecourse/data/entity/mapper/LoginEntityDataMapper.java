@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.LoginEntity;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.Login;
 
 /**
@@ -32,7 +33,7 @@ public class LoginEntityDataMapper {
             login.setId(loginEntity.getId());
             login.setLockEndDate(loginEntity.getLockEndDate());
             login.setGender(loginEntity.getGender());
-            login.setIconUrl(loginEntity.getIconUrl());
+            login.setIconUrl(RestApiConnection.API_FILE + "/" + loginEntity.getIconUrl());
             login.setJwt(loginEntity.getJwt());
             login.setLockDate(loginEntity.getLockDate());
         }

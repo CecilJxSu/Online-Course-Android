@@ -23,7 +23,7 @@ import cn.canlnac.onlinecourse.data.cache.FileManager;
 
 public class RestApiConnection {
     /** api地址 */
-    public static final String API_BASE_URL = "http://192.168.3.23:8080/";
+    public static final String API_BASE_URL = "http://www.canlnac.cn:8080/";
 
     //登录
     public static final String API_LOGIN = API_BASE_URL + "login";

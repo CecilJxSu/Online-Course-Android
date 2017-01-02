@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerCreateChatComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerUploadInChatComponent;
@@ -37,6 +38,7 @@ import cn.canlnac.onlinecourse.presentation.presenter.CreateChatPresenter;
 import cn.canlnac.onlinecourse.presentation.presenter.UploadInChatPresenter;
 import cn.canlnac.onlinecourse.presentation.ui.view.RichTextEditor;
 import cn.canlnac.onlinecourse.presentation.ui.view.RichTextEditor.EditData;
+import id.zelory.compressor.Compressor;
 
 /**
  * 发表话题.
@@ -167,12 +169,13 @@ public class PostChatActivity extends BaseActivity {
             File file;
             for (String path: pictureUrls) {
                 file = new File(path);
+                File compress = Compressor.getDefault(this).compressToFile(file);
                 //图片不存在
                 if (!file.exists() || file.isDirectory()) {
                     showToastMessage("图片不存在");
                     return;
                 }
-                files.add(file);
+                files.add(compress);
             }
             //上传图片
             DaggerUploadInChatComponent.builder()
@@ -197,7 +200,7 @@ public class PostChatActivity extends BaseActivity {
         String html = postChatData.get("html").toString();
         List<String> pictureUrls = (List<String>)postChatData.get("pictureUrls");
         for (int i = 0; i < uploadModels.size(); i++) {
-            html = html.replace(pictureUrls.get(i),uploadModels.get(i).getFileUrl());
+            html = html.replace(pictureUrls.get(i), RestApiConnection.API_FILE + "/" + uploadModels.get(i).getFileUrl());
             pictureUrls.set(i, uploadModels.get(i).getFileUrl());
         }
         //update post

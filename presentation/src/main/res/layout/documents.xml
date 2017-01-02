@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/document_type"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/pdf"/>
+
+    <TextView
+        android:id="@+id/document_name"
+        android:layout_width="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@+id/document_type"
+        android:text="阿斯蒂芬撒地方收费方式"
+        android:layout_height="25dp"/>
+
+    <TextView
+        android:id="@+id/document_size"
+        android:layout_width="44dp"
+        android:gravity="center_vertical"
+        android:text="1234K"
+        android:layout_alignParentRight="true"
+        android:layout_height="25dp" />
+
+</RelativeLayout>

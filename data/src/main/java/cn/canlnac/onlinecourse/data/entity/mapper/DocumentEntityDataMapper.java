@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.DocumentEntity;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.Document;
 
 /**
@@ -34,7 +35,7 @@ public class DocumentEntityDataMapper {
             document.setTargetId(documentEntity.getTargetId());
             document.setTargetType(documentEntity.getTargetType());
             document.setType(documentEntity.getType());
-            document.setUrl(documentEntity.getUrl());
+            document.setUrl(RestApiConnection.API_FILE + "/" + documentEntity.getUrl());
         }
         return document;
     }

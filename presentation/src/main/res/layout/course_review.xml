@@ -7,7 +7,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/course_preview_img"
         android:layout_width="120dp"
-        android:layout_height="80dp"
+        android:layout_height="95dp"
         android:padding="5dp"
         fresco:actualImageScaleType="fitXY"
         fresco:placeholderImage="@drawable/carousel_image_1" />
@@ -26,10 +26,11 @@
     <TextView
         android:id="@+id/course_list_intro"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:textSize="12sp"
         android:paddingLeft="5dp"
         android:textColor="#666666"
+        android:gravity="center_vertical"
         android:layout_toRightOf="@+id/course_preview_img"
         android:layout_below="@+id/course_list_name"
         />
@@ -42,7 +43,6 @@
         android:paddingLeft="5dp"
         android:paddingBottom="5dp"
         android:textColor="#333333"
-        android:text="苏金兴"
         android:layout_toRightOf="@+id/course_preview_img"
         android:layout_alignParentBottom="true"
         />

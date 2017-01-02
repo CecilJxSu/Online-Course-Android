@@ -1,6 +1,5 @@
 package cn.canlnac.onlinecourse.presentation.ui.adapter;
 
-import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,7 +34,12 @@ public class CourseListViewHolder {
 
         courseName.setText(course.getName());
 
-        String intro = (course.getIntroduction() == null)?"暂无简介":course.getIntroduction().substring(0, 25) + "...";
+        String intro = course.getIntroduction();
+        if (intro == null) {
+            intro = "暂无简介";
+        } else if (intro.length() > 25) {
+            intro = intro.substring(0, 25) + "...";
+        }
         courseIntro.setText(intro);
 
         courseAuthor.setText(course.getAuthor().getName());

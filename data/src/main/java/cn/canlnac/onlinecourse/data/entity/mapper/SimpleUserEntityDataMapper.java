@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.SimpleUserEntity;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.SimpleUser;
 
 /**
@@ -29,7 +30,7 @@ public class SimpleUserEntityDataMapper {
             simpleUser = new SimpleUser();
             simpleUser.setId(simpleUserEntity.getId());
             simpleUser.setName(simpleUserEntity.getName());
-            simpleUser.setIconUrl(simpleUserEntity.getIconUrl());
+            simpleUser.setIconUrl(RestApiConnection.API_FILE + "/" + simpleUserEntity.getIconUrl());
         }
         return simpleUser;
     }

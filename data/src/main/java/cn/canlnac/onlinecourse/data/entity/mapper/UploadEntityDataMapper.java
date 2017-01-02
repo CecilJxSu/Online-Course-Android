@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.UploadEntity;
-import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.domain.Upload;
 
 /**
@@ -28,7 +27,7 @@ public class UploadEntityDataMapper {
         Upload upload = null;
         if (uploadEntity != null) {
             upload = new Upload();
-            upload.setFileUrl(RestApiConnection.API_FILE + "/" + uploadEntity.getFileName());
+            upload.setFileUrl(uploadEntity.getFileName());
             upload.setFileSize(uploadEntity.getFileSize());
             upload.setFileType(uploadEntity.getFileType());
         }

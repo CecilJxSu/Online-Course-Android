@@ -67,6 +67,11 @@
         </activity>
 
         <activity
+            android:name=".ui.activity.PDFViewActivity"
+            android:label="PDF浏览">
+        </activity>
+
+        <activity
             android:name=".ui.activity.LoginActivity"
             android:label="登录">
         </activity>

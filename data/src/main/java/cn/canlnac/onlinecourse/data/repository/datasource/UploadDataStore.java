@@ -13,4 +13,6 @@ import rx.Observable;
 public interface UploadDataStore {
     /** 上传文件 */
     Observable<List<UploadEntity>> uploadFiles(List<File> files);
+    /** 下载文件 */
+    Observable<File> download(String fileUrl, File targetFile);
 }

@@ -36,4 +36,9 @@ public class UploadDataRepository implements UploadRepository {
         return uploadDataStore.uploadFiles(files).map(uploadEntityDataMapper::transform);
     }
 
+    @Override
+    public Observable<File> download(String fileUrl, File targetFile) {
+        return uploadDataStore.download(fileUrl, targetFile);
+    }
+
 }

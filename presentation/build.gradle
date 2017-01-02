@@ -80,6 +80,8 @@ dependencies {
     compile presentationDependencies.prettytime
     compile presentationDependencies.VerticalTabLayout
     compile presentationDependencies.richtext
+    compile presentationDependencies.pdfview
+    compile presentationDependencies.compressor
 
     apt presentationDependencies.daggerCompiler
     compile presentationDependencies.dagger
