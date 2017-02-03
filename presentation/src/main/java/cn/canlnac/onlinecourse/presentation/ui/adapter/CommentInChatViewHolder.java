@@ -90,6 +90,10 @@ public class CommentInChatViewHolder {
         int totalHeight = 0;
         for (int i = 0; i < adapter.getCount(); i++) {
             View item = adapter.getView(i, null, replyView);
+            if (item.getLayoutParams() == null) {//Throws NullPointerException when invoke measure in low level android version
+                item.setLayoutParams(new ViewGroup.LayoutParams(0,0));
+            }
+
             item.measure(0,0);
             totalHeight += item.getMeasuredHeight();
         }
