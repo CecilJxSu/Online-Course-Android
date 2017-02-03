@@ -8,7 +8,7 @@ import cn.canlnac.onlinecourse.data.entity.AnswerEntity;
 import cn.canlnac.onlinecourse.data.entity.CatalogEntity;
 import cn.canlnac.onlinecourse.data.entity.DocumentListEntity;
 import cn.canlnac.onlinecourse.data.entity.LearnRecordEntity;
-import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
+import cn.canlnac.onlinecourse.data.entity.QuestionListEntity;
 import rx.Observable;
 
 /**
@@ -29,7 +29,7 @@ public interface CatalogDataStore {
     /** 删除小测 */
     Observable<Void> deleteQuestion(int catalogId);
     /** 获取小测 */
-    Observable<QuestionEntity> getQuestion(int catalogId);
+    Observable<QuestionListEntity> getQuestion(int catalogId);
     /** 获取学习记录 */
     Observable<LearnRecordEntity> getLearnRecord(int catalogId);
     /** 创建学习记录 */

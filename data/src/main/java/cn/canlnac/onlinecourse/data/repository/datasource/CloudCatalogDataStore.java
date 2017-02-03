@@ -8,7 +8,7 @@ import cn.canlnac.onlinecourse.data.entity.AnswerEntity;
 import cn.canlnac.onlinecourse.data.entity.CatalogEntity;
 import cn.canlnac.onlinecourse.data.entity.DocumentListEntity;
 import cn.canlnac.onlinecourse.data.entity.LearnRecordEntity;
-import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
+import cn.canlnac.onlinecourse.data.entity.QuestionListEntity;
 import cn.canlnac.onlinecourse.data.net.RestApi;
 import rx.Observable;
 
@@ -54,7 +54,7 @@ public class CloudCatalogDataStore implements CatalogDataStore {
     }
 
     @Override
-    public Observable<QuestionEntity> getQuestion(int catalogId) {
+    public Observable<QuestionListEntity> getQuestion(int catalogId) {
         return this.restApi.getQuestion(catalogId);
     }
 

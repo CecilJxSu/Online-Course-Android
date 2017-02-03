@@ -23,7 +23,7 @@ import cn.canlnac.onlinecourse.data.entity.LoginEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
-import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
+import cn.canlnac.onlinecourse.data.entity.QuestionListEntity;
 import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import cn.canlnac.onlinecourse.data.entity.UploadEntity;
 import rx.Observable;
@@ -152,7 +152,7 @@ public interface RestApi {
     /** 删除小测 */
     Observable<Void> deleteQuestion(int catalogId);
     /** 获取小测 */
-    Observable<QuestionEntity> getQuestion(int catalogId);
+    Observable<QuestionListEntity> getQuestion(int catalogId);
     /** 获取学习记录 */
     Observable<LearnRecordEntity> getLearnRecord(int catalogId);
     /** 创建学习记录 */

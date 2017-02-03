@@ -9,14 +9,14 @@ import cn.canlnac.onlinecourse.data.entity.mapper.AnswerEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.CatalogEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.DocumentListEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.LearnRecordEntityDataMapper;
-import cn.canlnac.onlinecourse.data.entity.mapper.QuestionEntityDataMapper;
+import cn.canlnac.onlinecourse.data.entity.mapper.QuestionListEntityDataMapper;
 import cn.canlnac.onlinecourse.data.repository.datasource.CatalogDataStore;
 import cn.canlnac.onlinecourse.data.repository.datasource.CatalogDataStoreFactory;
 import cn.canlnac.onlinecourse.domain.Answer;
 import cn.canlnac.onlinecourse.domain.Catalog;
 import cn.canlnac.onlinecourse.domain.DocumentList;
 import cn.canlnac.onlinecourse.domain.LearnRecord;
-import cn.canlnac.onlinecourse.domain.Question;
+import cn.canlnac.onlinecourse.domain.QuestionList;
 import cn.canlnac.onlinecourse.domain.repository.CatalogRepository;
 import rx.Observable;
 
@@ -28,7 +28,7 @@ public class CatalogDataRepository implements CatalogRepository {
 
     private final CatalogDataStore catalogDataStore;
     private final CatalogEntityDataMapper catalogEntityDataMapper;
-    private final QuestionEntityDataMapper questionEntityDataMapper;
+    private final QuestionListEntityDataMapper questionListEntityDataMapper;
     private final LearnRecordEntityDataMapper learnRecordEntityDataMapper;
     private final DocumentListEntityDataMapper documentListEntityDataMapper;
     private final AnswerEntityDataMapper answerEntityDataMapper;
@@ -38,13 +38,13 @@ public class CatalogDataRepository implements CatalogRepository {
     public CatalogDataRepository(
             CatalogDataStoreFactory catalogDataStoreFactory,
             CatalogEntityDataMapper catalogEntityDataMapper,
-            QuestionEntityDataMapper questionEntityDataMapper,
+            QuestionListEntityDataMapper questionListEntityDataMapper,
             LearnRecordEntityDataMapper learnRecordEntityDataMapper,
             DocumentListEntityDataMapper documentListEntityDataMapper,
             AnswerEntityDataMapper answerEntityDataMapper
     ) {
         this.catalogEntityDataMapper = catalogEntityDataMapper;
-        this.questionEntityDataMapper = questionEntityDataMapper;
+        this.questionListEntityDataMapper = questionListEntityDataMapper;
         this.learnRecordEntityDataMapper = learnRecordEntityDataMapper;
         this.documentListEntityDataMapper = documentListEntityDataMapper;
         this.answerEntityDataMapper = answerEntityDataMapper;
@@ -82,8 +82,8 @@ public class CatalogDataRepository implements CatalogRepository {
     }
 
     @Override
-    public Observable<Question> getQuestion(int catalogId) {
-        return catalogDataStore.getQuestion(catalogId).map(questionEntityDataMapper::transform);
+    public Observable<QuestionList> getQuestion(int catalogId) {
+        return catalogDataStore.getQuestion(catalogId).map(questionListEntityDataMapper::transform);
     }
 
     @Override
