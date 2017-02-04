@@ -8,10 +8,10 @@ import cn.canlnac.onlinecourse.presentation.model.QuestionListModel;
 
 @PerActivity
 public class QuestionListModelDataMapper {
-    private final QuestionModelDataMapper questionModelDataMapper;
+    private final PaperModelDataMapper paperModelDataMapper;
     @Inject
-    public QuestionListModelDataMapper(QuestionModelDataMapper questionModelDataMapper) {
-        this.questionModelDataMapper = questionModelDataMapper;
+    public QuestionListModelDataMapper(PaperModelDataMapper paperModelDataMapper) {
+        this.paperModelDataMapper = paperModelDataMapper;
     }
 
     public QuestionListModel transform(QuestionList questionList) {
@@ -20,7 +20,7 @@ public class QuestionListModelDataMapper {
         }
         QuestionListModel questionListModel = new QuestionListModel();
         questionListModel.setTotal(questionList.getTotal());
-        questionListModel.setQuestions(questionModelDataMapper.transform(questionList.getQuestions()));
+        questionListModel.setQuestions(paperModelDataMapper.transform(questionList.getQuestions()));
 
         return questionListModel;
     }

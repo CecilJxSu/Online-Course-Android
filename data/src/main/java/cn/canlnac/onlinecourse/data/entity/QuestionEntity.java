@@ -10,9 +10,6 @@ import java.util.Map;
  */
 
 public class QuestionEntity {
-    @SerializedName("index")
-    private int index;
-
     @SerializedName("type")
     private String type;
 
@@ -30,17 +27,6 @@ public class QuestionEntity {
 
     @SerializedName("url")
     private String url;
-
-    @SerializedName("score")
-    private float score;
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
 
     public String getType() {
         return type;
@@ -88,13 +74,5 @@ public class QuestionEntity {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public float getScore() {
-        return score;
-    }
-
-    public void setScore(float score) {
-        this.score = score;
     }
 }

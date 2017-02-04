@@ -21,10 +21,8 @@ public class QuestionModelDataMapper {
         QuestionModel questionModel = new QuestionModel();
         questionModel.setAnswer(question.getAnswer());
         questionModel.setExplains(question.getExplains());
-        questionModel.setIndex(question.getIndex());
         questionModel.setItem(question.getItem());
         questionModel.setQuestion(question.getQuestion());
-        questionModel.setScore(question.getScore());
         questionModel.setType(question.getType());
         questionModel.setUrl(question.getUrl());
 

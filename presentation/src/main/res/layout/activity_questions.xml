@@ -31,16 +31,50 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/question_true_false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="判断题"/>
-    <ListView
-        android:id="@+id/question_list"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/question_header"
-        android:layout_marginTop="5dp" />
+        android:layout_above="@+id/question_footer">
+
+        <LinearLayout
+            android:id="@+id/question_type"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/question_footer"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <ImageView
+            android:id="@+id/question_check"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:tint="#00b2ff"
+            android:src="@drawable/check_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:textColor="#999999"
+            android:textSize="16sp"
+            android:layout_toRightOf="@+id/question_check"
+            android:text="检查"/>
+        <TextView
+            android:id="@+id/question_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:gravity="center_vertical"
+            android:textColor="#999999"
+            android:textSize="16sp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"/>
+    </RelativeLayout>
 
 </RelativeLayout>

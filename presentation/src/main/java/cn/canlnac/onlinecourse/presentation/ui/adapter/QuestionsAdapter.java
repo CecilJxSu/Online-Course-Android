@@ -5,8 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
 import java.util.List;
 
 import cn.canlnac.onlinecourse.presentation.R;
@@ -23,6 +21,10 @@ public class QuestionsAdapter extends BaseAdapter {
     public QuestionsAdapter(Activity activity, List<QuestionModel> questions) {
         this.activity = activity;
         this.questions = questions;
+        int index = 0;
+        for(QuestionModel questionModel: questions) {
+            questionModel.setQuestion(++index + "、" + questionModel.getQuestion());
+        }
     }
 
     @Override
@@ -41,13 +43,36 @@ public class QuestionsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        QuestionsViewHolder holder;
         if (view == null) {
-            view = activity.getLayoutInflater().inflate(R.layout.listitem_question, null);
+            switch (questions.get(position).getType()) {
+                case "判断题":
+                    view = activity.getLayoutInflater().inflate(R.layout.question_true_false, null);
+                    QuestionsTrueFalseViewHolder holder1;
+                    holder1 = new QuestionsTrueFalseViewHolder(activity,view, questions.get(position));
+                    view.setTag(holder1);
+                    break;
+                case "单选题":
+                    view = activity.getLayoutInflater().inflate(R.layout.question_single_select, null);
+                    QuestionsSingleSelectViewHolder holder2;
+                    holder2 = new QuestionsSingleSelectViewHolder(activity,view, questions.get(position));
+                    view.setTag(holder2);
+                    break;
+                case "多选题":
+                    view = activity.getLayoutInflater().inflate(R.layout.question_single_select, null);
+                    QuestionsMultiSelectViewHolder holder3;
+                    holder3 = new QuestionsMultiSelectViewHolder(activity,view, questions.get(position));
+                    view.setTag(holder3);
+                    break;
+                case "填空题":
+                    view = activity.getLayoutInflater().inflate(R.layout.question_blank, null);
+                    QuestionsBlankViewHolder holder4;
+                    holder4 = new QuestionsBlankViewHolder(activity,view, questions.get(position));
+                    view.setTag(holder4);
+                    break;
+                default:
+                    view = new View(activity);
+            }
         }
-
-        holder = new QuestionsViewHolder(activity,view, questions.get(position));
-        view.setTag(holder);
 
         return view;
     }

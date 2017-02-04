@@ -11,11 +11,11 @@ import cn.canlnac.onlinecourse.domain.QuestionList;
  */
 @Singleton
 public class QuestionListEntityDataMapper {
-    private QuestionEntityDataMapper questionEntityDataMapper;
+    private PaperEntityDataMapper paperEntityDataMapper;
 
     @Inject
-    public QuestionListEntityDataMapper(QuestionEntityDataMapper questionEntityDataMapper) {
-        this.questionEntityDataMapper = questionEntityDataMapper;
+    public QuestionListEntityDataMapper(PaperEntityDataMapper paperEntityDataMapper) {
+        this.paperEntityDataMapper = paperEntityDataMapper;
     }
 
     /**
@@ -28,7 +28,7 @@ public class QuestionListEntityDataMapper {
         if (questionListEntity != null) {
             questionList = new QuestionList();
             questionList.setTotal(questionListEntity.getTotal());
-            questionList.setQuestions(questionEntityDataMapper.transform(questionListEntity.getQuestions()));
+            questionList.setQuestions(paperEntityDataMapper.transform(questionListEntity.getQuestions()));
         }
         return questionList;
     }

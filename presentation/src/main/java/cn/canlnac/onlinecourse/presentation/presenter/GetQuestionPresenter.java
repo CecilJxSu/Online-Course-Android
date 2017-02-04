@@ -73,6 +73,7 @@ public class GetQuestionPresenter implements Presenter {
                 }
             } else {
                 GetQuestionPresenter.this.getQuestionActivity.showToastMessage("网络连接错误");
+                e.printStackTrace();
             }
         }
 

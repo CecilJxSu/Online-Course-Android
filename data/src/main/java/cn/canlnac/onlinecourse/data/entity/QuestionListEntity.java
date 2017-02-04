@@ -13,7 +13,7 @@ public class QuestionListEntity {
     private int total;
 
     @SerializedName("questions")
-    private List<QuestionEntity> questions;
+    private List<PaperEntity> questions;
 
     public int getTotal() {
         return total;
@@ -23,11 +23,11 @@ public class QuestionListEntity {
         this.total = total;
     }
 
-    public List<QuestionEntity> getQuestions() {
+    public List<PaperEntity> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<QuestionEntity> questions) {
+    public void setQuestions(List<PaperEntity> questions) {
         this.questions = questions;
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 public class QuestionList {
     private int total;
 
-    private List<Question> questions;
+    private List<Paper> questions;
 
     public int getTotal() {
         return total;
@@ -19,11 +19,11 @@ public class QuestionList {
         this.total = total;
     }
 
-    public List<Question> getQuestions() {
+    public List<Paper> getQuestions() {
         return questions;
     }
 
-    public void setQuestions(List<Question> questions) {
+    public void setQuestions(List<Paper> questions) {
         this.questions = questions;
     }
 }

@@ -1,12 +1,11 @@
 package cn.canlnac.onlinecourse.presentation.ui.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
@@ -16,22 +15,19 @@ import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetQuestionComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetQuestionModule;
+import cn.canlnac.onlinecourse.presentation.model.PaperModel;
 import cn.canlnac.onlinecourse.presentation.model.QuestionListModel;
-import cn.canlnac.onlinecourse.presentation.model.QuestionModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetQuestionPresenter;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.QuestionsAdapter;
+import cn.canlnac.onlinecourse.presentation.util.DensityUtil;
 
 public class QuestionActivity extends BaseActivity {
 
-    @BindView(R.id.question_list) ListView listView;
-
-    private QuestionsAdapter adapter;
-    private Handler handler;
+    @BindView(R.id.question_type) LinearLayout questionContainer;
+    @BindView(R.id.question_tag) TextView label;
 
     @Inject
     GetQuestionPresenter getQuestionPresenter;
-    List<QuestionModel> questions = new ArrayList<>();
-    private int totalScore = 0;
 
     private int catalogId;
 
@@ -46,11 +42,6 @@ public class QuestionActivity extends BaseActivity {
         }
 
         ButterKnife.bind(this);
-
-        handler = new Handler();
-
-        adapter = new QuestionsAdapter(this, questions);
-        listView.setAdapter(adapter);
 
         getQuestions();
     }
@@ -80,8 +71,66 @@ public class QuestionActivity extends BaseActivity {
     }
 
     public void showQuestions(QuestionListModel questions) {
-        this.totalScore = questions.getTotal();
-        this.questions.addAll(questions.getQuestions());
-        adapter.notifyDataSetChanged();
+        label.setText("满分：" + questions.getTotal());
+        //显示问题
+        int index = 0;
+        for (PaperModel paperModel: questions.getQuestions()) {
+            //添加题型标题
+            TextView questionTitle = new TextView(this);
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            questionTitle.setPadding(DensityUtil.dp2px(this,10),DensityUtil.dp2px(this,5),DensityUtil.dp2px(this,10),DensityUtil.dp2px(this,5));
+            questionTitle.setLayoutParams(layoutParams);
+            questionTitle.setTextColor(0xFF333333);
+
+            //添加问题
+            ListView questionsView = new ListView(this);
+            questionsView.setLayoutParams(layoutParams);
+
+            QuestionsAdapter adapter = new QuestionsAdapter(this,paperModel.getQuestions());
+            questionsView.setAdapter(adapter);
+            //题号
+            String[] indexStr = {"一、","二、","三、","四、","五、","六、","七、","八、","九、","十、"};
+            int score = (int)paperModel.getScore();
+
+            switch (paperModel.getType()) {
+                case "判断题":
+
+                    questionTitle.setText(indexStr[index++] + "判断题（共 " +
+                            score * paperModel.getQuestions().size() +
+                            " 分，每小题 "+ score +" 分）。");
+                    questionContainer.addView(questionTitle);
+                    questionContainer.addView(questionsView);
+                    break;
+                case "单选题":
+                    questionTitle.setText(indexStr[index++] + "单选题（共 " +
+                            score * paperModel.getQuestions().size() +
+                            " 分，每小题 "+ score +" 分）。");
+                    questionContainer.addView(questionTitle);
+                    questionContainer.addView(questionsView);
+                    break;
+                case "多选题":
+
+                    questionTitle.setText(indexStr[index++] + "多选题（共 " +
+                            score * paperModel.getQuestions().size() +
+                            " 分，每小题 "+ score +" 分）。");
+                    questionContainer.addView(questionTitle);
+                    questionContainer.addView(questionsView);
+                    break;
+                case "填空题":
+                    questionTitle.setText(indexStr[index++] + "填空题（共 " +
+                            score * paperModel.getQuestions().size() +
+                            " 分，每小题 "+ score +" 分）。");
+                    questionContainer.addView(questionTitle);
+                    questionContainer.addView(questionsView);
+                    break;
+            }
+        }
+    }
+
+    @OnClick(R.id.question_check)
+    public void check (View v) {
+
     }
 }
