@@ -9,6 +9,7 @@ import cn.canlnac.onlinecourse.domain.Login;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
+import cn.canlnac.onlinecourse.presentation.mapper.LoginModelDataMapper;
 import cn.canlnac.onlinecourse.presentation.ui.activity.LoginActivity;
 
 @PerActivity
@@ -18,9 +19,12 @@ public class LoginPresenter implements Presenter {
 
     private final UseCase loginUseCase;
 
+    private LoginModelDataMapper loginModelDataMapper;
+
     @Inject
-    public LoginPresenter(UseCase loginUseCase) {
+    public LoginPresenter(UseCase loginUseCase, LoginModelDataMapper loginModelDataMapper) {
         this.loginUseCase = loginUseCase;
+        this.loginModelDataMapper = loginModelDataMapper;
     }
 
     public void setView(@NonNull LoginActivity loginActivity) {
@@ -76,7 +80,7 @@ public class LoginPresenter implements Presenter {
         @Override
         public void onNext(Login login) {
             LoginPresenter.this.loginActivity.showToastMessage("登陆成功");
-            LoginPresenter.this.loginActivity.finish();
+            LoginPresenter.this.loginActivity.loginBack(loginModelDataMapper.transform(login));
         }
     }
 }

@@ -85,6 +85,11 @@
             android:name=".ui.activity.QuestionActivity"
             android:label="小测">
         </activity>
+
+        <activity
+            android:name=".ui.activity.ProfileActivity"
+            android:label="个人信息">
+        </activity>
     </application>
 
 </manifest>

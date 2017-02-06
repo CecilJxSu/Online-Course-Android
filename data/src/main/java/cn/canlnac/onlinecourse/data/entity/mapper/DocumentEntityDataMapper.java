@@ -35,7 +35,11 @@ public class DocumentEntityDataMapper {
             document.setTargetId(documentEntity.getTargetId());
             document.setTargetType(documentEntity.getTargetType());
             document.setType(documentEntity.getType());
-            document.setUrl(RestApiConnection.API_FILE + "/" + documentEntity.getUrl());
+            if (documentEntity.getUrl() != null && documentEntity.getUrl().startsWith("http")) {
+                document.setUrl(documentEntity.getUrl());
+            } else {
+                document.setUrl(RestApiConnection.API_FILE + "/" + documentEntity.getUrl());
+            }
         }
         return document;
     }

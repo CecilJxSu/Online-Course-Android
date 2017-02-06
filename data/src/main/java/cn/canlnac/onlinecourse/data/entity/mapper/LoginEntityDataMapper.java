@@ -1,5 +1,7 @@
 package cn.canlnac.onlinecourse.data.entity.mapper;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,12 @@ public class LoginEntityDataMapper {
             login.setId(loginEntity.getId());
             login.setLockEndDate(loginEntity.getLockEndDate());
             login.setGender(loginEntity.getGender());
-            login.setIconUrl(RestApiConnection.API_FILE + "/" + loginEntity.getIconUrl());
+            if (loginEntity.getIconUrl() != null && loginEntity.getIconUrl().startsWith("http")) {
+                login.setIconUrl(loginEntity.getIconUrl());
+            } else {
+                login.setIconUrl(RestApiConnection.API_FILE + "/" + loginEntity.getIconUrl());
+            }
+
             login.setJwt(loginEntity.getJwt());
             login.setLockDate(loginEntity.getLockDate());
         }

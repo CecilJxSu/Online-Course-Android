@@ -36,7 +36,11 @@ public class CommentEntityDataMapper {
             comment = new Comment();
             List<String> newPicUrls = new ArrayList<>();
             for(String url:commentEntity.getPictureUrls()) {
-                newPicUrls.add(RestApiConnection.API_FILE + "/" + url);
+                if (url != null && url.startsWith("http")) {
+                    newPicUrls.add(url);
+                } else {
+                    newPicUrls.add(RestApiConnection.API_FILE + "/" + url);
+                }
             }
             comment.setPictureUrls(newPicUrls);
             comment.setAuthor(simpleUserEntityDataMapper.transform(commentEntity.getAuthor()));

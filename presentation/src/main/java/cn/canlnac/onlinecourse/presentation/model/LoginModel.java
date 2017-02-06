@@ -1,10 +1,12 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
+import java.io.Serializable;
+
 /**
  * 登录数据模型.
  */
 
-public class LoginModel {
+public class LoginModel implements Serializable {
     private int id;
 
     private String userStatus;

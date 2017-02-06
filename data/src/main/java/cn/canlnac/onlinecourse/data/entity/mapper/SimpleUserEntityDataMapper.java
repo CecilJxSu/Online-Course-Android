@@ -30,7 +30,11 @@ public class SimpleUserEntityDataMapper {
             simpleUser = new SimpleUser();
             simpleUser.setId(simpleUserEntity.getId());
             simpleUser.setName(simpleUserEntity.getName());
-            simpleUser.setIconUrl(RestApiConnection.API_FILE + "/" + simpleUserEntity.getIconUrl());
+            if (simpleUserEntity.getIconUrl() != null && simpleUserEntity.getIconUrl().startsWith("http")) {
+                simpleUser.setIconUrl(simpleUserEntity.getIconUrl());
+            } else {
+                simpleUser.setIconUrl(RestApiConnection.API_FILE + "/" + simpleUserEntity.getIconUrl());
+            }
         }
         return simpleUser;
     }
