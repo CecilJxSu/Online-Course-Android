@@ -114,4 +114,9 @@ public class UserDataRepository implements UserRepository {
     public Observable<Void> unfollowUser(int userId) {
         return userDataStore.unfollowUser(userId);
     }
+
+    @Override
+    public Observable<Login> getLogin() {
+        return userDataStore.getLogin().map(loginEntityDataMapper::transform);
+    }
 }

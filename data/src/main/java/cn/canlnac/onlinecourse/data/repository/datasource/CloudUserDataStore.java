@@ -83,4 +83,9 @@ public class CloudUserDataStore implements UserDataStore {
     public Observable<Void> unfollowUser(int userId) {
         return this.restApi.unfollowUser(userId);
     }
+
+    @Override
+    public Observable<LoginEntity> getLogin() {
+        return this.restApi.getLogin();
+    }
 }

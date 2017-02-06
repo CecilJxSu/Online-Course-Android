@@ -107,9 +107,6 @@ public class LoginActivity extends BaseActivity implements HasComponent<LoginCom
     }
 
     public void loginBack(LoginModel loginModel) {
-        Intent intent = new Intent();
-        intent.putExtra("loginModel", loginModel);
-        setResult(200, intent);
         finish();
     }
 }

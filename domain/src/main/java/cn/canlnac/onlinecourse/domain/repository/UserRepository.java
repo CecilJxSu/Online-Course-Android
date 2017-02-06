@@ -38,4 +38,7 @@ public interface UserRepository {
     Observable<Void> followUser(int userId);
     /** 取消关注 */
     Observable<Void> unfollowUser(int userId);
+
+    /** 获取登陆状态 */
+    Observable<Login> getLogin();
 }

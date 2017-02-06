@@ -129,12 +129,28 @@ public class RestApiImpl implements RestApi {
                     loginEntity.setJwt(response.header("Authentication"));
 
                     restApiConnection.setJwt(loginEntity.getJwt());
+                    restApiConnection.setLoginData(loginEntity);
                     //完成
                     subscriber.onNext(loginEntity);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<LoginEntity> getLogin() {
+        return Observable.create(subscriber -> {
+            try {
+                LoginEntity loginEntity = restApiConnection.getLoginData(); //获取登录信息
+
+                subscriber.onNext(loginEntity);
+                subscriber.onCompleted();
             } catch (Exception e) {
                 e.printStackTrace();
                 subscriber.onError(new NetworkConnectionException(e.getCause()));
