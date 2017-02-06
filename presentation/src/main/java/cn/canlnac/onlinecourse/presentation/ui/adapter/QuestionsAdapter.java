@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.canlnac.onlinecourse.presentation.R;
@@ -17,6 +18,7 @@ import cn.canlnac.onlinecourse.presentation.model.QuestionModel;
 public class QuestionsAdapter extends BaseAdapter {
     private Activity activity;
     private List<QuestionModel> questions;
+    private List<View> views = new ArrayList<>();
 
     public QuestionsAdapter(Activity activity, List<QuestionModel> questions) {
         this.activity = activity;
@@ -50,24 +52,28 @@ public class QuestionsAdapter extends BaseAdapter {
                     QuestionsTrueFalseViewHolder holder1;
                     holder1 = new QuestionsTrueFalseViewHolder(activity,view, questions.get(position));
                     view.setTag(holder1);
+                    views.add(view);
                     break;
                 case "单选题":
                     view = activity.getLayoutInflater().inflate(R.layout.question_single_select, null);
                     QuestionsSingleSelectViewHolder holder2;
                     holder2 = new QuestionsSingleSelectViewHolder(activity,view, questions.get(position));
                     view.setTag(holder2);
+                    views.add(view);
                     break;
                 case "多选题":
                     view = activity.getLayoutInflater().inflate(R.layout.question_single_select, null);
                     QuestionsMultiSelectViewHolder holder3;
                     holder3 = new QuestionsMultiSelectViewHolder(activity,view, questions.get(position));
                     view.setTag(holder3);
+                    views.add(view);
                     break;
                 case "填空题":
                     view = activity.getLayoutInflater().inflate(R.layout.question_blank, null);
                     QuestionsBlankViewHolder holder4;
                     holder4 = new QuestionsBlankViewHolder(activity,view, questions.get(position));
                     view.setTag(holder4);
+                    views.add(view);
                     break;
                 default:
                     view = new View(activity);
@@ -75,5 +81,16 @@ public class QuestionsAdapter extends BaseAdapter {
         }
 
         return view;
+    }
+
+    public float check() {
+        float total = 0;
+        for (View v: views) {
+            if (((QuestionViewHolder)v.getTag()).checkAnswer()) {
+                total++;
+            }
+        }
+
+        return total;
     }
 }

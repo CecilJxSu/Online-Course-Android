@@ -7,6 +7,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -29,7 +34,10 @@ public class QuestionActivity extends BaseActivity {
     @Inject
     GetQuestionPresenter getQuestionPresenter;
 
+    List<Map<String,Object>> checkResult = new ArrayList<>();
+
     private int catalogId;
+    private float totalScore = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +79,9 @@ public class QuestionActivity extends BaseActivity {
     }
 
     public void showQuestions(QuestionListModel questions) {
-        label.setText("满分：" + questions.getTotal());
+        totalScore = questions.getTotal();
+        label.setText("满分：" + (int)totalScore);
+
         //显示问题
         int index = 0;
         for (PaperModel paperModel: questions.getQuestions()) {
@@ -94,9 +104,14 @@ public class QuestionActivity extends BaseActivity {
             String[] indexStr = {"一、","二、","三、","四、","五、","六、","七、","八、","九、","十、"};
             int score = (int)paperModel.getScore();
 
+            //分数记录
+            Map<String,Object> result = new HashMap<>();
+            result.put("view", questionsView);
+            result.put("score", paperModel.getScore());
+            checkResult.add(result);
+
             switch (paperModel.getType()) {
                 case "判断题":
-
                     questionTitle.setText(indexStr[index++] + "判断题（共 " +
                             score * paperModel.getQuestions().size() +
                             " 分，每小题 "+ score +" 分）。");
@@ -131,6 +146,14 @@ public class QuestionActivity extends BaseActivity {
 
     @OnClick(R.id.question_check)
     public void check (View v) {
+        float totalScore = 0;
+        for (Map<String,Object> result: checkResult) {
+            ListView view = (ListView)result.get("view");
+            if (view != null) {
+                totalScore += ((QuestionsAdapter)view.getAdapter()).check() * (float)result.get("score");
+            }
+        }
 
+        label.setText("满分：" + (int)this.totalScore + "，正确："+ (int)totalScore);
     }
 }

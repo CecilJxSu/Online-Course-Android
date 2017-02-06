@@ -35,7 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/question_header"
-        android:layout_above="@+id/question_footer">
+        android:layout_above="@+id/question_footer"
+        android:layout_marginBottom="0.2px">
 
         <LinearLayout
             android:id="@+id/question_type"
@@ -46,12 +47,19 @@
 
     </ScrollView>
 
+    <View android:layout_width="match_parent"
+        android:layout_height="0.1px"
+        android:background="#999999"
+        android:layout_above="@+id/question_footer">
+    </View>
+
     <RelativeLayout
         android:id="@+id/question_footer"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
+
         <ImageView
             android:id="@+id/question_check"
             android:layout_width="35dp"

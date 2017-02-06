@@ -24,4 +24,14 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/question_explain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question_answer"
+        android:textSize="14sp"
+        android:textColor="#FF3366"
+        android:visibility="gone"/>
+
 </RelativeLayout>

@@ -3,6 +3,8 @@ package cn.canlnac.onlinecourse.presentation.ui.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +18,12 @@ import cn.canlnac.onlinecourse.presentation.ui.activity.LoginActivity;
  * 小测 view holder.
  */
 
-public class QuestionsTrueFalseViewHolder {
+public class QuestionsTrueFalseViewHolder implements QuestionViewHolder {
     @BindView(R.id.question_title) TextView questionTitle;
+    @BindView(R.id.question_explain) TextView questionExplain;
+    @BindView(R.id.question_answer) RadioGroup questionAnswer;
+
+    String answer;
 
     private Activity activity;
 
@@ -26,9 +32,29 @@ public class QuestionsTrueFalseViewHolder {
 
         questionTitle.setText(question.getQuestion());
 
+        answer = (question.getAnswer().get(0).equals("T"))?"对":"错";
+
+        questionExplain.setText("答案解析：[" + answer +"]\n"+question.getExplains());
+
         this.activity = activity;
     }
 
+    @Override
+    public boolean checkAnswer() {
+        questionExplain.setVisibility(View.VISIBLE);
+        int id = questionAnswer.getCheckedRadioButtonId();
+        if (id > 0) {
+            RadioButton button = (RadioButton) questionAnswer.findViewById(id);
+            if (button.getText().equals(answer)) {
+                button.setTextColor(0xFF00FF00);
+                return true;
+            } else {
+                button.setTextColor(0xFFFF0000);
+            }
+        }
+
+        return false;
+    }
 
     /**
      * 显示消息
