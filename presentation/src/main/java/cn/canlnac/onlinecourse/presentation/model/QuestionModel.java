@@ -8,8 +8,6 @@ import java.util.Map;
  */
 
 public class QuestionModel {
-    private int index;
-
     private String type;
 
     private String question;
@@ -21,16 +19,6 @@ public class QuestionModel {
     private String explains;
 
     private String url;
-
-    private float score;
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
 
     public String getType() {
         return type;
@@ -78,13 +66,5 @@ public class QuestionModel {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public float getScore() {
-        return score;
-    }
-
-    public void setScore(float score) {
-        this.score = score;
     }
 }

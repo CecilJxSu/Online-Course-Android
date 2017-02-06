@@ -6,7 +6,7 @@ import cn.canlnac.onlinecourse.domain.Answer;
 import cn.canlnac.onlinecourse.domain.Catalog;
 import cn.canlnac.onlinecourse.domain.DocumentList;
 import cn.canlnac.onlinecourse.domain.LearnRecord;
-import cn.canlnac.onlinecourse.domain.Question;
+import cn.canlnac.onlinecourse.domain.QuestionList;
 import rx.Observable;
 
 /**
@@ -26,7 +26,7 @@ public interface CatalogRepository {
     /** 删除小测 */
     Observable<Void> deleteQuestion(int catalogId);
     /** 获取小测 */
-    Observable<Question> getQuestion(int catalogId);
+    Observable<QuestionList> getQuestion(int catalogId);
     /** 获取学习记录 */
     Observable<LearnRecord> getLearnRecord(int catalogId);
     /** 创建学习记录 */

@@ -1,5 +1,6 @@
 package cn.canlnac.onlinecourse.presentation.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,7 @@ import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.model.CatalogModel;
 import cn.canlnac.onlinecourse.presentation.ui.activity.CourseActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.QuestionActivity;
 import cn.canlnac.onlinecourse.presentation.ui.widget.TreeView.holder.CatalogViewHolder;
 import cn.canlnac.onlinecourse.presentation.ui.widget.TreeView.holder.CatalogViewHolder.IconTreeItem;
 import cn.canlnac.onlinecourse.presentation.ui.widget.TreeView.model.TreeNode;
@@ -107,6 +109,34 @@ public class CourseCatalogFragment extends Fragment {
                 }
 
                 parent.addChildren(child);
+            }
+        }
+
+        Integer[] parentsKeys = parents.keySet().toArray(new Integer[childes.size()]);
+        //添加小节小测
+        for (int i = 0; i < parentsKeys.length; i++) {
+            if(parents.get(parentsKeys[i]) != null) {
+                IconTreeItem iconTreeItem = new IconTreeItem();
+                iconTreeItem.icon = R.drawable.question_icon;
+                iconTreeItem.text = "小测";
+                iconTreeItem.url = "";
+                iconTreeItem.duration = "";
+
+                final CatalogViewHolder catalogViewHolder2 = new CatalogViewHolder(getActivity());
+                TreeNode child = new TreeNode(iconTreeItem).setViewHolder(catalogViewHolder2);
+
+                final int catalogId = parentsKeys[i];
+                //点击事件
+                child.setClickListener(new TreeNode.TreeNodeClickListener() {
+                    @Override
+                    public void onClick(TreeNode node, Object value) {
+                        Intent intent = new Intent(CourseCatalogFragment.this.getActivity(), QuestionActivity.class);
+                        intent.putExtra("catalogId", catalogId);
+                        CourseCatalogFragment.this.getActivity().startActivity(intent);
+                    }
+                });
+
+                parents.get(parentsKeys[i]).addChild(child);
             }
         }
 

@@ -1,5 +1,8 @@
 package cn.canlnac.onlinecourse.presentation.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.domain.Question;
@@ -18,13 +21,24 @@ public class QuestionModelDataMapper {
         QuestionModel questionModel = new QuestionModel();
         questionModel.setAnswer(question.getAnswer());
         questionModel.setExplains(question.getExplains());
-        questionModel.setIndex(question.getIndex());
         questionModel.setItem(question.getItem());
         questionModel.setQuestion(question.getQuestion());
-        questionModel.setScore(question.getScore());
         questionModel.setType(question.getType());
         questionModel.setUrl(question.getUrl());
 
         return questionModel;
+    }
+
+    public List<QuestionModel> transform(List<Question> questionList) {
+        List<QuestionModel> questionModelList = new ArrayList<>(questionList.size());
+        QuestionModel questionModel;
+        for (Question question : questionList) {
+            questionModel = transform(question);
+            if (question != null) {
+                questionModelList.add(questionModel);
+            }
+        }
+
+        return questionModelList;
     }
 }

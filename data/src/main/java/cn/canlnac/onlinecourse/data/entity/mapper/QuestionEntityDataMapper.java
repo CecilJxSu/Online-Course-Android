@@ -30,10 +30,8 @@ public class QuestionEntityDataMapper {
             question = new Question();
             question.setAnswer(questionEntity.getAnswer());
             question.setExplains(questionEntity.getExplains());
-            question.setIndex(questionEntity.getIndex());
             question.setItem(questionEntity.getItem());
             question.setQuestion(questionEntity.getQuestion());
-            question.setScore(questionEntity.getScore());
             question.setType(questionEntity.getType());
             question.setUrl(RestApiConnection.API_FILE + "/" + questionEntity.getUrl());
         }

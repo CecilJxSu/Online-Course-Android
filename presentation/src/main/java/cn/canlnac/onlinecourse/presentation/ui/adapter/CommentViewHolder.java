@@ -86,8 +86,12 @@ public class CommentViewHolder {
         //回复评论
         ReplyAdapter adapter = new ReplyAdapter(activity, comment.getReplies(), commentId, prettyTime);
         int totalHeight = 0;
-        for (int i = 0; i < adapter.getCount(); i++) {
+        for (int i = 0; i < adapter.getCount(); i++) {//Throws NullPointerException when invoke measure in low level android version
             View item = adapter.getView(i, null, replyView);
+            if (item.getLayoutParams() == null) {
+                item.setLayoutParams(new ViewGroup.LayoutParams(0,0));
+            }
+
             item.measure(0,0);
             totalHeight += item.getMeasuredHeight();
         }

@@ -42,8 +42,8 @@ import cn.canlnac.onlinecourse.data.entity.LoginEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageEntity;
 import cn.canlnac.onlinecourse.data.entity.MessageListEntity;
 import cn.canlnac.onlinecourse.data.entity.ProfileEntity;
-import cn.canlnac.onlinecourse.data.entity.QuestionEntity;
 import cn.canlnac.onlinecourse.data.entity.QuestionIdEntity;
+import cn.canlnac.onlinecourse.data.entity.QuestionListEntity;
 import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
 import cn.canlnac.onlinecourse.data.entity.ReplyEntity;
 import cn.canlnac.onlinecourse.data.entity.ReplyIdEntity;
@@ -1637,7 +1637,7 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
-    public Observable<QuestionEntity> getQuestion(int catalogId) {
+    public Observable<QuestionListEntity> getQuestion(int catalogId) {
         return Observable.create(subscriber -> {
             if (!isThereInternetConnection()) {//检查网络
                 subscriber.onError(new NetworkConnectionException());
@@ -1652,9 +1652,9 @@ public class RestApiImpl implements RestApi {
                 }
 
                 if (response.code() == 200) {//状态码正确响应
-                    QuestionEntity questionEntity = new Gson().fromJson(response.body().string(),QuestionEntity.class);
+                    QuestionListEntity questionListEntity = new Gson().fromJson(response.body().string(),QuestionListEntity.class);
                     //完成
-                    subscriber.onNext(questionEntity);
+                    subscriber.onNext(questionListEntity);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
