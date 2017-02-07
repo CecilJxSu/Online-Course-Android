@@ -41,4 +41,6 @@ public interface UserRepository {
 
     /** 获取登陆状态 */
     Observable<Login> getLogin();
+    /** 设置登陆状态 */
+    Observable<Void> setLogin(Login login);
 }

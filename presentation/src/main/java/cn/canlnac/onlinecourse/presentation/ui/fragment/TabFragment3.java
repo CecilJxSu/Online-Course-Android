@@ -16,9 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.canlnac.onlinecourse.presentation.R;
-import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetLoginDataComponent;
-import cn.canlnac.onlinecourse.presentation.internal.di.components.GetLoginDataComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetLoginDataModule;
 import cn.canlnac.onlinecourse.presentation.model.LoginModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetLoginDataPresenter;
@@ -30,7 +28,7 @@ import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
  * 个人中心.
  */
 
-public class TabFragment3 extends BaseFragment implements HasComponent<GetLoginDataComponent> {
+public class TabFragment3 extends BaseFragment {
     @BindView(R.id.tab3_register)
     TextView register;
     @BindView(R.id.tab3_login)
@@ -42,12 +40,6 @@ public class TabFragment3 extends BaseFragment implements HasComponent<GetLoginD
 
     @Inject
     GetLoginDataPresenter getLoginDataPresenter;
-    private GetLoginDataComponent getLoginDataComponent;
-
-    @Override
-    public GetLoginDataComponent getComponent() {
-        return getLoginDataComponent;
-    }
 
     @Nullable
     @Override
@@ -63,12 +55,11 @@ public class TabFragment3 extends BaseFragment implements HasComponent<GetLoginD
     }
 
     public void initialize(){
-        getLoginDataComponent = DaggerGetLoginDataComponent.builder()
+        DaggerGetLoginDataComponent.builder()
                 .applicationComponent(getApplicationComponent())
                 .activityModule(getActivityModule())
                 .getLoginDataModule(new GetLoginDataModule())
-                .build();
-        getComponent(GetLoginDataComponent.class).inject(this);
+                .build().inject(this);
 
         getLoginDataPresenter.setView(this);
         getLoginDataPresenter.initialize();
@@ -98,13 +89,22 @@ public class TabFragment3 extends BaseFragment implements HasComponent<GetLoginD
 
         Intent intent = new Intent(getContext(), ProfileActivity.class);
         intent.putExtra("userId", loginModel.getId());
-        startActivity(intent);
+        startActivityForResult(intent,ProfileActivity.UPDATE_AVATAR);
     }
 
     public void showHeader(LoginModel loginModel) {
         this.loginModel = loginModel;
         if (loginModel != null && loginModel.getIconUrl() != null) {
             header.setImageURI(loginModel.getIconUrl());
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == ProfileActivity.UPDATE_AVATAR) {
+            if (data.getStringExtra("avatar") != null) {
+                header.setImageURI(data.getStringExtra("avatar"));
+            }
         }
     }
 }

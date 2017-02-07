@@ -82,6 +82,7 @@ dependencies {
     compile presentationDependencies.richtext
     compile presentationDependencies.pdfview
     compile presentationDependencies.compressor
+    compile presentationDependencies.cookieCutter
 
     apt presentationDependencies.daggerCompiler
     compile presentationDependencies.dagger

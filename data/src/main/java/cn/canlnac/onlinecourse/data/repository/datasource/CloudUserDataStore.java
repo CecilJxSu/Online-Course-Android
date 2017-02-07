@@ -88,4 +88,9 @@ public class CloudUserDataStore implements UserDataStore {
     public Observable<LoginEntity> getLogin() {
         return this.restApi.getLogin();
     }
+
+    @Override
+    public Observable<Void> setLogin(LoginEntity loginEntity) {
+        return this.restApi.setLogin(loginEntity);
+    }
 }

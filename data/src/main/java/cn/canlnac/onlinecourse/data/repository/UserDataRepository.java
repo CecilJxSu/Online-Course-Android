@@ -119,4 +119,9 @@ public class UserDataRepository implements UserRepository {
     public Observable<Login> getLogin() {
         return userDataStore.getLogin().map(loginEntityDataMapper::transform);
     }
+
+    @Override
+    public Observable<Void> setLogin(Login login) {
+        return userDataStore.setLogin(loginEntityDataMapper.transform(login));
+    }
 }

@@ -31,6 +31,23 @@ public class LoginModelDataMapper {
         return loginModel;
     }
 
+    public Login transform(LoginModel loginModel) {
+        if (loginModel == null) {
+            throw new IllegalArgumentException("Cannot transform a null value");
+        }
+        Login login = new Login();
+        login.setId(loginModel.getId());
+        login.setJwt(loginModel.getJwt());
+        login.setGender(loginModel.getGender());
+        login.setIconUrl(loginModel.getIconUrl());
+        login.setLockDate(loginModel.getLockDate());
+        login.setLockEndDate(loginModel.getLockEndDate());
+        login.setNickname(loginModel.getNickname());
+        login.setUserStatus(loginModel.getUserStatus());
+
+        return login;
+    }
+
     public List<LoginModel> transform(List<Login> loginList) {
         List<LoginModel> loginModelList = new ArrayList<>(loginList.size());
         LoginModel loginModel;

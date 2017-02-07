@@ -1,9 +1,13 @@
 package cn.canlnac.onlinecourse.presentation.ui.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioButton;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,6 +17,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.canlnac.onlinecourse.data.net.RestApiConnection;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetUserProfileInSettingComponent;
@@ -26,8 +31,11 @@ import cn.canlnac.onlinecourse.presentation.presenter.GetUserProfileInSettingPre
 import cn.canlnac.onlinecourse.presentation.presenter.UpdateUserProfilePresenter;
 
 public class ProfileActivity extends BaseActivity implements HasComponent<GetUserProfileInSettingComponent> {
+    private static final int REQUEST_CODE_PICK_IMAGE = 1023;
+    public static final int UPDATE_AVATAR = 201;
 
     @BindView(R.id.profile_nickname) EditText nickname;
+    @BindView(R.id.profile_iconUrl) SimpleDraweeView iconUrl;
     @BindView(R.id.profile_gender_male) RadioButton male;
     @BindView(R.id.profile_gender_female) RadioButton female;
     @BindView(R.id.profile_universityId) EditText universityId;
@@ -39,6 +47,8 @@ public class ProfileActivity extends BaseActivity implements HasComponent<GetUse
     @BindView(R.id.profile_dormitoryAddress) EditText dormitoryAddress;
 
     private int userId;
+
+    private String avatar;
 
     @Inject
     GetUserProfileInSettingPresenter getUserProfileInSettingPresenter;
@@ -84,6 +94,11 @@ public class ProfileActivity extends BaseActivity implements HasComponent<GetUse
 
     @OnClick(R.id.close)
     public void onClickClose(View v) {
+        Intent intent = new Intent();
+        if (avatar!=null) {
+            intent.putExtra("avatar", RestApiConnection.API_BASE_URL + "file/" + avatar);
+        }
+        setResult(UPDATE_AVATAR, intent);
         finish();
     }
 
@@ -96,6 +111,7 @@ public class ProfileActivity extends BaseActivity implements HasComponent<GetUse
         department.setText(profileModel.getDepartment());
         major.setText(profileModel.getMajor());
         dormitoryAddress.setText(profileModel.getDormitoryAddress());
+        iconUrl.setImageURI(profileModel.getIconUrl());
         if (profileModel.getGender().equals("male")) {
             male.setChecked(true);
         } else {
@@ -125,6 +141,9 @@ public class ProfileActivity extends BaseActivity implements HasComponent<GetUse
         profiles.put("major",sMajor);
         profiles.put("dormitoryAddress",sDormitoryAddress);
         profiles.put("gender",sGender);
+        if (avatar!=null) {
+            profiles.put("iconUrl",avatar);
+        }
 
         updateUserProfileComponent = DaggerUpdateUserProfileComponent.builder()
                 .applicationComponent(getApplicationComponent())
@@ -135,5 +154,27 @@ public class ProfileActivity extends BaseActivity implements HasComponent<GetUse
 
         updateUserProfilePresenter.setView(this);
         updateUserProfilePresenter.initialize();
+    }
+
+    @OnClick(R.id.profile_iconUrl)
+    public void onClickIcon(View v) {
+        //打开系统相册
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");// 相片类型
+        startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PICK_IMAGE && data != null && data.getData() != null) {
+            Uri uri = data.getData();
+
+            Intent intent = new Intent(getBaseContext(), CutActivity.class);
+            intent.setData(uri);
+            startActivityForResult(intent,CutActivity.SUCCESS);
+        } else if (resultCode == CutActivity.SUCCESS) {
+            avatar = data.getStringExtra("avatar");
+            iconUrl.setImageURI(RestApiConnection.API_BASE_URL + "file/" + avatar);
+        }
     }
 }

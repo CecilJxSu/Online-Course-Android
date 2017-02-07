@@ -72,6 +72,7 @@ public class UpdateUserProfilePresenter implements Presenter {
         @Override
         public void onNext(Void empty) {
             UpdateUserProfilePresenter.this.updateUserProfileActivity.showToastMessage("更新成功");
+            UpdateUserProfilePresenter.this.updateUserProfileActivity.onClickClose(null);
         }
     }
 }

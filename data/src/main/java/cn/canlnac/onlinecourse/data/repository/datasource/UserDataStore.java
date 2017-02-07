@@ -44,4 +44,6 @@ public interface UserDataStore {
 
     /** 获取登陆状态 */
     Observable<LoginEntity> getLogin();
+    /** 设置登陆状态 */
+    Observable<Void> setLogin(LoginEntity loginEntity);
 }

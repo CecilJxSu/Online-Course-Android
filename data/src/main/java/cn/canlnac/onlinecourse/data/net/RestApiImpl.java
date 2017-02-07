@@ -158,6 +158,21 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    @Override
+    public Observable<Void> setLogin(LoginEntity loginEntity) {
+        return Observable.create(subscriber -> {
+            try {
+                restApiConnection.setLoginData(loginEntity); //设置登录信息
+
+                subscriber.onNext(null);
+                subscriber.onCompleted();
+            } catch (Exception e) {
+                e.printStackTrace();
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
     /**
      * 获取用户资料
      * @param userId            分页开始位置
@@ -211,6 +226,19 @@ public class RestApiImpl implements RestApi {
                     subscriber.onError(new NetworkConnectionException());
                     return;
                 }
+
+                LoginEntity loginEntity = restApiConnection.getLoginData();
+                if (profile.get("nickname")!=null){
+                    loginEntity.setNickname(profile.get("nickname"));
+                }
+                if (profile.get("gender")!=null){
+                    loginEntity.setGender(profile.get("gender"));
+                }
+                if (profile.get("iconUrl")!=null){
+                    loginEntity.setIconUrl(profile.get("iconUrl"));
+                }
+
+                restApiConnection.setLoginData(loginEntity);
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成

@@ -91,6 +91,11 @@
             android:name=".ui.activity.ProfileActivity"
             android:label="个人信息">
         </activity>
+
+        <activity
+            android:name=".ui.activity.CutActivity"
+            android:label="裁剪">
+        </activity>
     </application>
 
 </manifest>
