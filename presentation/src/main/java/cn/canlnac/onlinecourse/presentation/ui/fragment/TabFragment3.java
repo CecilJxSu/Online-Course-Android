@@ -97,6 +97,7 @@ public class TabFragment3 extends BaseFragment implements HasComponent<GetLoginD
         }
 
         Intent intent = new Intent(getContext(), ProfileActivity.class);
+        intent.putExtra("userId", loginModel.getId());
         startActivity(intent);
     }
 
