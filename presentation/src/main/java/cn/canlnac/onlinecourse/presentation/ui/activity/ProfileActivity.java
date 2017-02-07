@@ -112,10 +112,10 @@ public class ProfileActivity extends BaseActivity implements HasComponent<GetUse
         major.setText(profileModel.getMajor());
         dormitoryAddress.setText(profileModel.getDormitoryAddress());
         iconUrl.setImageURI(profileModel.getIconUrl());
-        if (profileModel.getGender().equals("male")) {
-            male.setChecked(true);
-        } else {
+        if (profileModel.getGender() != null && profileModel.getGender().equals("female")) {
             female.setChecked(true);
+        } else {
+            male.setChecked(true);
         }
     }
 
