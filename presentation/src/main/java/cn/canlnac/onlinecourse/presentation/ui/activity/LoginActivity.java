@@ -19,6 +19,7 @@ import cn.canlnac.onlinecourse.presentation.internal.di.HasComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerLoginComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.components.LoginComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.LoginModule;
+import cn.canlnac.onlinecourse.presentation.model.LoginModel;
 import cn.canlnac.onlinecourse.presentation.presenter.LoginPresenter;
 
 /**
@@ -103,5 +104,9 @@ public class LoginActivity extends BaseActivity implements HasComponent<LoginCom
             this.loginPresenter.setView(this);
             this.loginPresenter.initialize();
         }
+    }
+
+    public void loginBack(LoginModel loginModel) {
+        finish();
     }
 }

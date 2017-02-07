@@ -33,11 +33,37 @@ public class LoginEntityDataMapper {
             login.setId(loginEntity.getId());
             login.setLockEndDate(loginEntity.getLockEndDate());
             login.setGender(loginEntity.getGender());
-            login.setIconUrl(RestApiConnection.API_FILE + "/" + loginEntity.getIconUrl());
+            if (loginEntity.getIconUrl() != null && loginEntity.getIconUrl().startsWith("http")) {
+                login.setIconUrl(loginEntity.getIconUrl());
+            } else {
+                login.setIconUrl(RestApiConnection.API_FILE + "/" + loginEntity.getIconUrl());
+            }
+
             login.setJwt(loginEntity.getJwt());
             login.setLockDate(loginEntity.getLockDate());
         }
         return login;
+    }
+
+    public LoginEntity transform(Login login) {
+        LoginEntity loginEntity = null;
+        if (login != null) {
+            loginEntity = new LoginEntity();
+            loginEntity.setUserStatus(login.getUserStatus());
+            loginEntity.setNickname(login.getNickname());
+            loginEntity.setId(login.getId());
+            loginEntity.setLockEndDate(login.getLockEndDate());
+            loginEntity.setGender(login.getGender());
+            if (loginEntity.getIconUrl() != null && login.getIconUrl().startsWith("http")) {
+                loginEntity.setIconUrl(login.getIconUrl());
+            } else {
+                loginEntity.setIconUrl(RestApiConnection.API_FILE + "/" + login.getIconUrl());
+            }
+
+            loginEntity.setJwt(login.getJwt());
+            loginEntity.setLockDate(login.getLockDate());
+        }
+        return loginEntity;
     }
 
     /**

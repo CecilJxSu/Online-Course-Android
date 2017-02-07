@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.canlnac.onlinecourse.data.cache.FileManager;
+import cn.canlnac.onlinecourse.data.entity.LoginEntity;
 
 /**
  * 接口连接.
@@ -69,6 +70,23 @@ public class RestApiConnection {
      */
     public void setJwt(String jwt) {
         fileManager.writeStringToPreferences(context,"jwt","jwt",jwt);
+    }
+
+    /**
+     * 获取登陆信息
+     * @return
+     */
+    public LoginEntity getLoginData() {
+        String loginData = fileManager.getStringFromPreferences(context,"loginData","loginData");
+        return new Gson().fromJson(loginData, LoginEntity.class);
+    }
+
+    /**
+     * 设置登陆信息
+     * @param loginEntity 登陆信息
+     */
+    public void setLoginData(LoginEntity loginEntity) {
+        fileManager.writeStringToPreferences(context,"loginData","loginData", new Gson().toJson(loginEntity));
     }
 
     /**

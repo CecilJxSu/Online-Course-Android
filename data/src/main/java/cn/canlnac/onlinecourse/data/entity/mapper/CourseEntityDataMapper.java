@@ -42,7 +42,11 @@ public class CourseEntityDataMapper {
             course.setLikeCount(courseEntity.getLikeCount());
             course.setName(courseEntity.getName());
             course.setWatchCount(courseEntity.getWatchCount());
-            course.setPreviewUrl(RestApiConnection.API_FILE + "/" + courseEntity.getPreviewUrl());
+            if (courseEntity.getPreviewUrl() != null && courseEntity.getPreviewUrl().startsWith("http")) {
+                course.setPreviewUrl(courseEntity.getPreviewUrl());
+            } else {
+                course.setPreviewUrl(RestApiConnection.API_FILE + "/" + courseEntity.getPreviewUrl());
+            }
         }
         return course;
     }

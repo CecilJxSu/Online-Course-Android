@@ -12,7 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.PagerAdapter;
-import cn.canlnac.onlinecourse.presentation.util.Permisions;
+import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment3;
 
 /**
  * 应用主屏幕.
@@ -57,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 mViewPager.setCurrentItem(tab.getPosition());
+                if (tab.getPosition() == 2) {
+                    ((TabFragment3)(adapter.getItem(2))).initialize();
+                }
             }
 
             @Override

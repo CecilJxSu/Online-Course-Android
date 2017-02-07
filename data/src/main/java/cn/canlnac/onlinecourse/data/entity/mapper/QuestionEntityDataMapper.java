@@ -33,7 +33,11 @@ public class QuestionEntityDataMapper {
             question.setItem(questionEntity.getItem());
             question.setQuestion(questionEntity.getQuestion());
             question.setType(questionEntity.getType());
-            question.setUrl(RestApiConnection.API_FILE + "/" + questionEntity.getUrl());
+            if (questionEntity.getUrl() != null && questionEntity.getUrl().startsWith("http")) {
+                question.setUrl(questionEntity.getUrl());
+            } else {
+                question.setUrl(RestApiConnection.API_FILE + "/" + questionEntity.getUrl());
+            }
         }
         return question;
     }

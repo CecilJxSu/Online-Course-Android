@@ -36,8 +36,17 @@ public class CatalogEntityDataMapper {
             catalog.setParentId(catalogEntity.getParentId());
             catalog.setIntroduction(catalogEntity.getIntroduction());
             catalog.setName(catalogEntity.getName());
-            catalog.setPreviewImage(RestApiConnection.API_FILE + "/" + catalogEntity.getPreviewImage());
-            catalog.setUrl(RestApiConnection.API_FILE + "/" + catalogEntity.getUrl());
+            if (catalogEntity.getPreviewImage() != null && catalogEntity.getPreviewImage().startsWith("http")) {
+                catalog.setPreviewImage(catalogEntity.getPreviewImage());
+            } else {
+                catalog.setPreviewImage(RestApiConnection.API_FILE + "/" + catalogEntity.getPreviewImage());
+            }
+
+            if (catalogEntity.getUrl() != null && catalogEntity.getUrl().startsWith("http")) {
+                catalog.setUrl(catalogEntity.getUrl());
+            } else {
+                catalog.setUrl(RestApiConnection.API_FILE + "/" + catalogEntity.getUrl());
+            }
         }
         return catalog;
     }

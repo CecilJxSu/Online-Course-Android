@@ -30,7 +30,11 @@ public class ProfileEntityDataMapper {
             profile.setEmail(profileEntity.getEmail());
             profile.setFollowing(profileEntity.isFollowing());
             profile.setGender(profileEntity.getGender());
-            profile.setIconUrl(RestApiConnection.API_FILE + "/" + profileEntity.getIconUrl());
+            if (profileEntity.getIconUrl() != null && profileEntity.getIconUrl().startsWith("http")) {
+                profile.setIconUrl(profileEntity.getIconUrl());
+            } else {
+                profile.setIconUrl(RestApiConnection.API_FILE + "/" + profileEntity.getIconUrl());
+            }
             profile.setMajor(profileEntity.getMajor());
             profile.setNickname(profileEntity.getNickname());
             profile.setPhone(profileEntity.getPhone());

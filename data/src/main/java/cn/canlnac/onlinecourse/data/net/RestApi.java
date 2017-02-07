@@ -36,6 +36,9 @@ public interface RestApi {
     /********************************** 登录 ***********************************/
     Observable<LoginEntity> login(String username, String password);
 
+    Observable<LoginEntity> getLogin();
+    Observable<Void> setLogin(LoginEntity loginEntity);
+
     /********************************** 用户 ***********************************/
     /** 注册 */
     Observable<Integer> register(String username, String password);

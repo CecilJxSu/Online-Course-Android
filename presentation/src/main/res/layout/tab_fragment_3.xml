@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#f0f0f0">
 
     <LinearLayout
+        android:id="@+id/user_profile"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:background="#FFFFFF"
+        android:background="@drawable/linear_background"
+        android:clickable="true"
         android:padding="10dp"
         android:layout_marginBottom="10dp">
 
-        <cn.canlnac.onlinecourse.presentation.ui.view.CircleImageView
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/header"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/header"
+            fresco:placeholderImage="@drawable/header"
             android:layout_marginRight="10dp"
-            />
+            fresco:roundedCornerRadius="25dp"/>
 
         <TextView
             android:id="@+id/tab3_login"

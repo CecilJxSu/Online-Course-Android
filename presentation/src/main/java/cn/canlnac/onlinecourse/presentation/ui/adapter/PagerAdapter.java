@@ -4,36 +4,29 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment1_1;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment2;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment3;
 
-/**
- * Created by cecil on 2016/10/31.
- */
-
 public class PagerAdapter extends FragmentStatePagerAdapter {
-    int mNumOfTabs;
+    private int mNumOfTabs;
+    private List<Fragment> fragments = new ArrayList<>();
+
     public PagerAdapter(FragmentManager fm, int numOfTabs) {
         super(fm);
         mNumOfTabs = numOfTabs;
+
+        fragments.add(new TabFragment1_1());
+        fragments.add(new TabFragment2());
+        fragments.add(new TabFragment3());
     }
 
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                TabFragment1_1 tab1 = new TabFragment1_1();
-                return tab1;
-            case 1:
-                TabFragment2 tab2 = new TabFragment2();
-                return tab2;
-            case 2:
-                TabFragment3 tab3 = new TabFragment3();
-                return tab3;
-            default:
-                return null;
-        }
+        return fragments.get(position);
     }
 
     @Override

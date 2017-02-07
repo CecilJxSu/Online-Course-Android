@@ -60,6 +60,7 @@ public class BaseActivity extends Activity {
      */
     public void toLogin() {
         Intent intent = new Intent(this, LoginActivity.class);
+        showToastMessage("请先登陆");
         startActivity(intent);
     }
 }

@@ -129,12 +129,43 @@ public class RestApiImpl implements RestApi {
                     loginEntity.setJwt(response.header("Authentication"));
 
                     restApiConnection.setJwt(loginEntity.getJwt());
+                    restApiConnection.setLoginData(loginEntity);
                     //完成
                     subscriber.onNext(loginEntity);
                     subscriber.onCompleted();
                 } else {//状态码错误
                     subscriber.onError(setCommentStatusError(response.code()));
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<LoginEntity> getLogin() {
+        return Observable.create(subscriber -> {
+            try {
+                LoginEntity loginEntity = restApiConnection.getLoginData(); //获取登录信息
+
+                subscriber.onNext(loginEntity);
+                subscriber.onCompleted();
+            } catch (Exception e) {
+                e.printStackTrace();
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
+    public Observable<Void> setLogin(LoginEntity loginEntity) {
+        return Observable.create(subscriber -> {
+            try {
+                restApiConnection.setLoginData(loginEntity); //设置登录信息
+
+                subscriber.onNext(null);
+                subscriber.onCompleted();
             } catch (Exception e) {
                 e.printStackTrace();
                 subscriber.onError(new NetworkConnectionException(e.getCause()));
@@ -195,6 +226,19 @@ public class RestApiImpl implements RestApi {
                     subscriber.onError(new NetworkConnectionException());
                     return;
                 }
+
+                LoginEntity loginEntity = restApiConnection.getLoginData();
+                if (profile.get("nickname")!=null){
+                    loginEntity.setNickname(profile.get("nickname"));
+                }
+                if (profile.get("gender")!=null){
+                    loginEntity.setGender(profile.get("gender"));
+                }
+                if (profile.get("iconUrl")!=null){
+                    loginEntity.setIconUrl(profile.get("iconUrl"));
+                }
+
+                restApiConnection.setLoginData(loginEntity);
 
                 if (response.code() == 200) {//状态码正确响应
                     //完成

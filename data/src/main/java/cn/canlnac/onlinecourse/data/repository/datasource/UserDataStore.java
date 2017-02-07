@@ -41,4 +41,9 @@ public interface UserDataStore {
     Observable<Void> followUser(int userId);
     /** 取消关注 */
     Observable<Void> unfollowUser(int userId);
+
+    /** 获取登陆状态 */
+    Observable<LoginEntity> getLogin();
+    /** 设置登陆状态 */
+    Observable<Void> setLogin(LoginEntity loginEntity);
 }

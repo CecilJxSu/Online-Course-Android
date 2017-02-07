@@ -71,6 +71,10 @@ public class GetChatsPresenter implements Presenter {
                             GetChatsPresenter.this.getChatsActivity.showRefreshError("没有话题");
                         }
                         break;
+                    case 401:
+                        GetChatsPresenter.this.getChatsActivity.showRefreshError("加载失败");
+                        GetChatsPresenter.this.getChatsActivity.toLogin();
+                        break;
                     default:
                         if (state == 0) {
                             GetChatsPresenter.this.getChatsActivity.showRefreshError("加载失败");

@@ -55,6 +55,7 @@ public class BaseFragment extends Fragment {
      */
     public void toLogin() {
         Intent intent = new Intent(this.getActivity(), LoginActivity.class);
+        showToastMessage("请先登陆");
         startActivity(intent);
     }
 }

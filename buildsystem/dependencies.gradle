@@ -30,6 +30,8 @@ ext {
 
     compressor = '1.0.4'
 
+    cookieCutter = '1.0.2'
+
     //Libraries for UI
     appcompat = '23.2.1'
     design = '23.2.1'
@@ -67,6 +69,7 @@ ext {
             richtext:               "com.zzhoujay.richtext:richtext:${richtext}",
             pdfview:                "com.joanzapata.pdfview:android-pdfview:${pdfview}",
             compressor:             "id.zelory:compressor:${compressor}",
+            cookieCutter:           "com.adamstyrc.cookiecutter:cookie-cutter:${cookieCutter}",
 
             carouselview:           "com.synnapps:carouselview:${carouselview}",
             fab:                    "com.github.clans:fab:${fab}",

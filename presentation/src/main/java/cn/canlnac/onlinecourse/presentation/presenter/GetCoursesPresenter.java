@@ -76,6 +76,10 @@ public class GetCoursesPresenter implements Presenter {
                             GetCoursesPresenter.this.getCoursesActivity.showRefreshError("没有课程");
                         }
                         break;
+                    case 401:
+                        GetCoursesPresenter.this.getCoursesActivity.showRefreshError("加载失败");
+                        GetCoursesPresenter.this.getCoursesActivity.toLogin();
+                        break;
                     default:
                         if (state == 0) {
                             GetCoursesPresenter.this.getCoursesActivity.showRefreshError("加载失败");
