@@ -10,7 +10,7 @@
         android:layout_height="95dp"
         android:padding="5dp"
         fresco:actualImageScaleType="fitXY"
-        fresco:placeholderImage="@drawable/carousel_image_1" />
+        fresco:placeholderImage="@drawable/default_course"/>
 
     <TextView
         android:id="@+id/course_list_name"
