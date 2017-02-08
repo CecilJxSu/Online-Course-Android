@@ -230,6 +230,24 @@ public class RestApiConnection {
         return APIConnection.create(METHOD.DELETE, API_USER + "/" + userId + "/following", null, getJwt()).request();
     }
 
+    /**
+     * 获取我的话题
+     * @param start     分页开始位置
+     * @param count     分页返回数目
+     * @return Response 响应
+     * @throws MalformedURLException
+     */
+    public Response getMyChatsFromApi(@Nullable Integer start, @Nullable Integer count) throws MalformedURLException {
+        String CHATS = API_USER + "/chats?";
+        if (null != start) {
+            CHATS += "start="+start+"&";
+        }
+        if (null != count) {
+            CHATS += "count="+count+"&";
+        }
+        return APIConnection.create(METHOD.GET, CHATS, null, getJwt()).request();
+    }
+
     public Response getDocumentFromApi(int documentId) throws MalformedURLException {
         return APIConnection.create(METHOD.GET, API_DOCUMENT + "/" + documentId, null, getJwt()).request();
     }

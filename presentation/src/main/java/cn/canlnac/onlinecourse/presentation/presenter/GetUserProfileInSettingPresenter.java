@@ -59,7 +59,8 @@ public class GetUserProfileInSettingPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 404:
-                        GetUserProfileInSettingPresenter.this.profileActivity.showToastMessage("用户存在");
+                        GetUserProfileInSettingPresenter.this.profileActivity.showToastMessage("用户不存在,重新登陆");
+                        GetUserProfileInSettingPresenter.this.profileActivity.toLogin();
                         break;
                     case 401:
                         GetUserProfileInSettingPresenter.this.profileActivity.showToastMessage("未登陆");

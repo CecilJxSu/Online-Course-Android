@@ -96,6 +96,11 @@
             android:name=".ui.activity.CutActivity"
             android:label="裁剪">
         </activity>
+
+        <activity
+            android:name=".ui.activity.MyChatActivity"
+            android:label="我的话题">
+        </activity>
     </application>
 
 </manifest>

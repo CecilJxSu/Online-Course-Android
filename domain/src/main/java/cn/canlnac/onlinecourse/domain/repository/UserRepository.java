@@ -2,6 +2,7 @@ package cn.canlnac.onlinecourse.domain.repository;
 
 import java.util.Map;
 
+import cn.canlnac.onlinecourse.domain.ChatList;
 import cn.canlnac.onlinecourse.domain.Follower;
 import cn.canlnac.onlinecourse.domain.LearnRecordList;
 import cn.canlnac.onlinecourse.domain.Login;
@@ -38,6 +39,9 @@ public interface UserRepository {
     Observable<Void> followUser(int userId);
     /** 取消关注 */
     Observable<Void> unfollowUser(int userId);
+
+    /** 获取我的话题 */
+    Observable<ChatList> getMyChats(Integer start, Integer count);
 
     /** 获取登陆状态 */
     Observable<Login> getLogin();

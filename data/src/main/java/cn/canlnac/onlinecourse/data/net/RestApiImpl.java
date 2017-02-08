@@ -529,6 +529,41 @@ public class RestApiImpl implements RestApi {
         });
     }
 
+    /**
+     * 获取我的话题
+     * @param start                 分页开始位置
+     * @param count                 分页返回数目
+     * @return MessageListEntity    消息列表
+     */
+    @Override
+    public Observable<ChatListEntity> getMyChats(@Nullable Integer start, @Nullable Integer count) {
+        return Observable.create(subscriber -> {
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
+
+            try {
+                Response response = restApiConnection.getMyChatsFromApi(start, count);
+                if (response == null) {//网络异常
+                    subscriber.onError(new NetworkConnectionException());
+                    return;
+                }
+
+                if (response.code() == 200) {//状态码正确响应
+                    ChatListEntity chatListEntity = new Gson().fromJson(response.body().string(), ChatListEntity.class);
+                    //完成
+                    subscriber.onNext(chatListEntity);
+                    subscriber.onCompleted();
+                } else {//状态码错误
+                    subscriber.onError(setCommentStatusError(response.code()));
+                }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
     @Override
     public Observable<DocumentEntity> getDocument(int documentId) {
         return Observable.create(subscriber -> {
