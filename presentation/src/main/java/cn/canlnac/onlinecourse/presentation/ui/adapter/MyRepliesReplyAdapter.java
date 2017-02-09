@@ -8,32 +8,32 @@ import android.widget.BaseAdapter;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.List;
-import java.util.Locale;
 
 import cn.canlnac.onlinecourse.presentation.R;
-import cn.canlnac.onlinecourse.presentation.model.ChatModel;
+import cn.canlnac.onlinecourse.presentation.model.ReplyModel;
 
 /**
- * 话题适配器.
+ * 回复评论适配器.
  */
 
-public class ChatAdapter extends BaseAdapter {
+public class MyRepliesReplyAdapter extends BaseAdapter {
     private Activity activity;
-    private List<ChatModel> chats;
-    static final PrettyTime prettyTime = new PrettyTime(Locale.CHINA);
+    private List<ReplyModel> replies;
+    private PrettyTime prettyTime;
 
-    public ChatAdapter(Activity activity, List<ChatModel> chats) {
+    public MyRepliesReplyAdapter(Activity activity, List<ReplyModel> replies, PrettyTime prettyTime) {
         this.activity = activity;
-        this.chats = chats;
+        this.replies = replies;
+        this.prettyTime = prettyTime;
     }
 
     @Override
     public int getCount() {
-        return chats==null ? 0 : chats.size();
+        return replies==null ? 0 : replies.size();
     }
     @Override
     public Object getItem(int position) {
-        return chats.get(position);
+        return replies.get(position);
     }
 
     @Override
@@ -43,12 +43,12 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        ChatViewHolder holder;
+        MyRepliesReplyViewHolder holder;
         if (view == null) {
-            view = activity.getLayoutInflater().inflate(R.layout.chat_list_view, null);
+            view = activity.getLayoutInflater().inflate(R.layout.reply_to_comment, null);
         }
 
-        holder = new ChatViewHolder(activity,view, chats.get(position), prettyTime);
+        holder = new MyRepliesReplyViewHolder(activity,view, replies.get(position), prettyTime);
         view.setTag(holder);
 
         return view;

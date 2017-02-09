@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.List;
+import java.util.Locale;
 
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.model.CommentModel;
@@ -19,7 +20,7 @@ import cn.canlnac.onlinecourse.presentation.model.CommentModel;
 public class CommentAdapter extends BaseAdapter {
     private Activity activity;
     private List<CommentModel> comments;
-    static final PrettyTime prettyTime = new PrettyTime();
+    static final PrettyTime prettyTime = new PrettyTime(Locale.CHINA);
 
     public CommentAdapter(Activity activity, List<CommentModel> comments) {
         this.activity = activity;

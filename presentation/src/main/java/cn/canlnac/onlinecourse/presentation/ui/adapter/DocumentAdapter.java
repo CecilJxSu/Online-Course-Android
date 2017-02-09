@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import org.ocpsoft.prettytime.PrettyTime;
 
 import java.util.List;
+import java.util.Locale;
 
 import cn.canlnac.onlinecourse.presentation.R;
 import cn.canlnac.onlinecourse.presentation.model.DocumentModel;
@@ -19,7 +20,7 @@ import cn.canlnac.onlinecourse.presentation.model.DocumentModel;
 public class DocumentAdapter extends BaseAdapter {
     private Activity activity;
     private List<DocumentModel> documents;
-    static final PrettyTime prettyTime = new PrettyTime();
+    static final PrettyTime prettyTime = new PrettyTime(Locale.CHINA);
 
     public DocumentAdapter(Activity activity, List<DocumentModel> documents) {
         this.activity = activity;

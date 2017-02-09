@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#2196F3"
+        android:elevation="6dp">
+
+        <Button
+            android:id="@+id/close"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/ic_close"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/my_chats_title"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:text="我的话题"
+            android:textColor="#FFFFFF"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="15dp"
+            android:textSize="17sp"
+            android:layout_toRightOf="@+id/close"
+            android:gravity="center_vertical"/>
+
+    </RelativeLayout>
+
+    <cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.ZrcListView
+        android:id="@+id/mychats_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp" />
+</LinearLayout>

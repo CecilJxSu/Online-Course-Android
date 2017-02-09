@@ -11,29 +11,29 @@ import java.util.List;
 import java.util.Locale;
 
 import cn.canlnac.onlinecourse.presentation.R;
-import cn.canlnac.onlinecourse.presentation.model.ChatModel;
+import cn.canlnac.onlinecourse.presentation.model.CommentModel;
 
 /**
- * 话题适配器.
+ * 评论适配器.
  */
 
-public class ChatAdapter extends BaseAdapter {
+public class MyRepliesCommentAdapter extends BaseAdapter {
     private Activity activity;
-    private List<ChatModel> chats;
+    private List<CommentModel> comments;
     static final PrettyTime prettyTime = new PrettyTime(Locale.CHINA);
 
-    public ChatAdapter(Activity activity, List<ChatModel> chats) {
+    public MyRepliesCommentAdapter(Activity activity, List<CommentModel> comments) {
         this.activity = activity;
-        this.chats = chats;
+        this.comments = comments;
     }
 
     @Override
     public int getCount() {
-        return chats==null ? 0 : chats.size();
+        return comments==null ? 0 : comments.size();
     }
     @Override
     public Object getItem(int position) {
-        return chats.get(position);
+        return comments.get(position);
     }
 
     @Override
@@ -43,12 +43,12 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        ChatViewHolder holder;
+        MyRepliesCommentViewHolder holder;
         if (view == null) {
-            view = activity.getLayoutInflater().inflate(R.layout.chat_list_view, null);
+            view = activity.getLayoutInflater().inflate(R.layout.comment_content, null);
         }
 
-        holder = new ChatViewHolder(activity,view, chats.get(position), prettyTime);
+        holder = new MyRepliesCommentViewHolder(activity,view, comments.get(position), prettyTime);
         view.setTag(holder);
 
         return view;

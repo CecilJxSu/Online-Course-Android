@@ -62,6 +62,14 @@ public interface RestApi {
     Observable<Void> followUser(int userId);
     /** 取消关注 */
     Observable<Void> unfollowUser(int userId);
+    /** 获取我的话题 */
+    Observable<ChatListEntity> getMyChats(@Nullable Integer start, @Nullable Integer count);
+    /** 获取我收藏的话题 */
+    Observable<ChatListEntity> getMyFavoriteChats(@Nullable Integer start, @Nullable Integer count);
+    /** 获取我收藏的课程 */
+    Observable<CourseListEntity> getMyFavoriteCourses(@Nullable Integer start, @Nullable Integer count);
+    /** 获取我的回复 */
+    Observable<CommentListEntity> getMyReplies(@Nullable Integer start, @Nullable Integer count);
 
     /********************************** 文档 ***********************************/
     /** 获取指定文档 */

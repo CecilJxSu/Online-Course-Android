@@ -4,6 +4,9 @@ import android.support.annotation.Nullable;
 
 import java.util.Map;
 
+import cn.canlnac.onlinecourse.data.entity.ChatListEntity;
+import cn.canlnac.onlinecourse.data.entity.CommentListEntity;
+import cn.canlnac.onlinecourse.data.entity.CourseListEntity;
 import cn.canlnac.onlinecourse.data.entity.FollowerEntity;
 import cn.canlnac.onlinecourse.data.entity.LearnRecordListEntity;
 import cn.canlnac.onlinecourse.data.entity.LoginEntity;
@@ -92,5 +95,25 @@ public class CloudUserDataStore implements UserDataStore {
     @Override
     public Observable<Void> setLogin(LoginEntity loginEntity) {
         return this.restApi.setLogin(loginEntity);
+    }
+
+    @Override
+    public Observable<ChatListEntity> getMyChats(@Nullable Integer start, @Nullable Integer count) {
+        return this.restApi.getMyChats(start,count);
+    }
+
+    @Override
+    public Observable<ChatListEntity> getMyFavoriteChats(Integer start, Integer count) {
+        return this.restApi.getMyFavoriteChats(start,count);
+    }
+
+    @Override
+    public Observable<CourseListEntity> getMyFavoriteCourses(Integer start, Integer count) {
+        return this.restApi.getMyFavoriteCourses(start,count);
+    }
+
+    @Override
+    public Observable<CommentListEntity> getMyReplies(Integer start, Integer count) {
+        return this.restApi.getMyReplies(start,count);
     }
 }

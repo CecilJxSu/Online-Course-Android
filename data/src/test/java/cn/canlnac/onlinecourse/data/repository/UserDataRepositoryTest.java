@@ -9,6 +9,9 @@ import org.mockito.MockitoAnnotations;
 
 import cn.canlnac.onlinecourse.data.ApplicationTestCase;
 import cn.canlnac.onlinecourse.data.entity.RegisterEntity;
+import cn.canlnac.onlinecourse.data.entity.mapper.ChatListEntityDataMapper;
+import cn.canlnac.onlinecourse.data.entity.mapper.CommentListEntityDataMapper;
+import cn.canlnac.onlinecourse.data.entity.mapper.CourseListEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.FollowerEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.LearnRecordListEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.LoginEntityDataMapper;
@@ -40,7 +43,10 @@ public class UserDataRepositoryTest extends ApplicationTestCase {
     @Mock private MessageListEntityDataMapper mockMessageListEntityDataMapper;
     @Mock private MessageEntityDataMapper mockMessageEntityDataMapper;
     @Mock private LearnRecordListEntityDataMapper mockLearnRecordListEntityDataMapper;
-    @Mock private FollowerEntityDataMapper MessageFollowerEntityDataMapper;
+    @Mock private FollowerEntityDataMapper messageFollowerEntityDataMapper;
+    @Mock private ChatListEntityDataMapper chatListEntityDataMapper;
+    @Mock private CourseListEntityDataMapper courseListEntityDataMapper;
+    @Mock private CommentListEntityDataMapper commentListEntityDataMapper;
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -54,7 +60,10 @@ public class UserDataRepositoryTest extends ApplicationTestCase {
                 mockMessageListEntityDataMapper,
                 mockMessageEntityDataMapper,
                 mockLearnRecordListEntityDataMapper,
-                MessageFollowerEntityDataMapper
+                messageFollowerEntityDataMapper,
+                chatListEntityDataMapper,
+                courseListEntityDataMapper,
+                commentListEntityDataMapper
         );
         given(mockUserDataStoreFactory.create()).willReturn(mockUserDataStore);
     }

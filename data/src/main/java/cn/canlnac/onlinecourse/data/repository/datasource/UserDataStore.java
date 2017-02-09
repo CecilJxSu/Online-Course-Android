@@ -4,6 +4,9 @@ import android.support.annotation.Nullable;
 
 import java.util.Map;
 
+import cn.canlnac.onlinecourse.data.entity.ChatListEntity;
+import cn.canlnac.onlinecourse.data.entity.CommentListEntity;
+import cn.canlnac.onlinecourse.data.entity.CourseListEntity;
 import cn.canlnac.onlinecourse.data.entity.FollowerEntity;
 import cn.canlnac.onlinecourse.data.entity.LearnRecordListEntity;
 import cn.canlnac.onlinecourse.data.entity.LoginEntity;
@@ -41,6 +44,18 @@ public interface UserDataStore {
     Observable<Void> followUser(int userId);
     /** 取消关注 */
     Observable<Void> unfollowUser(int userId);
+
+    /** 获取我的话题 */
+    Observable<ChatListEntity> getMyChats(Integer start, Integer count);
+
+    /** 获取我收藏的话题 */
+    Observable<ChatListEntity> getMyFavoriteChats(Integer start, Integer count);
+
+    /** 获取我收藏的课程 */
+    Observable<CourseListEntity> getMyFavoriteCourses(Integer start, Integer count);
+
+    /** 获取我的回复 */
+    Observable<CommentListEntity> getMyReplies(Integer start, Integer count);
 
     /** 获取登陆状态 */
     Observable<LoginEntity> getLogin();

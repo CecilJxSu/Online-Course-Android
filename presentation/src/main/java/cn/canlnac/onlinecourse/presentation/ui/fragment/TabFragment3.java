@@ -21,6 +21,9 @@ import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetLoginDataModu
 import cn.canlnac.onlinecourse.presentation.model.LoginModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetLoginDataPresenter;
 import cn.canlnac.onlinecourse.presentation.ui.activity.LoginActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.MyChatActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.MyFavoriteActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.MyRepliesActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.ProfileActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
 
@@ -106,5 +109,41 @@ public class TabFragment3 extends BaseFragment {
                 header.setImageURI(data.getStringExtra("avatar"));
             }
         }
+    }
+
+    @OnClick(R.id.my_chats)
+    public void onClickMyChats(View v) {
+        if (loginModel == null) {
+            showToastMessage("请先登陆");
+            onClickLogin(null);
+            return;
+        }
+
+        Intent intent = new Intent(getActivity(), MyChatActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.my_favorites)
+    public void onClickMyFavorites(View v) {
+        if (loginModel == null) {
+            showToastMessage("请先登陆");
+            onClickLogin(null);
+            return;
+        }
+
+        Intent intent = new Intent(getActivity(), MyFavoriteActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.my_replies)
+    public void onClickMyReplies(View v) {
+        if (loginModel == null) {
+            showToastMessage("请先登陆");
+            onClickLogin(null);
+            return;
+        }
+
+        Intent intent = new Intent(getActivity(), MyRepliesActivity.class);
+        startActivity(intent);
     }
 }

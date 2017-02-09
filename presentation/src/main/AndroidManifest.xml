@@ -96,6 +96,21 @@
             android:name=".ui.activity.CutActivity"
             android:label="裁剪">
         </activity>
+
+        <activity
+            android:name=".ui.activity.MyChatActivity"
+            android:label="我的话题">
+        </activity>
+
+        <activity
+            android:name=".ui.activity.MyFavoriteActivity"
+            android:label="我的收藏">
+        </activity>
+
+        <activity
+            android:name=".ui.activity.MyRepliesActivity"
+            android:label="我的回复">
+        </activity>
     </application>
 
 </manifest>
