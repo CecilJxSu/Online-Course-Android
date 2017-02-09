@@ -22,6 +22,8 @@ import cn.canlnac.onlinecourse.presentation.model.LoginModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetLoginDataPresenter;
 import cn.canlnac.onlinecourse.presentation.ui.activity.LoginActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.MyChatActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.MyFavoriteActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.MyRepliesActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.ProfileActivity;
 import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
 
@@ -118,7 +120,6 @@ public class TabFragment3 extends BaseFragment {
         }
 
         Intent intent = new Intent(getActivity(), MyChatActivity.class);
-        intent.putExtra("userId", loginModel.getId());
         startActivity(intent);
     }
 
@@ -130,8 +131,8 @@ public class TabFragment3 extends BaseFragment {
             return;
         }
 
-        Intent intent = new Intent();
-        intent.putExtra("userId", loginModel.getId());
+        Intent intent = new Intent(getActivity(), MyFavoriteActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.my_replies)
@@ -142,7 +143,7 @@ public class TabFragment3 extends BaseFragment {
             return;
         }
 
-        Intent intent = new Intent();
-        intent.putExtra("userId", loginModel.getId());
+        Intent intent = new Intent(getActivity(), MyRepliesActivity.class);
+        startActivity(intent);
     }
 }

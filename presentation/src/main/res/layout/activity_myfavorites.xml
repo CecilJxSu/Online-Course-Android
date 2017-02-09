@@ -19,10 +19,9 @@
             android:layout_gravity="center_vertical"/>
 
         <TextView
-            android:id="@+id/my_chats_title"
             android:layout_width="wrap_content"
             android:layout_height="25dp"
-            android:text="我的话题"
+            android:text="我的收藏"
             android:textColor="#FFFFFF"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="15dp"
@@ -30,10 +29,37 @@
             android:layout_toRightOf="@+id/close"
             android:gravity="center_vertical"/>
 
+        <TextView
+            android:id="@+id/my_favorites_courses_btn"
+            android:layout_width="45dp"
+            android:layout_height="25dp"
+            android:text="课程"
+            android:gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/background_border_left"
+            android:textSize="12sp"
+            android:layout_toLeftOf="@+id/my_favorites_chats_btn"
+            android:textColor="#2196F3"
+            />
+
+        <TextView
+            android:id="@+id/my_favorites_chats_btn"
+            android:layout_width="45dp"
+            android:layout_height="25dp"
+            android:text="话题"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/background_border_right"
+            android:textSize="12sp"
+            android:textColor="#FFFFFF"
+            />
+
     </RelativeLayout>
 
     <cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.ZrcListView
-        android:id="@+id/mychats_list"
+        android:id="@+id/myfavorites_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="5dp" />
