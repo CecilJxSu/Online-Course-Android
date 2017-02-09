@@ -623,6 +623,35 @@ public class RestApiImpl implements RestApi {
     }
 
     @Override
+    public Observable<CommentListEntity> getMyReplies(@Nullable Integer start, @Nullable Integer count) {
+        return Observable.create(subscriber -> {
+            if (!isThereInternetConnection()) {//检查网络
+                subscriber.onError(new NetworkConnectionException());
+                return;
+            }
+
+            try {
+                Response response = restApiConnection.getMyRepliesFromApi(start, count);
+                if (response == null) {//网络异常
+                    subscriber.onError(new NetworkConnectionException());
+                    return;
+                }
+
+                if (response.code() == 200) {//状态码正确响应
+                    CommentListEntity commentListEntity = new Gson().fromJson(response.body().string(), CommentListEntity.class);
+                    //完成
+                    subscriber.onNext(commentListEntity);
+                    subscriber.onCompleted();
+                } else {//状态码错误
+                    subscriber.onError(setCommentStatusError(response.code()));
+                }
+            } catch (Exception e) {
+                subscriber.onError(new NetworkConnectionException(e.getCause()));
+            }
+        });
+    }
+
+    @Override
     public Observable<DocumentEntity> getDocument(int documentId) {
         return Observable.create(subscriber -> {
             if (!isThereInternetConnection()) {//检查网络

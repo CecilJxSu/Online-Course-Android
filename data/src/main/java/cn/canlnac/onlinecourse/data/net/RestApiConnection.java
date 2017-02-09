@@ -270,6 +270,24 @@ public class RestApiConnection {
         return APIConnection.create(METHOD.GET, FAVORITES, null, getJwt()).request();
     }
 
+    /**
+     * 获取我的回复
+     * @param start     分页开始位置
+     * @param count     分页返回数目
+     * @return Response 响应
+     * @throws MalformedURLException
+     */
+    public Response getMyRepliesFromApi(@Nullable Integer start, @Nullable Integer count) throws MalformedURLException {
+        String REPLIES = API_USER + "/replies?";
+        if (null != start) {
+            REPLIES += "start="+start+"&";
+        }
+        if (null != count) {
+            REPLIES += "count="+count+"&";
+        }
+        return APIConnection.create(METHOD.GET, REPLIES, null, getJwt()).request();
+    }
+
     public Response getDocumentFromApi(int documentId) throws MalformedURLException {
         return APIConnection.create(METHOD.GET, API_DOCUMENT + "/" + documentId, null, getJwt()).request();
     }

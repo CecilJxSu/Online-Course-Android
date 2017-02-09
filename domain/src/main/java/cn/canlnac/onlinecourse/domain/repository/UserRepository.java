@@ -3,6 +3,7 @@ package cn.canlnac.onlinecourse.domain.repository;
 import java.util.Map;
 
 import cn.canlnac.onlinecourse.domain.ChatList;
+import cn.canlnac.onlinecourse.domain.CommentList;
 import cn.canlnac.onlinecourse.domain.CourseList;
 import cn.canlnac.onlinecourse.domain.Follower;
 import cn.canlnac.onlinecourse.domain.LearnRecordList;
@@ -49,6 +50,9 @@ public interface UserRepository {
 
     /** 获取我收藏的课程 */
     Observable<CourseList> getMyFavoriteCourses(Integer start, Integer count);
+
+    /** 获取我的回复 */
+    Observable<CommentList> getMyReplies(Integer start, Integer count);
 
     /** 获取登陆状态 */
     Observable<Login> getLogin();

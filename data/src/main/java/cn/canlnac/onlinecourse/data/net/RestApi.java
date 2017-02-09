@@ -68,6 +68,8 @@ public interface RestApi {
     Observable<ChatListEntity> getMyFavoriteChats(@Nullable Integer start, @Nullable Integer count);
     /** 获取我收藏的课程 */
     Observable<CourseListEntity> getMyFavoriteCourses(@Nullable Integer start, @Nullable Integer count);
+    /** 获取我的回复 */
+    Observable<CommentListEntity> getMyReplies(@Nullable Integer start, @Nullable Integer count);
 
     /********************************** 文档 ***********************************/
     /** 获取指定文档 */
