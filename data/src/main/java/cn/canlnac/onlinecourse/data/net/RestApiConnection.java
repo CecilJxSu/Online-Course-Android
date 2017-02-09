@@ -248,6 +248,28 @@ public class RestApiConnection {
         return APIConnection.create(METHOD.GET, CHATS, null, getJwt()).request();
     }
 
+    /**
+     * 获取我的收藏
+     * @param type      类型，course，chat
+     * @param start     分页开始位置
+     * @param count     分页返回数目
+     * @return Response 响应
+     * @throws MalformedURLException
+     */
+    public Response getMyFavoritesFromApi(String type, @Nullable Integer start, @Nullable Integer count) throws MalformedURLException {
+        String FAVORITES = API_USER + "/favorites?";
+        if (null != start) {
+            FAVORITES += "start="+start+"&";
+        }
+        if (null != count) {
+            FAVORITES += "count="+count+"&";
+        }
+
+        FAVORITES += "type="+type+"&";
+
+        return APIConnection.create(METHOD.GET, FAVORITES, null, getJwt()).request();
+    }
+
     public Response getDocumentFromApi(int documentId) throws MalformedURLException {
         return APIConnection.create(METHOD.GET, API_DOCUMENT + "/" + documentId, null, getJwt()).request();
     }

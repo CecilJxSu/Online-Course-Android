@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import cn.canlnac.onlinecourse.data.entity.mapper.ChatListEntityDataMapper;
+import cn.canlnac.onlinecourse.data.entity.mapper.CourseListEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.FollowerEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.LearnRecordListEntityDataMapper;
 import cn.canlnac.onlinecourse.data.entity.mapper.LoginEntityDataMapper;
@@ -15,6 +16,7 @@ import cn.canlnac.onlinecourse.data.entity.mapper.ProfileEntityDataMapper;
 import cn.canlnac.onlinecourse.data.repository.datasource.UserDataStore;
 import cn.canlnac.onlinecourse.data.repository.datasource.UserDataStoreFactory;
 import cn.canlnac.onlinecourse.domain.ChatList;
+import cn.canlnac.onlinecourse.domain.CourseList;
 import cn.canlnac.onlinecourse.domain.Follower;
 import cn.canlnac.onlinecourse.domain.LearnRecordList;
 import cn.canlnac.onlinecourse.domain.Login;
@@ -38,6 +40,7 @@ public class UserDataRepository implements UserRepository {
     private final LearnRecordListEntityDataMapper learnRecordListEntityDataMapper;
     private final FollowerEntityDataMapper followerEntityDataMapper;
     private final ChatListEntityDataMapper chatListEntityDataMapper;
+    private final CourseListEntityDataMapper courseListEntityDataMapper;
 
     @Inject
     public UserDataRepository(
@@ -48,7 +51,8 @@ public class UserDataRepository implements UserRepository {
             MessageEntityDataMapper messageEntityDataMapper,
             LearnRecordListEntityDataMapper learnRecordListEntityDataMapper,
             FollowerEntityDataMapper followerEntityDataMapper,
-            ChatListEntityDataMapper chatListEntityDataMapper
+            ChatListEntityDataMapper chatListEntityDataMapper,
+            CourseListEntityDataMapper courseListEntityDataMapper
     ) {
         this.userDataStore = userDataStoreFactory.create();
         this.loginEntityDataMapper = loginEntityDataMapper;
@@ -58,6 +62,7 @@ public class UserDataRepository implements UserRepository {
         this.learnRecordListEntityDataMapper = learnRecordListEntityDataMapper;
         this.followerEntityDataMapper = followerEntityDataMapper;
         this.chatListEntityDataMapper = chatListEntityDataMapper;
+        this.courseListEntityDataMapper = courseListEntityDataMapper;
     }
 
     @Override
@@ -123,6 +128,16 @@ public class UserDataRepository implements UserRepository {
     @Override
     public Observable<ChatList> getMyChats(Integer start, Integer count) {
         return userDataStore.getMyChats(start, count).map(chatListEntityDataMapper::transform);
+    }
+
+    @Override
+    public Observable<ChatList> getMyFavoriteChats(Integer start, Integer count) {
+        return userDataStore.getMyFavoriteChats(start, count).map(chatListEntityDataMapper::transform);
+    }
+
+    @Override
+    public Observable<CourseList> getMyFavoriteCourses(Integer start, Integer count) {
+        return userDataStore.getMyFavoriteCourses(start, count).map(courseListEntityDataMapper::transform);
     }
 
     @Override
