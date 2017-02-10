@@ -11,12 +11,12 @@ import cn.canlnac.onlinecourse.presentation.model.MessageModel;
 
 @PerActivity
 public class MessageModelDataMapper {
-    private final LoginModelDataMapper loginModelDataMapper;
+    private final SimpleUserModelDataMapper simpleUserModelDataMapper;
     private final PositionModelDataMapper positionModelDataMapper;
 
     @Inject
-    public MessageModelDataMapper(LoginModelDataMapper loginModelDataMapper,PositionModelDataMapper positionModelDataMapper) {
-        this.loginModelDataMapper = loginModelDataMapper;
+    public MessageModelDataMapper(SimpleUserModelDataMapper simpleUserModelDataMapper,PositionModelDataMapper positionModelDataMapper) {
+        this.simpleUserModelDataMapper = simpleUserModelDataMapper;
         this.positionModelDataMapper = positionModelDataMapper;
     }
 
@@ -29,9 +29,13 @@ public class MessageModelDataMapper {
         messageModel.setDate(message.getDate());
         messageModel.setActionType(message.getActionType());
         messageModel.setContent(message.getContent());
-        messageModel.setFromUser(loginModelDataMapper.transform(message.getFromUser()));
-        messageModel.setPositionModel(positionModelDataMapper.transform(message.getPosition()));
-        messageModel.setToUser(loginModelDataMapper.transform(message.getToUser()));
+        if (message.getFromUser() != null) {
+            messageModel.setFromUser(simpleUserModelDataMapper.transform(message.getFromUser()));
+        }
+        if (message.getPosition() != null) {
+            messageModel.setPositionModel(positionModelDataMapper.transform(message.getPosition()));
+        }
+        messageModel.setToUser(simpleUserModelDataMapper.transform(message.getToUser()));
         messageModel.setType(message.getType());
 
         return messageModel;

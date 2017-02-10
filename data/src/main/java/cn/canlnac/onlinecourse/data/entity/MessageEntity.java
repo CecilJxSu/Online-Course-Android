@@ -17,10 +17,10 @@ public class MessageEntity {
     private String type;
 
     @SerializedName("toUser")
-    private LoginEntity toUser;
+    private SimpleUserEntity toUser;
 
     @SerializedName("fromUser")
-    private LoginEntity fromUser;
+    private SimpleUserEntity fromUser;
 
     @SerializedName("actionType")
     private String actionType;
@@ -55,19 +55,19 @@ public class MessageEntity {
         this.type = type;
     }
 
-    public LoginEntity getToUser() {
+    public SimpleUserEntity getToUser() {
         return toUser;
     }
 
-    public void setToUser(LoginEntity toUser) {
+    public void setToUser(SimpleUserEntity toUser) {
         this.toUser = toUser;
     }
 
-    public LoginEntity getFromUser() {
+    public SimpleUserEntity getFromUser() {
         return fromUser;
     }
 
-    public void setFromUser(LoginEntity fromUser) {
+    public void setFromUser(SimpleUserEntity fromUser) {
         this.fromUser = fromUser;
     }
 

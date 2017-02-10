@@ -11,9 +11,9 @@ public class Message {
 
     private String type;
 
-    private Login toUser;
+    private SimpleUser toUser;
 
-    private Login fromUser;
+    private SimpleUser fromUser;
 
     private String actionType;
 
@@ -45,19 +45,19 @@ public class Message {
         this.type = type;
     }
 
-    public Login getToUser() {
+    public SimpleUser getToUser() {
         return toUser;
     }
 
-    public void setToUser(Login toUser) {
+    public void setToUser(SimpleUser toUser) {
         this.toUser = toUser;
     }
 
-    public Login getFromUser() {
+    public SimpleUser getFromUser() {
         return fromUser;
     }
 
-    public void setFromUser(Login fromUser) {
+    public void setFromUser(SimpleUser fromUser) {
         this.fromUser = fromUser;
     }
 

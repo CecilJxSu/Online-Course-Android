@@ -14,12 +14,12 @@ import cn.canlnac.onlinecourse.domain.Message;
  */
 @Singleton
 public class MessageEntityDataMapper {
-    private LoginEntityDataMapper loginEntityDataMapper;
+    private SimpleUserEntityDataMapper simpleUserEntityDataMapper;
     private PositionEntityDataMapper positionEntityDataMapper;
 
     @Inject
-    public MessageEntityDataMapper(LoginEntityDataMapper loginEntityDataMapper, PositionEntityDataMapper positionEntityDataMapper) {
-        this.loginEntityDataMapper = loginEntityDataMapper;
+    public MessageEntityDataMapper(SimpleUserEntityDataMapper simpleUserEntityDataMapper, PositionEntityDataMapper positionEntityDataMapper) {
+        this.simpleUserEntityDataMapper = simpleUserEntityDataMapper;
         this.positionEntityDataMapper = positionEntityDataMapper;
     }
 
@@ -36,8 +36,8 @@ public class MessageEntityDataMapper {
             message.setActionType(messageEntity.getActionType());
             message.setContent(messageEntity.getContent());
             message.setDate(messageEntity.getDate());
-            message.setFromUser(loginEntityDataMapper.transform(messageEntity.getFromUser()));
-            message.setToUser(loginEntityDataMapper.transform(messageEntity.getToUser()));
+            message.setFromUser(simpleUserEntityDataMapper.transform(messageEntity.getFromUser()));
+            message.setToUser(simpleUserEntityDataMapper.transform(messageEntity.getToUser()));
             message.setPosition(positionEntityDataMapper.transform(messageEntity.getPosition()));
             message.setType(messageEntity.getType());
         }

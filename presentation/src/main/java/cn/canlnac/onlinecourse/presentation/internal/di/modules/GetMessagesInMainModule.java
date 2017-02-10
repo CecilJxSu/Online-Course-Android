@@ -2,7 +2,7 @@ package cn.canlnac.onlinecourse.presentation.internal.di.modules;
 
 import cn.canlnac.onlinecourse.domain.executor.PostExecutionThread;
 import cn.canlnac.onlinecourse.domain.executor.ThreadExecutor;
-import cn.canlnac.onlinecourse.domain.interactor.GetMessagesUseCase;
+import cn.canlnac.onlinecourse.domain.interactor.GetMessagesInMainUseCase;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.domain.repository.UserRepository;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
@@ -13,13 +13,13 @@ import dagger.Provides;
  * 注入模块.
  */
 @Module
-public class GetMessagesModule{
+public class GetMessagesInMainModule {
 
     private final Integer start;
     private final Integer count;
     private final Boolean isRead;
 
-    public GetMessagesModule(
+    public GetMessagesInMainModule(
             Integer start,
             Integer count,
             Boolean isRead
@@ -31,8 +31,8 @@ public class GetMessagesModule{
 
     @Provides
     @PerActivity
-    UseCase provideGetMessagesUseCase(UserRepository userRepository, ThreadExecutor threadExecutor,
+    UseCase provideGetMessagesInMainUseCase(UserRepository userRepository, ThreadExecutor threadExecutor,
                                    PostExecutionThread postExecutionThread){
-        return new GetMessagesUseCase(start, count,isRead, userRepository, threadExecutor, postExecutionThread);
+        return new GetMessagesInMainUseCase(start, count,isRead, userRepository, threadExecutor, postExecutionThread);
     }
 }
