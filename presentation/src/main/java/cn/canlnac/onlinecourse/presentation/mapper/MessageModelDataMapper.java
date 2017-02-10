@@ -29,8 +29,12 @@ public class MessageModelDataMapper {
         messageModel.setDate(message.getDate());
         messageModel.setActionType(message.getActionType());
         messageModel.setContent(message.getContent());
-        messageModel.setFromUser(loginModelDataMapper.transform(message.getFromUser()));
-        messageModel.setPositionModel(positionModelDataMapper.transform(message.getPosition()));
+        if (message.getFromUser() != null) {
+            messageModel.setFromUser(loginModelDataMapper.transform(message.getFromUser()));
+        }
+        if (message.getPosition() != null) {
+            messageModel.setPositionModel(positionModelDataMapper.transform(message.getPosition()));
+        }
         messageModel.setToUser(loginModelDataMapper.transform(message.getToUser()));
         messageModel.setType(message.getType());
 
