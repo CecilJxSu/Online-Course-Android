@@ -186,7 +186,7 @@ public class RestApiConnection {
     }
 
     public Response deleteMessageFromApi(int messageId) throws MalformedURLException {
-        return APIConnection.create(METHOD.GET, API_USER+"/message/"+messageId, null, getJwt()).request();
+        return APIConnection.create(METHOD.DELETE, API_USER+"/message/"+messageId, null, getJwt()).request();
     }
 
     public Response getOtherUserLearnRecordFromApi(int userId, @Nullable Integer start, @Nullable Integer count) throws MalformedURLException {

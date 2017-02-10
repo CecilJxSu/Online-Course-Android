@@ -1,7 +1,5 @@
 package cn.canlnac.onlinecourse.presentation.model;
 
-import java.util.Date;
-
 /**
  * 消息数据模型.
  */
@@ -13,9 +11,9 @@ public class MessageModel {
 
     private String type;
 
-    private LoginModel toUser;
+    private SimpleUserModel toUser;
 
-    private LoginModel fromUser;
+    private SimpleUserModel fromUser;
 
     private String actionType;
 
@@ -47,19 +45,19 @@ public class MessageModel {
         this.type = type;
     }
 
-    public LoginModel getToUser() {
+    public SimpleUserModel getToUser() {
         return toUser;
     }
 
-    public void setToUser(LoginModel toUser) {
+    public void setToUser(SimpleUserModel toUser) {
         this.toUser = toUser;
     }
 
-    public LoginModel getFromUser() {
+    public SimpleUserModel getFromUser() {
         return fromUser;
     }
 
-    public void setFromUser(LoginModel fromUser) {
+    public void setFromUser(SimpleUserModel fromUser) {
         this.fromUser = fromUser;
     }
 

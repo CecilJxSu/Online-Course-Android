@@ -8,12 +8,12 @@ import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.MessageActivity;
 
 @PerActivity
 public class DeleteMessagePresenter implements Presenter {
 
-    RegisterActivity deleteMessageActivity;
+    MessageActivity deleteMessageActivity;
 
     private final UseCase deleteMessageUseCase;
 
@@ -22,7 +22,7 @@ public class DeleteMessagePresenter implements Presenter {
         this.deleteMessageUseCase = deleteMessageUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity deleteMessageActivity) {
+    public void setView(@NonNull MessageActivity deleteMessageActivity) {
         this.deleteMessageActivity = deleteMessageActivity;
     }
 
@@ -55,25 +55,25 @@ public class DeleteMessagePresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        DeleteMessagePresenter.this.deleteMessageActivity.showToastMessage("参数错误！");
+                        DeleteMessagePresenter.this.deleteMessageActivity.showToastMessage("参数错误");
                         break;
                     case 404:
-                        DeleteMessagePresenter.this.deleteMessageActivity.showToastMessage("资源不存在！");
+                        DeleteMessagePresenter.this.deleteMessageActivity.showToastMessage("消息已经删除");
                         break;
-                    case 409:
-                        DeleteMessagePresenter.this.deleteMessageActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        DeleteMessagePresenter.this.deleteMessageActivity.toLogin();
                         break;
                     default:
                         DeleteMessagePresenter.this.deleteMessageActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                DeleteMessagePresenter.this.deleteMessageActivity.showToastMessage("网络连接错误！");
+                DeleteMessagePresenter.this.deleteMessageActivity.showToastMessage("网络连接错误");
+                e.printStackTrace();
             }
         }
 
         @Override
         public void onNext(Void empty) {
-            DeleteMessagePresenter.this.deleteMessageActivity.showToastMessage("创建成功");
         }
     }
 }

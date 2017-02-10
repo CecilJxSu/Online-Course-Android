@@ -23,11 +23,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.canlnac.onlinecourse.presentation.AndroidApplication;
 import cn.canlnac.onlinecourse.presentation.R;
-import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetMessagesComponent;
+import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetMessagesInMainComponent;
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.ActivityModule;
-import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetMessagesModule;
+import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetMessagesInMainModule;
 import cn.canlnac.onlinecourse.presentation.model.MessageListModel;
-import cn.canlnac.onlinecourse.presentation.presenter.GetMessagesPresenter;
+import cn.canlnac.onlinecourse.presentation.presenter.GetMessagesInMainPresenter;
 import cn.canlnac.onlinecourse.presentation.ui.adapter.PagerAdapter;
 import cn.canlnac.onlinecourse.presentation.ui.fragment.TabFragment3;
 import cn.canlnac.onlinecourse.presentation.util.DensityUtil;
@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private MenuItem messageItem;
 
     @Inject
-    GetMessagesPresenter getMessagesPresenter;
+    GetMessagesInMainPresenter getMessagesInMainPresenter;
+
+    private int unreadCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_message:
                 Intent intent = new Intent(this,MessageActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, MessageActivity.TO_READ_COUNT);
                 return true;
             case R.id.menu_search:
                 return true;
@@ -190,19 +192,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initialize(){
-        DaggerGetMessagesComponent.builder()
+        DaggerGetMessagesInMainComponent.builder()
                 .applicationComponent(((AndroidApplication) getApplication()).getApplicationComponent())
                 .activityModule(new ActivityModule(this))
-                .getMessagesModule(new GetMessagesModule(0, 1, false))
+                .getMessagesInMainModule(new GetMessagesInMainModule(0, 1, false))
                 .build().inject(this);
 
-        getMessagesPresenter.setView(this);
-        getMessagesPresenter.initialize();
+        getMessagesInMainPresenter.setView(this);
+        getMessagesInMainPresenter.initialize();
     }
 
     public void showMessages(MessageListModel messageListModel) {
         if (messageItem != null && messageListModel.getTotal() > 0) {
-            setMessageNum(messageItem,messageListModel.getTotal()+"");
+            unreadCount = messageListModel.getTotal();
+            setMessageNum(messageItem,unreadCount+"");
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == MessageActivity.TO_READ_COUNT) {
+            int toReadCount = data.getIntExtra("toReadCount", 0);
+            if (toReadCount > 0) {
+                unreadCount -= toReadCount;
+                if (unreadCount - toReadCount > 0) {
+                    setMessageNum(messageItem, unreadCount+"");
+                } else {
+                    unreadCount = 0;
+                    setMessageNum(messageItem, null);
+                }
+            }
         }
     }
 }

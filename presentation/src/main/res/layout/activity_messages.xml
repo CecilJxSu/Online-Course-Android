@@ -61,4 +61,10 @@
 
     </RelativeLayout>
 
+    <cn.canlnac.onlinecourse.presentation.ui.widget.ZrcListView.ZrcListView
+        android:id="@+id/message_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp" />
+
 </LinearLayout>

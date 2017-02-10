@@ -5,16 +5,16 @@ import android.support.annotation.NonNull;
 import javax.inject.Inject;
 
 import cn.canlnac.onlinecourse.data.exception.ResponseStatusException;
+import cn.canlnac.onlinecourse.domain.Message;
 import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
-import cn.canlnac.onlinecourse.presentation.model.MessageModel;
-import cn.canlnac.onlinecourse.presentation.ui.activity.RegisterActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.MessageActivity;
 
 @PerActivity
 public class GetMessagePresenter implements Presenter {
 
-    RegisterActivity getMessageActivity;
+    MessageActivity getMessageActivity;
 
     private final UseCase getMessageUseCase;
 
@@ -23,7 +23,7 @@ public class GetMessagePresenter implements Presenter {
         this.getMessageUseCase = getMessageUseCase;
     }
 
-    public void setView(@NonNull RegisterActivity getMessageActivity) {
+    public void setView(@NonNull MessageActivity getMessageActivity) {
         this.getMessageActivity = getMessageActivity;
     }
 
@@ -46,7 +46,7 @@ public class GetMessagePresenter implements Presenter {
         this.getMessageUseCase.unsubscribe();
     }
 
-    private final class GetMessageSubscriber extends DefaultSubscriber<MessageModel> {
+    private final class GetMessageSubscriber extends DefaultSubscriber<Message> {
         @Override
         public void onCompleted() {
         }
@@ -56,25 +56,26 @@ public class GetMessagePresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        GetMessagePresenter.this.getMessageActivity.showToastMessage("参数错误！");
+                        GetMessagePresenter.this.getMessageActivity.showToastMessage("参数错误");
                         break;
                     case 404:
-                        GetMessagePresenter.this.getMessageActivity.showToastMessage("资源不存在！");
+                        GetMessagePresenter.this.getMessageActivity.showToastMessage("消息不存在");
                         break;
-                    case 409:
-                        GetMessagePresenter.this.getMessageActivity.showToastMessage("用户名已被注册！");
+                    case 401:
+                        GetMessagePresenter.this.getMessageActivity.toLogin();
                         break;
                     default:
                         GetMessagePresenter.this.getMessageActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
                 }
             } else {
-                GetMessagePresenter.this.getMessageActivity.showToastMessage("网络连接错误！");
+                GetMessagePresenter.this.getMessageActivity.showToastMessage("网络连接错误");
+                e.printStackTrace();
             }
         }
 
         @Override
-        public void onNext(MessageModel messageModel) {
-            GetMessagePresenter.this.getMessageActivity.showToastMessage("创建成功");
+        public void onNext(Message message) {
+            GetMessagePresenter.this.getMessageActivity.readMessage();
         }
     }
 }

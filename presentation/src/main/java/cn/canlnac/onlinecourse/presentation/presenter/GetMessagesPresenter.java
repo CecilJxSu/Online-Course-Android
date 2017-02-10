@@ -10,12 +10,14 @@ import cn.canlnac.onlinecourse.domain.interactor.DefaultSubscriber;
 import cn.canlnac.onlinecourse.domain.interactor.UseCase;
 import cn.canlnac.onlinecourse.presentation.internal.di.PerActivity;
 import cn.canlnac.onlinecourse.presentation.mapper.MessageListModelDataMapper;
-import cn.canlnac.onlinecourse.presentation.ui.activity.MainActivity;
+import cn.canlnac.onlinecourse.presentation.ui.activity.MessageActivity;
 
 @PerActivity
 public class GetMessagesPresenter implements Presenter {
 
-    MainActivity getMessagesActivity;
+    MessageActivity getMessagesActivity;
+    private int state;
+    private boolean isRead;
 
     private final UseCase getMessagesUseCase;
     private MessageListModelDataMapper messageListModelDataMapper;
@@ -26,8 +28,15 @@ public class GetMessagesPresenter implements Presenter {
         this.messageListModelDataMapper = messageListModelDataMapper;
     }
 
-    public void setView(@NonNull MainActivity getMessagesActivity) {
+    /**
+     * 设置View
+     * @param getMessagesActivity  view
+     * @param state                0，刷新；1，加载更多
+     */
+    public void setView(@NonNull MessageActivity getMessagesActivity, int state, boolean isRead) {
         this.getMessagesActivity = getMessagesActivity;
+        this.state = state;
+        this.isRead = isRead;
     }
 
     public void initialize() {
@@ -59,24 +68,39 @@ public class GetMessagesPresenter implements Presenter {
             if (e instanceof ResponseStatusException) {
                 switch (((ResponseStatusException)e).code) {
                     case 400:
-                        GetMessagesPresenter.this.getMessagesActivity.showToastMessage("参数错误");
+                        if (state == 0) {
+                            GetMessagesPresenter.this.getMessagesActivity.showRefreshError("参数错误");
+                        }
                         break;
                     case 404:
+                        if (state == 0) {
+                            GetMessagesPresenter.this.getMessagesActivity.showRefreshError("没有消息");
+                        }
                         break;
                     case 401:
                         break;
                     default:
                         GetMessagesPresenter.this.getMessagesActivity.showToastMessage("服务器错误:"+((ResponseStatusException)e).code);
+                        if (state == 0) {
+                            GetMessagesPresenter.this.getMessagesActivity.showRefreshError("服务器错误");
+                        }
                 }
             } else {
                 GetMessagesPresenter.this.getMessagesActivity.showToastMessage("网络连接错误");
+                if (state == 0) {
+                    GetMessagesPresenter.this.getMessagesActivity.showRefreshError("网络连接错误");
+                }
                 e.printStackTrace();
             }
         }
 
         @Override
         public void onNext(MessageList messageList) {
-            GetMessagesPresenter.this.getMessagesActivity.showMessages(messageListModelDataMapper.transform(messageList));
+            if (state == 0) {
+                GetMessagesPresenter.this.getMessagesActivity.showRefreshMessages(messageListModelDataMapper.transform(messageList), isRead);
+            } else if (state == 1) {
+                GetMessagesPresenter.this.getMessagesActivity.showLoadMoreMessages(messageListModelDataMapper.transform(messageList), isRead);
+            }
         }
     }
 }
