@@ -71,6 +71,9 @@ public class QuestionsMultiSelectViewHolder implements QuestionViewHolder, View.
     public boolean checkAnswer() {
         questionExplain.setVisibility(View.VISIBLE);
         boolean isAllCorrect = currentChecked.size() == answerPosition.size();
+        if (answerPosition.size() == 0) {
+            isAllCorrect = false;
+        }
         for (int i = 0; i < currentChecked.size(); i++) {
             boolean isCorrect = false;
             for (int j = 0; j < answerPosition.size(); j++) {
