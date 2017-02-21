@@ -2,8 +2,6 @@ package cn.canlnac.onlinecourse.presentation.ui.activity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,13 +20,14 @@ import cn.canlnac.onlinecourse.presentation.internal.di.components.DaggerGetQues
 import cn.canlnac.onlinecourse.presentation.internal.di.modules.GetQuestionModule;
 import cn.canlnac.onlinecourse.presentation.model.PaperModel;
 import cn.canlnac.onlinecourse.presentation.model.QuestionListModel;
+import cn.canlnac.onlinecourse.presentation.model.QuestionModel;
 import cn.canlnac.onlinecourse.presentation.presenter.GetQuestionPresenter;
-import cn.canlnac.onlinecourse.presentation.ui.adapter.QuestionsAdapter;
-import cn.canlnac.onlinecourse.presentation.util.DensityUtil;
+import cn.canlnac.onlinecourse.presentation.ui.adapter.PaperAdapter;
+import cn.canlnac.onlinecourse.presentation.ui.adapter.QuestionViewHolder;
 
 public class QuestionActivity extends BaseActivity {
 
-    @BindView(R.id.question_type) LinearLayout questionContainer;
+    @BindView(R.id.question_type) ListView questionContainer;
     @BindView(R.id.question_tag) TextView label;
 
     @Inject
@@ -38,6 +37,9 @@ public class QuestionActivity extends BaseActivity {
 
     private int catalogId;
     private float totalScore = 0;
+
+    //题号
+    private String[] indexStr = {"一、","二、","三、","四、","五、","六、","七、","八、","九、","十、"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,75 +84,67 @@ public class QuestionActivity extends BaseActivity {
         totalScore = questions.getTotal();
         label.setText("满分：" + (int)totalScore);
 
-        //显示问题
-        int index = 0;
-        for (PaperModel paperModel: questions.getQuestions()) {
-            //添加题型标题
-            TextView questionTitle = new TextView(this);
-            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            questionTitle.setPadding(DensityUtil.dp2px(this,10),DensityUtil.dp2px(this,5),DensityUtil.dp2px(this,10),DensityUtil.dp2px(this,5));
-            questionTitle.setLayoutParams(layoutParams);
-            questionTitle.setTextColor(0xFF333333);
+        List<Map<String,Object>> papers = new ArrayList<>();
 
-            //添加问题
-            ListView questionsView = new ListView(this);
-            questionsView.setLayoutParams(layoutParams);
-
-            QuestionsAdapter adapter = new QuestionsAdapter(this,paperModel.getQuestions());
-            questionsView.setAdapter(adapter);
-            //题号
-            String[] indexStr = {"一、","二、","三、","四、","五、","六、","七、","八、","九、","十、"};
+        int titleIndex = 0;
+        for (PaperModel paperModel:questions.getQuestions()) { //处理标题
+            String title;
             int score = (int)paperModel.getScore();
-
-            //分数记录
-            Map<String,Object> result = new HashMap<>();
-            result.put("view", questionsView);
-            result.put("score", paperModel.getScore());
-            checkResult.add(result);
-
             switch (paperModel.getType()) {
                 case "判断题":
-                    questionTitle.setText(indexStr[index++] + "判断题（共 " +
+                    title = indexStr[titleIndex++] + "判断题（共 " +
                             score * paperModel.getQuestions().size() +
-                            " 分，每小题 "+ score +" 分）。");
-                    questionContainer.addView(questionTitle);
-                    questionContainer.addView(questionsView);
+                            " 分，每小题 "+ score +" 分）。";
                     break;
                 case "单选题":
-                    questionTitle.setText(indexStr[index++] + "单选题（共 " +
+                    title = indexStr[titleIndex++] + "单选题（共 " +
                             score * paperModel.getQuestions().size() +
-                            " 分，每小题 "+ score +" 分）。");
-                    questionContainer.addView(questionTitle);
-                    questionContainer.addView(questionsView);
+                            " 分，每小题 "+ score +" 分）。";
                     break;
                 case "多选题":
-
-                    questionTitle.setText(indexStr[index++] + "多选题（共 " +
+                    title = indexStr[titleIndex++] + "多选题（共 " +
                             score * paperModel.getQuestions().size() +
-                            " 分，每小题 "+ score +" 分）。");
-                    questionContainer.addView(questionTitle);
-                    questionContainer.addView(questionsView);
+                            " 分，每小题 "+ score +" 分）。";
                     break;
                 case "填空题":
-                    questionTitle.setText(indexStr[index++] + "填空题（共 " +
+                    title = indexStr[titleIndex++] + "填空题（共 " +
                             score * paperModel.getQuestions().size() +
-                            " 分，每小题 "+ score +" 分）。");
-                    questionContainer.addView(questionTitle);
-                    questionContainer.addView(questionsView);
+                            " 分，每小题 "+ score +" 分）。";
                     break;
+                default:
+                    title = "";
+            }
+
+            Map<String,Object> titleObj = new HashMap<>();
+            titleObj.put("type","title");
+            titleObj.put("title",title);
+            papers.add(titleObj);
+
+            int questionIndex = 0;
+            for (QuestionModel questionModel: paperModel.getQuestions()) {  //处理小题
+                questionModel.setQuestion(++questionIndex + "、" + questionModel.getQuestion());
+
+                Map<String,Object> questionObj = new HashMap<>();
+                questionObj.put("type","question");
+                questionObj.put("question",questionModel);
+                questionObj.put("score",paperModel.getScore());
+                papers.add(questionObj);
             }
         }
+
+        PaperAdapter paperAdapter = new PaperAdapter(this, papers, checkResult);
+        questionContainer.setAdapter(paperAdapter);
     }
 
     @OnClick(R.id.question_check)
     public void check (View v) {
         float totalScore = 0;
         for (Map<String,Object> result: checkResult) {
-            ListView view = (ListView)result.get("view");
+            QuestionViewHolder view = (QuestionViewHolder)result.get("view");
             if (view != null) {
-                totalScore += ((QuestionsAdapter)view.getAdapter()).check() * (float)result.get("score");
+                if (view.checkAnswer()) {
+                    totalScore += (float)result.get("score");
+                }
             }
         }
 
