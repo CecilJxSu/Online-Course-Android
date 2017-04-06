@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:id="@+id/forget_title"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#2196F3"
+        android:orientation="horizontal"
+        android:elevation="6dp">
+
+            <Button
+                android:id="@+id/forget_close_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/ic_close"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="忘记密码"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="10dp"
+                android:textSize="17sp"
+                android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/forget_title"
+        android:layout_marginTop="40dp">
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="邮箱："/>
+
+            <EditText
+                android:id="@+id/forget_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:inputType="textEmailAddress"
+                android:textColor="#666666"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+        </LinearLayout>
+        <View
+            android:layout_width="300dp"
+            android:layout_height="1px"
+            android:background="#dddddd" />
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" >
+            <TextView
+                android:id="@+id/forget_verify_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="验证码：" />
+
+            <EditText
+                android:id="@+id/forget_verify"
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:background="@null"
+                android:layout_toRightOf="@+id/forget_verify_hint"
+                android:layout_toLeftOf="@+id/forget_verify_send"
+                android:textColor="#666666"/>
+            <TextView
+                android:id="@+id/forget_verify_send"
+                android:layout_width="80dp"
+                android:layout_height="30dp"
+                android:gravity="center_vertical|right"
+                android:text="发送验证码"
+                android:textColor="#2196F3"
+                android:textSize="14sp"
+                android:clickable="true"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+        <View
+            android:layout_width="300dp"
+            android:layout_height="1px"
+            android:background="#dddddd" />
+
+        <Button
+            android:id="@+id/forget_next"
+            android:layout_width="300dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="下\t一\t步"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:background="#AFAFAF"/>
+    </LinearLayout>
+
+</RelativeLayout>

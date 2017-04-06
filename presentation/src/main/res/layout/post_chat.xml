@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+    <LinearLayout
+        android:id="@+id/post_chat_title"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#2196F3"
+        android:orientation="horizontal"
+        android:elevation="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/post_chat_close_button"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="14dp"
+                android:background="@drawable/ic_close"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="发表话题"
+                android:textColor="#FFFFFF"
+                android:layout_marginLeft="10dp"
+                android:textSize="17sp"
+                android:layout_gravity="center_vertical"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/post_chat_send_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="13dp"
+                android:layout_marginRight="14dp"
+                android:background="@drawable/post_chat"
+                android:layout_gravity="right" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/post_chat_topic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="50dp"
+        android:background="#FFFFFF"
+        android:padding="10dp"
+        android:maxLength="32"
+        android:maxLines="2"
+        android:layout_below="@+id/post_chat_title"
+        android:hint="输入标题"
+        android:textCursorDrawable="@drawable/cursor_shape" />
+
+    <View
+        android:id="@+id/post_chat_stroke"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/darker_gray"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="1.0px"
+        android:layout_below="@+id/post_chat_topic"/>
+
+    <LinearLayout
+        android:id="@+id/post_chat_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#2196F3"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/post_chat_image_button"
+            android:layout_width="30dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/post_image"
+            android:gravity="center_horizontal" />
+
+        <Button
+            android:id="@+id/post_chat_photo_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="14dp"
+            android:background="@drawable/post_photo"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
+
+    <cn.canlnac.onlinecourse.presentation.ui.view.RichTextEditor
+        android:id="@+id/richEditor"
+        android:layout_below="@+id/post_chat_stroke"
+        android:layout_above="@+id/post_chat_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF" />
+
+</RelativeLayout>
